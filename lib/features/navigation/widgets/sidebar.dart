@@ -349,28 +349,22 @@ class _SidebarItem extends StatelessWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
-  final Widget? trailing;
-  final bool isHeader;
 
   const _SidebarItem({
     required this.icon,
     required this.label,
     required this.isSelected,
     required this.onTap,
-    this.trailing,
-    this.isHeader = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final trailingWidget = trailing;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       child: InkWell(
         onTap: () {
           onTap();
-          if (!isHeader && Scaffold.of(context).isDrawerOpen) {
+          if (Scaffold.of(context).isDrawerOpen) {
             Navigator.of(context).pop();
           }
         },
@@ -408,7 +402,6 @@ class _SidebarItem extends StatelessWidget {
                   ),
                 ),
               ),
-              ?trailingWidget,
               if (isSelected) ...[
                 const SizedBox(width: 8),
                 Container(
@@ -422,87 +415,6 @@ class _SidebarItem extends StatelessWidget {
               ],
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-final sidebarExpandedProvider = StateProvider<Map<String, bool>>((ref) => {});
-
-class _SidebarExpandable extends ConsumerWidget {
-  final IconData icon;
-  final String label;
-  final List<Widget> children;
-  final bool isInitiallyExpanded;
-
-  const _SidebarExpandable({
-    required this.icon,
-    required this.label,
-    required this.children,
-  }) : isInitiallyExpanded = false;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final expandedStates = ref.watch(sidebarExpandedProvider);
-    final isExpanded = expandedStates[label] ?? isInitiallyExpanded;
-
-    return Column(
-      children: [
-        _SidebarItem(
-          icon: icon,
-          label: label,
-          isSelected: false,
-          isHeader: true,
-          onTap: () {
-            ref.read(sidebarExpandedProvider.notifier).update((state) => {
-              ...state,
-              label: !isExpanded,
-            });
-          },
-          trailing: Icon(
-            isExpanded ? LucideIcons.chevronUp : LucideIcons.chevronDown,
-            size: 16,
-            color: AppColors.secondaryText,
-          ),
-        ),
-        if (isExpanded)
-          Padding(
-            padding: const EdgeInsets.only(left: 32),
-            child: Column(children: children),
-          ),
-      ],
-    );
-  }
-}
-
-class _SidebarSubItem extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _SidebarSubItem({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      onTap: () {
-        onTap();
-        if (Scaffold.of(context).isDrawerOpen) {
-          Navigator.of(context).pop();
-        }
-      },
-      title: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? AppColors.primaryGreen : AppColors.secondaryText,
-          fontSize: 13,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
         ),
       ),
     );

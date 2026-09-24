@@ -31,7 +31,6 @@ class _EmployeeLoanPanelState extends ConsumerState<EmployeeLoanPanel> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 950;
-    final isNarrow = screenWidth < 400;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -271,7 +270,6 @@ class _ProcessPayrollPanelState extends ConsumerState<ProcessPayrollPanel> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 950;
-    final isNarrow = screenWidth < 480;
 
     return Scaffold(
       backgroundColor: Colors.transparent,

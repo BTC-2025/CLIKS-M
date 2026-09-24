@@ -436,7 +436,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 size: 18,
               ),
               label: Text(
-                _claimedToday ? "✓ Daily Bonus Claimed Today (+${todayBonus} Pts)" : "Claim Today's Bonus (+${todayBonus} Points)",
+                _claimedToday ? "✓ Daily Bonus Claimed Today (+$todayBonus Pts)" : "Claim Today's Bonus (+$todayBonus Points)",
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               style: ElevatedButton.styleFrom(

@@ -53,7 +53,6 @@ class _SettingsPageState extends State<SettingsPage> {
   // Appearance State
   bool _darkMode = false;
   bool _compactMode = false;
-  final String _accentColor = '#1B5B3A';
   String _fontSize = 'Medium';
 
   @override

@@ -509,31 +509,6 @@ Widget _buildResponsiveRow(BuildContext context, List<Widget> children) {
   );
 }
 
-Widget _buildResponsiveThreeRow(BuildContext context, List<Widget> children) {
-  final isSmall = MediaQuery.of(context).size.width < 550;
-  if (isSmall) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        children[0],
-        const SizedBox(height: 16),
-        children[1],
-        const SizedBox(height: 16),
-        children[2],
-      ],
-    );
-  }
-  return Row(
-    children: [
-      Expanded(child: children[0]),
-      const SizedBox(width: 8),
-      Expanded(child: children[1]),
-      const SizedBox(width: 8),
-      Expanded(child: children[2]),
-    ],
-  );
-}
-
 Widget _buildResponsiveFourRow(BuildContext context, List<Widget> children) {
   final isSmall = MediaQuery.of(context).size.width < 600;
   if (isSmall) {
@@ -644,50 +619,6 @@ Widget _buildDropdown({
   );
 }
 
-Widget _buildCompactInput(String hint, {required double width}) {
-  return SizedBox(
-    width: width,
-    height: 36,
-    child: TextField(
-      style: const TextStyle(fontSize: 12, color: Color(0xFF1F2937)),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFF7C3AED))),
-      ),
-    ),
-  );
-}
-
-Widget _buildCompactDropdown(String value, List<String> items) {
-  return SizedBox(
-    height: 36,
-    child: DropdownButtonFormField<String>(
-      initialValue: value,
-      items: items.map((item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(item, style: const TextStyle(fontSize: 11.5, color: Color(0xFF1F2937))),
-        );
-      }).toList(),
-      onChanged: (val) {},
-      icon: const Icon(LucideIcons.chevronDown, size: 12, color: Color(0xFF6B7280)),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFF7C3AED))),
-      ),
-    ),
-  );
-}
 
 class NewCustomerReturnModal extends ConsumerStatefulWidget {
   const NewCustomerReturnModal({super.key});

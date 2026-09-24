@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cliks.app"
+    namespace = "com.cliks.betasoftnet"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         // Unique Application ID for Cliks app
-        applicationId = "com.cliks.app"
+        applicationId = "com.cliks.betasoftnet"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

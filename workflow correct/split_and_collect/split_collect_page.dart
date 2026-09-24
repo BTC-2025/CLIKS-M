@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../widgets/app_ui_kit.dart';
+import 'package:cliks/core/theme/app_colors.dart';
+import 'package:cliks/widgets/app_ui_kit.dart';
 import 'create_split_ticket_dialog.dart';
 
 // Persistent In-Memory Store for Split Expenses across navigation tabs
@@ -72,6 +71,7 @@ class _SplitCollectPageState extends State<SplitCollectPage> {
         _tickets.add(result);
         _selectedTicketId = result['id'] as String;
       });
+      if (!mounted) return;
       AppSnackbar.show(
         context,
         "Split ticket '${result['title']}' created successfully!",

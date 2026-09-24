@@ -12,8 +12,6 @@ class StockPage extends ConsumerStatefulWidget {
 }
 
 class _StockPageState extends ConsumerState<StockPage> {
-  final String _selectedCategory = 'All Categories';
-  final String _selectedStatus = 'All Statuses';
   int _selectedFilterPill = 0; // 0: All Stock, 1: Low Stock
   String _searchQuery = '';
 
@@ -511,7 +509,13 @@ class _StockPageState extends ConsumerState<StockPage> {
               const SizedBox(height: 8),
 
               // Product Items List
-              ..._products.map((p) => _buildProductRow(p, isMobile)),
+              ..._products
+                  .where((p) =>
+                      _searchQuery.isEmpty ||
+                      (p['name'] as String)
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase()))
+                  .map((p) => _buildProductRow(p, isMobile)),
             ],
           ),
         ),

@@ -436,7 +436,6 @@ class _GstPageState extends ConsumerState<GstPage> {
   }
 
   Widget _buildMainContent(bool isMobile) {
-    Widget content;
     String title = "";
     Widget? actionButton;
     List<String> headers = [];
@@ -642,10 +641,5 @@ class _GstPageState extends ConsumerState<GstPage> {
         ],
       ),
     );
-  }
-
-  Widget _buildTableOrList(bool isMobile) {
-    // This is replaced by _buildDynamicTable in _buildMainContent
-    return const SizedBox.shrink();
   }
 }

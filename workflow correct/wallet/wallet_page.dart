@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/theme/app_colors.dart';
+import 'package:cliks/core/theme/app_colors.dart';
 import 'add_money_dialog.dart';
 
 class WalletPage extends StatelessWidget {

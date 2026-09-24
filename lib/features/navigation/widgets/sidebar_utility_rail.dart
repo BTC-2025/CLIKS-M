@@ -82,7 +82,6 @@ class SidebarUtilityRail extends ConsumerStatefulWidget {
 class _SidebarUtilityRailState extends ConsumerState<SidebarUtilityRail> {
   DateTime _selectedCalendarDate = DateTime.now();
 
-  final List<String> _keepNotes = ['Review Q3 invoices', 'Finalize tax filings', 'Call vendor team'];
   final List<Map<String, String>> _contacts = [
     {'name': 'Sarah Jenkins', 'email': 'sarah@cliks.com'},
     {'name': 'Alex Rivera', 'email': 'alex@cliks.com'},

@@ -659,7 +659,7 @@ class _LogGratitudeDialogState extends State<LogGratitudeDialog> {
                                 ),
                                 const SizedBox(height: 12),
                                 DropdownButtonFormField<String>(
-                                  value: _selectedCategory,
+                                  initialValue: _selectedCategory,
                                   decoration: InputDecoration(
                                     labelText: 'Category',
                                     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -687,7 +687,7 @@ class _LogGratitudeDialogState extends State<LogGratitudeDialog> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: DropdownButtonFormField<String>(
-                                    value: _selectedCategory,
+                                    initialValue: _selectedCategory,
                                     decoration: InputDecoration(
                                       labelText: 'Category',
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -701,7 +701,7 @@ class _LogGratitudeDialogState extends State<LogGratitudeDialog> {
                             ),
                       const SizedBox(height: 12),
                       DropdownButtonFormField<String>(
-                        value: _selectedTagType,
+                        initialValue: _selectedTagType,
                         decoration: InputDecoration(
                           labelText: 'Win Type Tag',
                           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),

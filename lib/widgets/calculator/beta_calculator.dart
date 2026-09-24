@@ -198,7 +198,6 @@ class _BetaCalculatorState extends State<BetaCalculator> {
   }
 
   void _applyOperation(double value) {
-    double oldTotal = _runningTotal;
     switch (_pendingOperator) {
       case '+':
         _runningTotal += value;
@@ -265,12 +264,6 @@ class _BetaCalculatorState extends State<BetaCalculator> {
     _scrollTapeToBottom();
   }
 
-  // Label management
-  void _addLabel(int idx, String label) {
-    setState(() {
-      _tapeEntries[idx].label = label;
-    });
-  }
 
   // History logs
   void _saveToHistory() {

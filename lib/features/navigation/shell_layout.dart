@@ -121,7 +121,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
 
     return PopScope(
       canPop: (navigation.currentModule == AppModule.books && navigation.currentRoute == AppRoute.dashboard) && !isOverlay,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         
         if (isOverlay) {

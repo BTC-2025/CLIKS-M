@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/theme/app_colors.dart';
+import 'package:cliks/core/theme/app_colors.dart';
 
 class CreateSplitTicketDialog extends StatefulWidget {
   const CreateSplitTicketDialog({super.key});

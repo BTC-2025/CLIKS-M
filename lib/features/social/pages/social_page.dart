@@ -347,8 +347,10 @@ class _LocationDialogState extends ConsumerState<_LocationDialog> {
       if (updatedState.errorMessage != null) {
         setState(() => _errorMessage = updatedState.errorMessage);
       } else {
-        if (mounted) Navigator.pop(context);
-        AppSnackbar.show(context, 'Location updated successfully!', type: SnackType.success);
+        if (mounted) {
+          Navigator.pop(context);
+          AppSnackbar.show(context, 'Location updated successfully!', type: SnackType.success);
+        }
       }
     } catch (e) {
       setState(() => _errorMessage = 'Failed to detect GPS location.');
@@ -370,8 +372,10 @@ class _LocationDialogState extends ConsumerState<_LocationDialog> {
           .read(locationStateProvider.notifier)
           .searchAndSetLocation(query);
       if (success) {
-        if (mounted) Navigator.pop(context);
-        AppSnackbar.show(context, 'Location set to $query', type: SnackType.success);
+        if (mounted) {
+          Navigator.pop(context);
+          AppSnackbar.show(context, 'Location set to $query', type: SnackType.success);
+        }
       } else {
         final updatedState = ref.read(locationStateProvider);
         setState(() {

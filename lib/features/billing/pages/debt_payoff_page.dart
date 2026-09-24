@@ -47,7 +47,6 @@ class _DebtPayoffPageState extends State<DebtPayoffPage> {
   ];
 
   double get _totalBalance => _debts.fold(0, (sum, item) => sum + (item['balance'] as num));
-  double get _totalOriginal => _debts.fold(0, (sum, item) => sum + (item['original'] as num));
   double get _totalEmi => _debts.fold(0, (sum, item) => sum + (item['minEmi'] as num));
 
   @override

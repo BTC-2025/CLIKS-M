@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/navigation/navigation_provider.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../widgets/app_ui_kit.dart';
-import '../widgets/enroll_contact_dialog.dart';
+import 'package:cliks/core/theme/app_colors.dart';
+import 'package:cliks/widgets/app_ui_kit.dart';
+import 'enroll_contact_dialog.dart';
 
 class PeoplePage extends ConsumerStatefulWidget {
   const PeoplePage({super.key});
@@ -1092,7 +1091,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                           const Text('DIRECTION', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
                           const SizedBox(height: 4),
                           DropdownButtonFormField<String>(
-                            value: direction,
+                            initialValue: direction,
                             items: ['I Borrowed Money (-)', 'I Lent Money (+)'].map((d) {
                               return DropdownMenuItem(value: d, child: Text(d, style: const TextStyle(fontSize: 12)));
                             }).toList(),

@@ -298,27 +298,31 @@ class SettingsRadioTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onChanged(value),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Radio<T>(
-            value: value,
-            groupValue: groupValue,
-            onChanged: onChanged,
-            activeColor: AppColors.primaryGreen,
-            visualDensity: VisualDensity.compact,
-          ),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.darkText,
-              fontWeight: FontWeight.w500,
+    return RadioGroup<T>(
+      groupValue: groupValue,
+      onChanged: (val) {
+        if (val != null) onChanged(val);
+      },
+      child: InkWell(
+        onTap: () => onChanged(value),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Radio<T>(
+              value: value,
+              activeColor: AppColors.primaryGreen,
+              visualDensity: VisualDensity.compact,
             ),
-          ),
-        ],
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.darkText,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

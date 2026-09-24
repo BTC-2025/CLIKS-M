@@ -1164,7 +1164,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
             const Text('SELECT FOLDER *', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
-              value: selectedFolderId,
+              initialValue: selectedFolderId,
               items: _folders.map((f) {
                 return DropdownMenuItem<String>(
                   value: f['id'] as String,
@@ -1262,9 +1262,5 @@ class _DocumentsPageState extends State<DocumentsPage> {
         ),
       );
     }
-  }
-
-  String _fmt(double val) {
-    return val.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},');
   }
 }

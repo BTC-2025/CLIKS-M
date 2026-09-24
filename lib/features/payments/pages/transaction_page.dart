@@ -149,7 +149,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   const Text('CATEGORY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF5A7184))),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<String>(
-                    value: selectedCategory,
+                    initialValue: selectedCategory,
                     icon: const Icon(LucideIcons.chevronDown, size: 16),
                     decoration: InputDecoration(
                       filled: true,
@@ -406,7 +406,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   const Text('CATEGORY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF5A7184))),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<String>(
-                    value: selectedCategory,
+                    initialValue: selectedCategory,
                     icon: const Icon(LucideIcons.chevronDown, size: 16),
                     decoration: InputDecoration(
                       filled: true,

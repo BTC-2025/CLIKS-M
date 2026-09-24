@@ -44,8 +44,9 @@ class _AppCardState extends State<AppCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()
-          ..scale(_hovered && widget.onTap != null ? 1.008 : 1.0),
+        transform: _hovered && widget.onTap != null
+            ? Matrix4.diagonal3Values(1.008, 1.008, 1.0)
+            : Matrix4.identity(),
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? AppColors.cardBackground,
           borderRadius: AppRadius.md,

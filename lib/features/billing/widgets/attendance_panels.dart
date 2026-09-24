@@ -229,7 +229,7 @@ class _ManualPunchPanelState extends ConsumerState<ManualPunchPanel> {
               ),
               onTap: () async {
                 final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                if (time != null) controller.text = time.format(context);
+                if (time != null && mounted) controller.text = time.format(context);
               },
             ),
           ),
@@ -530,7 +530,7 @@ class _RegularizePunchPanelState extends ConsumerState<RegularizePunchPanel> {
               ),
               onTap: () async {
                 final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                if (time != null) controller.text = time.format(context);
+                if (time != null && mounted) controller.text = time.format(context);
               },
             ),
           ),

@@ -114,7 +114,6 @@ class _NewInvoicePageState extends ConsumerState<NewInvoicePage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 950;
-    final paddingVal = isMobile ? 16.0 : 32.0;
 
     final formColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

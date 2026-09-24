@@ -13,7 +13,6 @@ class GoalBucketsPage extends StatefulWidget {
 
 class _GoalBucketsPageState extends State<GoalBucketsPage> {
   String _selectedSubTab = 'all'; // 'all', 'savings', 'debts', 'summary'
-  String _searchQuery = '';
 
   // Unified Goals & Debts Data
   final List<Map<String, dynamic>> _items = [
