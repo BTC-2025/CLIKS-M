@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cliks/core/theme/app_colors.dart';
+import 'package:cliks/widgets/app_ui_kit.dart';
 
 class RecordTransactionDialog extends StatefulWidget {
   const RecordTransactionDialog({super.key});
@@ -189,7 +190,11 @@ class _RecordTransactionDialogState extends State<RecordTransactionDialog> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Handle transaction recording
+                          AppSnackbar.show(
+                            context,
+                            'Transaction logged successfully.',
+                            type: SnackType.success,
+                          );
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(

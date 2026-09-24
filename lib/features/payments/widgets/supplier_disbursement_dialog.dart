@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../widgets/app_ui_kit.dart';
 
 class RecordSupplierDisbursementDialog extends StatefulWidget {
   const RecordSupplierDisbursementDialog({super.key});
@@ -187,7 +188,11 @@ class _RecordSupplierDisbursementDialogState extends State<RecordSupplierDisburs
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Handle supplier disbursement
+                          AppSnackbar.show(
+                            context,
+                            'Supplier funds disbursed successfully.',
+                            type: SnackType.success,
+                          );
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(

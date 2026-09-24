@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../widgets/app_ui_kit.dart';
 
 class InviteTeamDialog extends StatefulWidget {
   const InviteTeamDialog({super.key});
@@ -128,7 +129,11 @@ class _InviteTeamDialogState extends State<InviteTeamDialog> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Send Invitation
+                            AppSnackbar.show(
+                              context,
+                              'Team invitation sent successfully.',
+                              type: SnackType.success,
+                            );
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

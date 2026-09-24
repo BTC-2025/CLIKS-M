@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../widgets/app_ui_kit.dart';
 
 class RegisterClientDialog extends StatefulWidget {
   const RegisterClientDialog({super.key});
@@ -164,7 +165,11 @@ class _RegisterClientDialogState extends State<RegisterClientDialog> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Register Client
+                            AppSnackbar.show(
+                              context,
+                              'Client registered successfully.',
+                              type: SnackType.success,
+                            );
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

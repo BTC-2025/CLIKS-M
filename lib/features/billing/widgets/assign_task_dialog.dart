@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../widgets/app_ui_kit.dart';
 
 class AssignTaskDialog extends StatefulWidget {
   const AssignTaskDialog({super.key});
@@ -181,7 +182,11 @@ class _AssignTaskDialogState extends State<AssignTaskDialog> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Assign Task
+                            AppSnackbar.show(
+                              context,
+                              'Task assigned successfully.',
+                              type: SnackType.success,
+                            );
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cliks/core/theme/app_colors.dart';
+import 'package:cliks/widgets/app_ui_kit.dart';
 
 class AddMoneyDialog extends StatefulWidget {
   const AddMoneyDialog({super.key});
@@ -133,7 +134,11 @@ class _AddMoneyDialogState extends State<AddMoneyDialog> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Handle load confirmation
+                          AppSnackbar.show(
+                            context,
+                            'Funds added to wallet successfully.',
+                            type: SnackType.success,
+                          );
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(

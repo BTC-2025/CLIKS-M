@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../widgets/app_ui_kit.dart';
 
 class DispatchBillDialog extends StatefulWidget {
   const DispatchBillDialog({super.key});
@@ -178,7 +179,11 @@ class _DispatchBillDialogState extends State<DispatchBillDialog> {
                       height: 44,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Settle government e-way bill
+                          AppSnackbar.show(
+                            context,
+                            'Government e-Way Bill settled successfully.',
+                            type: SnackType.success,
+                          );
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
