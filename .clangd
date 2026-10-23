@@ -1,0 +1,10 @@
+If:
+  PathMatch: .*linux/.*
+
+CompileFlags:
+  Add:
+    - "-ferror-limit=0"
+    - "-Wno-everything"
+
+Diagnostics:
+  Suppress: ["*"]

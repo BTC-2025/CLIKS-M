@@ -53,13 +53,16 @@ static void my_application_activate(GApplication* application) {
   }
 
   // Load and set application icon if available
-  g_autofree gchar* exe_path = g_file_read_link("/proc/self/exe", nullptr);
+  gchar* exe_path = g_file_read_link("/proc/self/exe", nullptr);
   if (exe_path != nullptr) {
-    g_autofree gchar* exe_dir = g_path_get_dirname(exe_path);
-    g_autofree gchar* asset_icon = g_build_filename(exe_dir, "data", "flutter_assets", "assets", "cliks_logo.png", nullptr);
+    gchar* exe_dir = g_path_get_dirname(exe_path);
+    gchar* asset_icon = g_build_filename(exe_dir, "data", "flutter_assets", "assets", "cliks_logo.png", nullptr);
     if (g_file_test(asset_icon, G_FILE_TEST_EXISTS)) {
       gtk_window_set_icon_from_file(window, asset_icon, nullptr);
     }
+    g_free(asset_icon);
+    g_free(exe_dir);
+    g_free(exe_path);
   }
 
   gtk_window_set_default_size(window, 1280, 720);
