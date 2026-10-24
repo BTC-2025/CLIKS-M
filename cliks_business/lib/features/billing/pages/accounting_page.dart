@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../core/navigation/navigation_provider.dart';
 
 class AccountingPage extends ConsumerStatefulWidget {
   const AccountingPage({super.key});
@@ -440,106 +441,306 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
     final assetNameController = TextEditingController();
     final costBasisController = TextEditingController();
     final marketValController = TextEditingController();
-    String assetClass = 'Mutual Funds';
+    final purchaseDateController = TextEditingController(text: '24/10/2026');
+    String assetCategory = 'Stocks';
+
+    final categories = [
+      'Stocks',
+      'Mutual Funds',
+      'Fixed Deposit',
+      'Crypto',
+      'Gold',
+      'Real Estate',
+      'Bonds',
+      'Other',
+    ];
 
     showDialog(
       context: context,
       builder: (ctx) => StatefulBuilder(
-        builder: (context, setModalState) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          title: const Row(
-            children: [
-              Icon(LucideIcons.trendingUp, color: Color(0xFF4F46E5), size: 22),
-              SizedBox(width: 10),
-              Text('Add Investment Asset', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-            ],
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: assetNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Asset / Ticker Name',
-                    hintText: 'e.g. Nifty 50 Index Fund or Apple',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                DropdownButtonFormField<String>(
-                  value: assetClass,
-                  decoration: InputDecoration(
-                    labelText: 'Asset Class',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  items: const [
-                    DropdownMenuItem(value: 'Mutual Funds', child: Text('Mutual Funds')),
-                    DropdownMenuItem(value: 'Equities / Stocks', child: Text('Equities / Stocks')),
-                    DropdownMenuItem(value: 'Gold / Precious Metals', child: Text('Gold / Precious Metals')),
-                    DropdownMenuItem(value: 'Real Estate / REIT', child: Text('Real Estate / REIT')),
-                    DropdownMenuItem(value: 'Fixed Deposit / Bonds', child: Text('Fixed Deposit / Bonds')),
-                  ],
-                  onChanged: (val) {
-                    if (val != null) setModalState(() => assetClass = val);
-                  },
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: costBasisController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    prefixText: '₹ ',
-                    labelText: 'Principal Invested (Cost Basis)',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: marketValController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    prefixText: '₹ ',
-                    labelText: 'Current Market Value',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-              ],
+        builder: (context, setModalState) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            width: 440,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel', style: TextStyle(color: Color(0xFF64748B))),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final name = assetNameController.text.trim().isEmpty ? 'Portfolio Asset' : assetNameController.text.trim();
-                final cost = double.tryParse(costBasisController.text.trim()) ?? 10000.0;
-                final market = double.tryParse(marketValController.text.trim()) ?? cost;
-                setState(() {
-                  _investments.add({
-                    'name': name,
-                    'class': assetClass,
-                    'costBasis': cost,
-                    'marketValue': market,
-                    'date': 'Oct 2026',
-                  });
-                });
-                Navigator.pop(ctx);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Added $name to Investment Portfolio!'), backgroundColor: const Color(0xFF166534)),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4F46E5),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header with circular close button (Screenshot 3)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Add Asset to Portfolio',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0F172A),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(ctx),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF1F5F9),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(LucideIcons.x, size: 16, color: Color(0xFF64748B)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // ASSET NAME
+                  const Text(
+                    'ASSET NAME',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    alignment: Alignment.centerLeft,
+                    child: TextField(
+                      controller: assetNameController,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                      decoration: const InputDecoration(
+                        hintText: 'e.g. HDFC Bank Ltd',
+                        hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // ASSET CATEGORY
+                  const Text(
+                    'ASSET CATEGORY',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: 42,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: assetCategory,
+                        isExpanded: true,
+                        icon: const Icon(LucideIcons.chevronDown, size: 16, color: Color(0xFF64748B)),
+                        style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A), fontWeight: FontWeight.w500),
+                        items: categories
+                            .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                            .toList(),
+                        onChanged: (val) {
+                          if (val != null) setModalState(() => assetCategory = val);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // INVESTED AMOUNT & CURRENT VALUE
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'INVESTED AMOUNT',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              height: 42,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              alignment: Alignment.centerLeft,
+                              child: TextField(
+                                controller: costBasisController,
+                                keyboardType: TextInputType.number,
+                                style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                                decoration: const InputDecoration(
+                                  hintText: '0.00',
+                                  hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'CURRENT VALUE',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              height: 42,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              alignment: Alignment.centerLeft,
+                              child: TextField(
+                                controller: marketValController,
+                                keyboardType: TextInputType.number,
+                                style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                                decoration: const InputDecoration(
+                                  hintText: '0.00',
+                                  hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // PURCHASE DATE
+                  const Text(
+                    'PURCHASE DATE',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  InkWell(
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) {
+                        final formatted = '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+                        setModalState(() => purchaseDateController.text = formatted);
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 42,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              purchaseDateController.text.isEmpty ? 'dd/mm/yyyy' : purchaseDateController.text,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: purchaseDateController.text.isEmpty ? const Color(0xFF94A3B8) : const Color(0xFF0F172A),
+                              ),
+                            ),
+                          ),
+                          const Icon(LucideIcons.calendar, size: 16, color: Color(0xFF64748B)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Confirm Asset Addition Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 46,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final name = assetNameController.text.trim().isEmpty ? 'Portfolio Asset' : assetNameController.text.trim();
+                        final cost = double.tryParse(costBasisController.text.trim()) ?? 10000.0;
+                        final market = double.tryParse(marketValController.text.trim()) ?? cost;
+                        setState(() {
+                          _investments.add({
+                            'name': name,
+                            'class': assetCategory,
+                            'costBasis': cost,
+                            'marketValue': market,
+                            'date': purchaseDateController.text,
+                          });
+                        });
+                        Navigator.pop(ctx);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Added $name to Investment Portfolio!'), backgroundColor: const Color(0xFF4F46E5)),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4F46E5),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Confirm Asset Addition',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: const Text('Add Investment'),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -646,118 +847,446 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
     final nameController = TextEditingController();
     final descController = TextEditingController();
     final amtController = TextEditingController();
-    final scheduleController = TextEditingController(text: isFixed ? 'Monthly (1st)' : 'One-time');
+    final dateController = TextEditingController(text: '24/10/2026');
+    final timeController = TextEditingController(text: '12:00 PM');
+    String category = 'Other';
+    String associatedWallet = 'No Wallet';
+
+    final categories = isIncome
+        ? ['Other', 'Freelance', 'Salary', 'Dividends', 'Interest', 'Rental', 'Consulting']
+        : ['Other', 'Office supplies', 'Utilities', 'Rent', 'Software', 'Marketing', 'Travel', 'Food'];
+
+    final wallets = ['No Wallet', 'Main Wallet', 'Business Wallet', 'Savings Wallet'];
+
+    final modalTitle = isIncome
+        ? (isFixed ? 'Add Fixed Income' : 'Add Additional Income')
+        : (isFixed ? 'Add Fixed Expense' : 'Add Additional Expense');
+    final modalSubtitle = isIncome
+        ? (isFixed ? 'Enter the details of your fixed income source below.' : 'Enter the details of your additional income source below.')
+        : (isFixed ? 'Enter the details of your fixed expense below.' : 'Enter the details of your additional expense below.');
+    final buttonLabel = isIncome ? 'Save Income' : 'Save Expense';
+    final nameLabel = isIncome ? 'INCOME NAME' : 'EXPENSE NAME';
+    final nameHint = isIncome ? 'e.g. Freelance project' : 'e.g. Office supplies';
 
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        title: Row(
-          children: [
-            Icon(isIncome ? LucideIcons.arrowDownLeft : LucideIcons.arrowUpRight,
-                color: isIncome ? const Color(0xFF16A34A) : const Color(0xFFEA580C), size: 22),
-            const SizedBox(width: 10),
-            Text('Add $title', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: 'Name / Source',
-                  hintText: isIncome ? 'e.g. Freelance Consulting' : 'e.g. Office Supplies',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: descController,
-                decoration: InputDecoration(
-                  labelText: 'Description / Remarks',
-                  hintText: 'e.g. Q3 Retainer payment',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: amtController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  prefixText: '₹ ',
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              if (isFixed) ...[
-                const SizedBox(height: 12),
-                TextField(
-                  controller: scheduleController,
-                  decoration: InputDecoration(
-                    labelText: 'Frequency / Schedule',
-                    hintText: 'e.g. Monthly, Bi-weekly, Annual',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: Color(0xFF64748B))),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final name = nameController.text.trim().isEmpty ? 'Entry' : nameController.text.trim();
-              final desc = descController.text.trim().isEmpty ? 'Regular' : descController.text.trim();
-              final amt = double.tryParse(amtController.text.trim()) ?? 0.0;
-              final schedule = scheduleController.text.trim();
-
-              final item = {
-                'name': name,
-                'description': desc,
-                'date': '24 Oct 2026',
-                'time': '12:00 PM',
-                'amount': amt,
-                'schedule': schedule,
-              };
-
-              setState(() {
-                if (isFixed) {
-                  if (isIncome) {
-                    _fixedIncomes.add(item);
-                  } else {
-                    _fixedExpenses.add(item);
-                    _monthlyExpenses += amt;
-                  }
-                } else {
-                  if (isIncome) {
-                    _additionalIncomes.add(item);
-                  } else {
-                    _additionalExpenses.add(item);
-                    _monthlyExpenses += amt;
-                  }
-                }
-              });
-
-              Navigator.pop(ctx);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Added $name successfully!'), backgroundColor: const Color(0xFF166534)),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF166534),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setModalState) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            width: 460,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('Add Entry'),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header with Circular Close Button (Screenshots 4 & 5)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              modalTitle,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              modalSubtitle,
+                              style: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(ctx),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF1F5F9),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(LucideIcons.x, size: 16, color: Color(0xFF64748B)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // NAME
+                  Text(
+                    nameLabel,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    alignment: Alignment.centerLeft,
+                    child: TextField(
+                      controller: nameController,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                      decoration: InputDecoration(
+                        hintText: nameHint,
+                        hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // DESCRIPTION
+                  const Text(
+                    'DESCRIPTION',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    alignment: Alignment.centerLeft,
+                    child: TextField(
+                      controller: descController,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                      decoration: const InputDecoration(
+                        hintText: 'Optional details...',
+                        hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // DATE & TIME
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'DATE',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            InkWell(
+                              onTap: () async {
+                                final picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (picked != null) {
+                                  final formatted = '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+                                  setModalState(() => dateController.text = formatted);
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        dateController.text.isEmpty ? 'dd/mm/yyyy' : dateController.text,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: dateController.text.isEmpty ? const Color(0xFF94A3B8) : const Color(0xFF0F172A),
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(LucideIcons.calendar, size: 16, color: Color(0xFF64748B)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'TIME',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            InkWell(
+                              onTap: () async {
+                                final picked = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                );
+                                if (picked != null) {
+                                  setModalState(() => timeController.text = picked.format(context));
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        timeController.text.isEmpty ? '-- : -- --' : timeController.text,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: timeController.text.isEmpty ? const Color(0xFF94A3B8) : const Color(0xFF0F172A),
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(LucideIcons.clock, size: 16, color: Color(0xFF64748B)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // CATEGORY & ASSOCIATED WALLET
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'CATEGORY',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              height: 42,
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: category,
+                                  isExpanded: true,
+                                  icon: const Icon(LucideIcons.chevronDown, size: 16, color: Color(0xFF64748B)),
+                                  style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A), fontWeight: FontWeight.w500),
+                                  items: categories
+                                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                                      .toList(),
+                                  onChanged: (val) {
+                                    if (val != null) setModalState(() => category = val);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'ASSOCIATED WALLET',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF475569),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              height: 42,
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: associatedWallet,
+                                  isExpanded: true,
+                                  icon: const Icon(LucideIcons.chevronDown, size: 16, color: Color(0xFF64748B)),
+                                  style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A), fontWeight: FontWeight.w500),
+                                  items: wallets
+                                      .map((w) => DropdownMenuItem(value: w, child: Text(w)))
+                                      .toList(),
+                                  onChanged: (val) {
+                                    if (val != null) setModalState(() => associatedWallet = val);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // AMOUNT
+                  const Text(
+                    'AMOUNT (₹)',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF475569),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    alignment: Alignment.centerLeft,
+                    child: TextField(
+                      controller: amtController,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+                      decoration: const InputDecoration(
+                        hintText: '0.00',
+                        hintStyle: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Save Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 46,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final name = nameController.text.trim().isEmpty ? 'Entry' : nameController.text.trim();
+                        final desc = descController.text.trim().isEmpty ? 'Optional details' : descController.text.trim();
+                        final amt = double.tryParse(amtController.text.trim()) ?? 0.0;
+                        final date = dateController.text.isEmpty ? '24/10/2026' : dateController.text;
+                        final time = timeController.text.isEmpty ? '12:00 PM' : timeController.text;
+
+                        final item = {
+                          'name': name,
+                          'description': desc,
+                          'date': date,
+                          'time': time,
+                          'amount': amt,
+                          'category': category,
+                          'wallet': associatedWallet,
+                          'schedule': isFixed ? 'Monthly' : 'One-time',
+                        };
+
+                        setState(() {
+                          if (isFixed) {
+                            if (isIncome) {
+                              _fixedIncomes.add(item);
+                            } else {
+                              _fixedExpenses.add(item);
+                              _monthlyExpenses += amt;
+                            }
+                          } else {
+                            if (isIncome) {
+                              _additionalIncomes.add(item);
+                            } else {
+                              _additionalExpenses.add(item);
+                              _monthlyExpenses += amt;
+                            }
+                          }
+                        });
+
+                        Navigator.pop(ctx);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Saved $name successfully!'), backgroundColor: const Color(0xFF166534)),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF166534),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        buttonLabel,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -846,7 +1375,9 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
                     ),
                   ),
                   OutlinedButton.icon(
-                    onPressed: _showTaxDeductionsDialog,
+                    onPressed: () {
+                      ref.read(navigationProvider.notifier).setRoute(AppRoute.taxDeductions);
+                    },
                     icon: const Icon(LucideIcons.shield, size: 14, color: Color(0xFFDC2626)),
                     label: const Text(
                       'Tax & Deductions',
@@ -922,7 +1453,9 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
                   ),
                   const SizedBox(width: 8),
                   OutlinedButton.icon(
-                    onPressed: _showTaxDeductionsDialog,
+                    onPressed: () {
+                      ref.read(navigationProvider.notifier).setRoute(AppRoute.taxDeductions);
+                    },
                     icon: const Icon(LucideIcons.shield, size: 15, color: Color(0xFFDC2626)),
                     label: const Text(
                       'Tax & Deductions',
@@ -1281,7 +1814,9 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
               ),
               const SizedBox(width: 8),
               InkWell(
-                onTap: _showTaxDeductionsDialog,
+                onTap: () {
+                  ref.read(navigationProvider.notifier).setRoute(AppRoute.taxDeductions);
+                },
                 child: const Icon(LucideIcons.shield, color: Color(0xFFDC2626), size: 18),
               ),
             ],

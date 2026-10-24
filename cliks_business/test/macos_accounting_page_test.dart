@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:clicks_business_frontend/core/navigation/navigation_provider.dart';
 import 'package:clicks_business_frontend/features/billing/pages/accounting_page.dart';
 
 void main() {
@@ -110,7 +111,7 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('Tax & Deductions dialog opens and functions properly',
+    testWidgets('Tax & Deductions button routes to AppRoute.taxDeductions',
         (tester) async {
       tester.view.physicalSize = const Size(1280, 800);
       tester.view.devicePixelRatio = 1.0;
@@ -119,9 +120,13 @@ void main() {
         tester.view.resetDevicePixelRatio();
       });
 
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
             home: Scaffold(
               body: AccountingPage(),
             ),
@@ -134,14 +139,7 @@ void main() {
       await tester.tap(find.text('Tax & Deductions').first);
       await tester.pumpAndSettle();
 
-      expect(find.text('Tax & Deductions Overview'), findsOneWidget);
-      expect(find.text('Section 80C (PPF/ELSS/EPF)'), findsOneWidget);
-
-      // Close dialog
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Tax & Deductions Overview'), findsNothing);
+      expect(container.read(navigationProvider).currentRoute, AppRoute.taxDeductions);
     });
 
     testWidgets('Add Funds to Wallet dialog increases balance',

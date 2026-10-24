@@ -32,6 +32,8 @@ import '../settings/pages/settings_page.dart';
 import '../billing/pages/new_invoice_page.dart';
 import '../billing/pages/accounting_page.dart';
 import '../billing/pages/purchase_details_page.dart';
+import '../billing/pages/tax_deductions_page.dart';
+import '../billing/pages/staff_details_page.dart';
 import '../billing/pages/expenses_page.dart';
 import '../billing/pages/gst_page.dart';
 import '../billing/pages/orders_page.dart';
@@ -871,6 +873,8 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return PurchaseInvoicePage(key: ValueKey(route));
       case AppRoute.purchaseDetails:
         return PurchaseDetailsPage(key: ValueKey(route));
+      case AppRoute.taxDeductions:
+        return TaxDeductionsPage(key: ValueKey(route));
       case AppRoute.suppliers:
         return SuppliersPage(key: ValueKey(route));
       case AppRoute.registerSupplier:
@@ -883,8 +887,9 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return WarehousePage(key: ValueKey(route));
       case AppRoute.hr:
       case AppRoute.staff:
-      case AppRoute.staffDetails:
         return StaffPage(key: ValueKey(route));
+      case AppRoute.staffDetails:
+        return StaffDetailsPage(key: ValueKey(route));
       case AppRoute.attendance:
         return AttendancePage(key: ValueKey(route));
       case AppRoute.manualPunchEntry:

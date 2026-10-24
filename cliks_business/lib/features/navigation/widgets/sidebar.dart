@@ -224,6 +224,7 @@ class Sidebar extends ConsumerWidget {
                         navigation.currentRoute == AppRoute.accounting ||
                         navigation.currentRoute == AppRoute.purchaseDetails ||
                         navigation.currentRoute == AppRoute.staffDetails ||
+                        navigation.currentRoute == AppRoute.taxDeductions ||
                         navigation.currentRoute == AppRoute.expenses ||
                         navigation.currentRoute == AppRoute.gst ||
                         navigation.currentRoute == AppRoute.fintech ||
@@ -667,6 +668,7 @@ class Sidebar extends ConsumerWidget {
                       AppRoute.accounting,
                       AppRoute.purchaseDetails,
                       AppRoute.staffDetails,
+                      AppRoute.taxDeductions,
                       AppRoute.expenses,
                       AppRoute.gst,
                       AppRoute.fintech,

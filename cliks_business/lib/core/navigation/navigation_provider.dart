@@ -88,6 +88,7 @@ enum AppRoute {
   cashFlowHeatmap,
   purchaseDetails,
   staffDetails,
+  taxDeductions,
 }
 
 class NavigationState {
