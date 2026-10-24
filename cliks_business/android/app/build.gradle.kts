@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.clicks_business_frontend"
+    namespace = "com.cliks.betasoftnet"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.cliks.clicksBusiness"
+        applicationId = "com.cliks.betasoftnet"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

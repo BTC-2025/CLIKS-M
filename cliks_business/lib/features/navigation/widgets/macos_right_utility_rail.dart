@@ -48,11 +48,11 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
       if (srcFile.existsSync()) {
         final bytes = srcFile.readAsBytesSync();
         final targets = [
-          '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
-          '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/images/beta_logo.png',
+          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
+          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo.png',
+          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
+          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/beta_logo.png',
+          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/images/beta_logo.png',
         ];
         for (final t in targets) {
           try {
@@ -97,10 +97,10 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
     Color? color,
   }) {
     final candidatePaths = [
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/images/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/images/$fileName',
     ];
 
     for (final p in candidatePaths) {
@@ -304,9 +304,9 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
   Widget _buildBetaImageHD({double? width, double? height, BoxFit fit = BoxFit.contain}) {
     final candidatePaths = [
       '/Users/btrldev004/.gemini/antigravity-ide/brain/45c0b19c-2750-462e-9d32-e9090898243f/.user_uploaded/media_1790664964179.png',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/beta_logo.png',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/beta_logo.png',
     ];
 
     for (final p in candidatePaths) {

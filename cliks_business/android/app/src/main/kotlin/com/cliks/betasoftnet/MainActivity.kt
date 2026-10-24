@@ -1,4 +1,4 @@
-package com.example.clicks_business_frontend
+package com.cliks.betasoftnet
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -53,6 +53,11 @@ import '../billing/pages/barcode_gen_page.dart';
 import '../billing/pages/audit_hub_page.dart';
 import '../billing/pages/fintech_page.dart';
 import '../billing/pages/subscription_page.dart';
+import '../billing/pages/money_tracker_page.dart';
+import '../billing/pages/goal_buckets_page.dart';
+import '../billing/pages/documents_page.dart';
+import '../billing/pages/subscription_vault_page.dart';
+import '../payments/pages/cash_flow_heatmap_page.dart';
 import '../purchases/pages/purchase_invoice_page.dart';
 import '../purchases/pages/suppliers_page.dart';
 import '../purchases/pages/register_supplier_page.dart';
@@ -944,6 +949,17 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return RecordAccountingEntryModal(key: ValueKey(route));
       case AppRoute.scheduleReturnReminder:
         return ScheduleReturnReminderPanel(key: ValueKey(route));
+      case AppRoute.track:
+        return MoneyTrackerPage(key: ValueKey(route));
+      case AppRoute.subscriptionVault:
+        return SubscriptionVaultPage(key: ValueKey(route));
+      case AppRoute.goalBuckets:
+      case AppRoute.debtPayoff:
+        return GoalBucketsPage(key: ValueKey(route));
+      case AppRoute.documents:
+        return DocumentsPage(key: ValueKey(route));
+      case AppRoute.cashFlowHeatmap:
+        return CashFlowHeatmapPage(key: ValueKey(route));
       default:
         return Center(
           key: ValueKey(route),

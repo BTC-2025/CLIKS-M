@@ -74,15 +74,22 @@ class Sidebar extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Image.asset(
-                              'assets/images/icon.png',
+                              'assets/cliks_logo.png',
                               width: 28,
                               height: 28,
                               fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                'assets/images/icon.png',
+                                width: 28,
+                                height: 28,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           const Text(
-                            'Cliks Business',
+                            'Cliks',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 22,
@@ -531,6 +538,65 @@ class Sidebar extends ConsumerWidget {
                           .setRoute(AppRoute.marketing);
                     },
                   ),
+                  _SidebarExpandable(
+                    icon: LucideIcons.shieldCheck,
+                    label: 'Personal Vault',
+                    isInitiallyExpanded:
+                        navigation.currentRoute == AppRoute.track ||
+                        navigation.currentRoute == AppRoute.goalBuckets ||
+                        navigation.currentRoute == AppRoute.documents ||
+                        navigation.currentRoute == AppRoute.subscriptionVault,
+                    children: [
+                      _SidebarSubItem(
+                        icon: LucideIcons.walletCards,
+                        label: 'Money Tracker',
+                        isSelected: navigation.currentRoute == AppRoute.track,
+                        onTap: () {
+                          final scaffold = Scaffold.maybeOf(context);
+                          if (scaffold != null && scaffold.isDrawerOpen) {
+                            Navigator.pop(context);
+                          }
+                          ref.read(navigationProvider.notifier).setRoute(AppRoute.track);
+                        },
+                      ),
+                      _SidebarSubItem(
+                        icon: LucideIcons.target,
+                        label: 'Goal Buckets',
+                        isSelected: navigation.currentRoute == AppRoute.goalBuckets,
+                        onTap: () {
+                          final scaffold = Scaffold.maybeOf(context);
+                          if (scaffold != null && scaffold.isDrawerOpen) {
+                            Navigator.pop(context);
+                          }
+                          ref.read(navigationProvider.notifier).setRoute(AppRoute.goalBuckets);
+                        },
+                      ),
+                      _SidebarSubItem(
+                        icon: LucideIcons.folderLock,
+                        label: 'Document Vault',
+                        isSelected: navigation.currentRoute == AppRoute.documents,
+                        onTap: () {
+                          final scaffold = Scaffold.maybeOf(context);
+                          if (scaffold != null && scaffold.isDrawerOpen) {
+                            Navigator.pop(context);
+                          }
+                          ref.read(navigationProvider.notifier).setRoute(AppRoute.documents);
+                        },
+                      ),
+                      _SidebarSubItem(
+                        icon: LucideIcons.badgePercent,
+                        label: 'Subscriptions',
+                        isSelected: navigation.currentRoute == AppRoute.subscriptionVault,
+                        onTap: () {
+                          final scaffold = Scaffold.maybeOf(context);
+                          if (scaffold != null && scaffold.isDrawerOpen) {
+                            Navigator.pop(context);
+                          }
+                          ref.read(navigationProvider.notifier).setRoute(AppRoute.subscriptionVault);
+                        },
+                      ),
+                    ],
+                  ),
                   _SidebarItem(
                     icon: LucideIcons.sparkles,
                     label: 'Refer & Earn',
@@ -607,6 +673,20 @@ class Sidebar extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.planner),
+                  ),
+                  _SidebarItem(
+                    icon: LucideIcons.flame,
+                    label: 'Cash Flow Heatmap',
+                    isSelected: navigation.currentRoute == AppRoute.cashFlowHeatmap,
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.cashFlowHeatmap);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.sparkles,
@@ -1016,6 +1096,50 @@ class Sidebar extends ConsumerWidget {
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.marketing),
                   ),
+                  _buildMacOSExpandable(
+                    icon: LucideIcons.shieldCheck,
+                    label: 'Personal Vault',
+                    isInitiallyExpanded: [
+                      AppRoute.track,
+                      AppRoute.goalBuckets,
+                      AppRoute.documents,
+                      AppRoute.subscriptionVault,
+                    ].contains(navigation.currentRoute),
+                    children: [
+                      _buildMacOSSubItem(
+                        icon: LucideIcons.walletCards,
+                        label: 'Money Tracker',
+                        isSelected: navigation.currentRoute == AppRoute.track,
+                        onTap: () => ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.track),
+                      ),
+                      _buildMacOSSubItem(
+                        icon: LucideIcons.target,
+                        label: 'Goal Buckets',
+                        isSelected: navigation.currentRoute == AppRoute.goalBuckets,
+                        onTap: () => ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.goalBuckets),
+                      ),
+                      _buildMacOSSubItem(
+                        icon: LucideIcons.folderLock,
+                        label: 'Document Vault',
+                        isSelected: navigation.currentRoute == AppRoute.documents,
+                        onTap: () => ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.documents),
+                      ),
+                      _buildMacOSSubItem(
+                        icon: LucideIcons.badgePercent,
+                        label: 'Subscriptions',
+                        isSelected: navigation.currentRoute == AppRoute.subscriptionVault,
+                        onTap: () => ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.subscriptionVault),
+                      ),
+                    ],
+                  ),
                 ] else if (navigation.currentModule == AppModule.payments) ...[
                   // + Add Money Button (for Payments module)
                   Padding(
@@ -1102,6 +1226,14 @@ class Sidebar extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.planner),
+                  ),
+                  _buildMacOSItem(
+                    icon: LucideIcons.flame,
+                    label: 'Cash Flow Heatmap',
+                    isSelected: navigation.currentRoute == AppRoute.cashFlowHeatmap,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.cashFlowHeatmap),
                   ),
                 ] else if (navigation.currentModule == AppModule.social) ...[
                   _buildMacOSItem(

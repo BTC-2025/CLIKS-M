@@ -93,14 +93,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   ],
                 ),
                 child: Image.asset(
-                  'assets/images/icon.png',
+                  'assets/cliks_logo.png',
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                    'assets/images/icon.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: 32),
               // Brand Titles
               const Text(
-                'CLIKS BUSINESS',
+                'CLIKS',
                 style: TextStyle(
                   color: Color(0xFF0F2027),
                   fontSize: 26,

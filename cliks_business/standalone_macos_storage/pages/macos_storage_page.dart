@@ -5989,9 +5989,9 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
       'assets/icons_images_reference/$fileName',
       'assets/storage_export/$fileName',
       'assets/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/lib/standalone_macos_storage/assets/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/lib/standalone_macos_storage/assets/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/$fileName',
     ];
 
     for (final p in candidatePaths) {
@@ -6134,7 +6134,7 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
   Widget _buildBetaLogoImage() {
     final candidatePaths = [
       'lib/standalone_macos_storage/assets/beta_logo_hd.png',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/lib/standalone_macos_storage/assets/beta_logo_hd.png',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/lib/standalone_macos_storage/assets/beta_logo_hd.png',
       '/Users/btrldev004/.gemini/antigravity-ide/brain/45c0b19c-2750-462e-9d32-e9090898243f/.user_uploaded/media_1790664964179.png',
     ];
 

@@ -197,10 +197,17 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                               borderRadius: BorderRadius.circular(7),
                             ),
                             child: Image.asset(
-                              'assets/images/icon.png',
+                              'assets/cliks_logo.png',
                               width: 22,
                               height: 22,
                               fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                'assets/images/icon.png',
+                                width: 22,
+                                height: 22,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 6),
@@ -704,15 +711,22 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Image.asset(
-                        'assets/images/icon.png',
+                        'assets/cliks_logo.png',
                         width: 24,
                         height: 24,
                         fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/images/icon.png',
+                          width: 24,
+                          height: 24,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'Cliks Business',
+                      'Cliks',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

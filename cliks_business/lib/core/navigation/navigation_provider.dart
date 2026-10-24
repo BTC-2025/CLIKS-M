@@ -77,6 +77,15 @@ enum AppRoute {
   allocateEmployeeLoan,
   processMonthlyPayroll,
   scheduleReturnReminder,
+  track,
+  subscriptionVault,
+  eventVault,
+  debtPayoff,
+  goalBuckets,
+  documents,
+  gratitudeJournal,
+  noSpendChallenge,
+  cashFlowHeatmap,
 }
 
 class NavigationState {

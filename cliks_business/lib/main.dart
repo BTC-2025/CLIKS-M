@@ -41,7 +41,7 @@ class _CliksBusinessAppState extends ConsumerState<CliksBusinessApp> {
     final authState = ref.watch(authProvider);
 
     return MaterialApp(
-      title: 'Cliks Business',
+      title: 'cliks',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: !_isInitialized

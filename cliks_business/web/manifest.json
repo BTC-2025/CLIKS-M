@@ -1,6 +1,6 @@
 {
-    "name": "Cliks Business",
-    "short_name": "Cliks Business",
+    "name": "cliks",
+    "short_name": "cliks",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

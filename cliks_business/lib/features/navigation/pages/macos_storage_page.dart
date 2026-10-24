@@ -6449,8 +6449,8 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
   }) {
     // Direct file loader on macOS desktop for instant hot-reload without bundle delay
     final candidatePaths = [
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference /$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-BUSINESS-M/cliks_business/assets/icons_images_reference/$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /$fileName',
+      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/$fileName',
     ];
 
     for (final p in candidatePaths) {

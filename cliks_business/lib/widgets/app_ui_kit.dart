@@ -14,9 +14,8 @@ const double kMaxAllowedAmount = 999999999999.99;
 const String kMaxAllowedAmountText = '₹9,99,99,99,99,999.99';
 
 /// Currency & Amount input formatter matching Zoho Books / Zoho Inventory standards:
-/// - Maximum [integerDigits] digits before decimal point (default: 12, up to 999,999,999,999 or 99,999 Crores)
+/// - Maximum [integerDigits] digits before decimal point (default: 12)
 /// - Maximum [decimalDigits] digits after decimal (default: 2)
-/// - Prevents multiple decimals, negative numbers, symbols, non-digits, and integer overflows.
 class CurrencyInputFormatter extends TextInputFormatter {
   final int integerDigits;
   final int decimalDigits;
@@ -52,6 +51,8 @@ class CurrencyInputFormatter extends TextInputFormatter {
     return oldValue;
   }
 }
+
+typedef DecimalTextInputFormatter = CurrencyInputFormatter;
 
 enum SnackType { success, error, warning, info }
 
@@ -191,51 +192,47 @@ class AppEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          decoration: BoxDecoration(
-            color: AppColors.hoverBackground,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 48, color: AppColors.secondaryText),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Text(title,
-            style: AppTextStyles.h3.copyWith(color: AppColors.darkText),
-            textAlign: TextAlign.center),
-        if (subtitle.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.xs),
-          Text(subtitle,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.secondaryText),
-              textAlign: TextAlign.center),
-        ],
-        if (onAction != null && actionLabel != null) ...[
-          const SizedBox(height: AppSpacing.xl),
-          FilledButton.icon(
-            onPressed: onAction,
-            icon: const Icon(LucideIcons.plus, size: 16),
-            label: Text(actionLabel!),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl, vertical: AppSpacing.md),
-              shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
-            ),
-          ),
-        ],
-      ],
-    );
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
-        child: isMacOS ? content : content.animate().fadeIn(duration: 350.ms).slideY(begin: 0.1, end: 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.xxl),
+              decoration: BoxDecoration(
+                color: AppColors.border.withValues(alpha: 0.4),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 48, color: AppColors.secondaryText),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            Text(title,
+                style: AppTextStyles.h3
+                    .copyWith(color: AppColors.darkText),
+                textAlign: TextAlign.center),
+            const SizedBox(height: AppSpacing.sm),
+            Text(subtitle,
+                style: AppTextStyles.bodyMedium
+                    .copyWith(color: AppColors.secondaryText),
+                textAlign: TextAlign.center),
+            if (actionLabel != null && onAction != null) ...[
+              const SizedBox(height: AppSpacing.xl),
+              FilledButton.icon(
+                onPressed: onAction,
+                icon: const Icon(LucideIcons.plus, size: 16),
+                label: Text(actionLabel!),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl, vertical: AppSpacing.md),
+                  shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
+                ),
+              ),
+            ],
+          ],
+        ).animate().fadeIn(duration: 350.ms).slideY(begin: 0.1, end: 0),
       ),
     );
   }
@@ -249,50 +246,47 @@ class AppErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          decoration: BoxDecoration(
-            color: AppColors.red.withValues(alpha: 0.08),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(LucideIcons.alertTriangle,
-              size: 40, color: AppColors.red),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Text('Something went wrong',
-            style: AppTextStyles.h3.copyWith(color: AppColors.darkText),
-            textAlign: TextAlign.center),
-        const SizedBox(height: AppSpacing.xs),
-        Text(message,
-            style: AppTextStyles.bodyMedium
-                .copyWith(color: AppColors.secondaryText),
-            textAlign: TextAlign.center),
-        if (onRetry != null) ...[
-          const SizedBox(height: AppSpacing.lg),
-          OutlinedButton.icon(
-            onPressed: onRetry,
-            icon: const Icon(LucideIcons.refreshCw, size: 16),
-            label: const Text('Retry'),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: AppColors.primaryGreen,
-              side: const BorderSide(color: AppColors.primaryGreen),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl, vertical: AppSpacing.md),
-              shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
-            ),
-          ),
-        ],
-      ],
-    );
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
-        child: isMacOS ? content : content.animate().fadeIn(duration: 350.ms),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              decoration: BoxDecoration(
+                color: AppColors.red.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(LucideIcons.alertTriangle,
+                  size: 40, color: AppColors.red),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text('Something went wrong',
+                style: AppTextStyles.h3.copyWith(color: AppColors.darkText),
+                textAlign: TextAlign.center),
+            const SizedBox(height: AppSpacing.xs),
+            Text(message,
+                style: AppTextStyles.bodyMedium
+                    .copyWith(color: AppColors.secondaryText),
+                textAlign: TextAlign.center),
+            if (onRetry != null) ...[
+              const SizedBox(height: AppSpacing.lg),
+              OutlinedButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(LucideIcons.refreshCw, size: 16),
+                label: const Text('Retry'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.primaryGreen,
+                  side: const BorderSide(color: AppColors.primaryGreen),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl, vertical: AppSpacing.md),
+                  shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
+                ),
+              ),
+            ],
+          ],
+        ).animate().fadeIn(duration: 350.ms),
       ),
     );
   }
