@@ -1,0 +1,58 @@
+name: clicks_business_frontend
+description: "Premium Enterprise SaaS ERP Frontend."
+publish_to: "none"
+version: 0.1.0+5
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  google_fonts: ^6.1.0
+  lucide_icons_flutter: ^3.1.14+2
+  animations: ^2.0.11
+  flutter_animate: ^4.5.0
+  shimmer: ^3.0.0
+  responsive_framework: ^1.1.1
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+  image_picker: ^1.1.2
+  package_info_plus: ^8.0.0
+  http: ^1.6.0
+  http_parser: ^4.1.2
+  file_picker: ^11.0.3
+  url_launcher: ^6.3.3
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^2.3.9
+  build_runner: ^2.4.7
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
+
+flutter_launcher_icons:
+  image_path: "assets/images/icon.png"
+  macos:
+    generate: true
+    image_path: "assets/images/icon.png"
+
+flutter_native_splash:
+  color: "#f7f9fb"
+  android: true
+  ios: true
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/bit_tool_logo.png
+    - assets/bnx_mail_logo.png
+    - assets/cliks_business_img.png
+    - assets/cliks_logo.png
+    - "assets/icons_images_reference /"
