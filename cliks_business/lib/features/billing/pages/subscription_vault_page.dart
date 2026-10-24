@@ -89,7 +89,8 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 768;
+    final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
+    final isMobile = !isMacOS && screenWidth < 768;
     final paddingVal = isMobile ? 16.0 : 24.0;
 
     final filteredList = _subscriptions.where((sub) {
@@ -221,7 +222,7 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
   Widget _buildBurnRateBanner(bool isMobile, List<Map<String, dynamic>> filteredList) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(isMobile ? 16 : 24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF0F5132), Color(0xFF198754)],
@@ -274,13 +275,17 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text('₹${_totalBurnRate.toStringAsFixed(0)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white)),
-              const Text(' / month', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white70)),
-            ],
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text('₹${_totalBurnRate.toStringAsFixed(0)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white)),
+                const Text(' / month', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white70)),
+              ],
+            ),
           ),
           const SizedBox(height: 8),
           Text('Automatic advance due-date notifications enabled for all active subscriptions.', style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.85))),
@@ -337,7 +342,7 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
           children: items.map((sub) {
             return Container(
               width: cardWidth,
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -359,20 +364,25 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
                         ),
                         child: Icon(sub['icon'] as IconData, color: const Color(0xFF059669), size: 20),
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: (sub['statusColor'] as Color).withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(12),
+                      Flexible(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: (sub['statusColor'] as Color).withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  sub['status'] as String,
+                                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: sub['statusColor'] as Color, letterSpacing: 0.5),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              sub['status'] as String,
-                              style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: sub['statusColor'] as Color, letterSpacing: 0.5),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
+                            const SizedBox(width: 8),
                           InkWell(
                             onTap: () {
                               final name = sub['name'];
@@ -399,6 +409,7 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
                           ),
                         ],
                       ),
+                    ),
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -406,13 +417,17 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
                   const SizedBox(height: 2),
                   Text('Due: ${sub['dueDate']}', style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
                   const SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text('₹${sub['amount']}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppColors.darkText)),
-                      Text(' / ${sub['cycle']}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey.shade500)),
-                    ],
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text('₹${sub['amount']}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppColors.darkText)),
+                        Text(' / ${sub['cycle']}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey.shade500)),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -536,7 +551,15 @@ class _SubscriptionVaultPageState extends State<SubscriptionVaultPage> {
         isScrollControlled: true,
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-        builder: (context) => FractionallySizedBox(heightFactor: 0.65, child: Padding(padding: const EdgeInsets.all(20), child: content)),
+        builder: (context) => Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+          child: SafeArea(child: content),
+        ),
       );
     } else {
       showDialog(

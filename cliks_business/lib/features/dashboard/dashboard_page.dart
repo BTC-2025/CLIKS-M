@@ -75,7 +75,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 ],
               ),
             ],
-            const SizedBox(height: 32),
+            SizedBox(height: isMobile ? 110 : 32),
           ],
         ),
       ),
@@ -435,14 +435,18 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Fund Segregation',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.darkText,
+              const Expanded(
+                child: Text(
+                  'Fund Segregation',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkText,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               InkWell(
                 onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.segregation),
                 child: const Text(

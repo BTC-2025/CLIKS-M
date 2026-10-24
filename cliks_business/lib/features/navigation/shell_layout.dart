@@ -724,14 +724,14 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
     final double bottomInset = MediaQuery.of(context).padding.bottom;
     final screenWidth = MediaQuery.of(context).size.width;
     final isCompact = screenWidth < 700;
-    return SafeArea(
-      top: false,
-      child: Container(
-        color: Colors.transparent,
-        padding: EdgeInsets.only(
-          bottom: bottomInset > 0 ? (bottomInset * 0.4).clamp(4.0, 10.0) : 12.0,
-        ),
-        alignment: Alignment.bottomCenter,
+    // Elevate floating tabs slightly above the system footer / navigation bar area
+    final double bottomPadding = bottomInset > 0 ? bottomInset + 12.0 : 18.0;
+    return Container(
+      color: Colors.transparent,
+      padding: EdgeInsets.only(
+        bottom: bottomPadding,
+      ),
+      alignment: Alignment.bottomCenter,
         child: Container(
           constraints: BoxConstraints(
             maxWidth: isCompact ? 330 : 440,
@@ -762,8 +762,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildBottomTab(WidgetRef ref, NavigationState navigation, AppModule module, IconData icon, String label, [bool isCompact = false]) {

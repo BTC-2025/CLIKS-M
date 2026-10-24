@@ -343,8 +343,10 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                     return 'Refer & Earn';
                                   case AppRoute.storage:
                                     return 'Storage';
+                                  case AppRoute.profile:
+                                    return 'cliks';
                                   default:
-                                    return 'Cliks Business';
+                                    return 'cliks';
                                 }
                               }(),
                               maxLines: 1,

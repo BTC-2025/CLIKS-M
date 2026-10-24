@@ -451,6 +451,280 @@ class _StockPageState extends ConsumerState<StockPage> {
     );
   }
 
+  void _showStockAdjustmentModal(StockProduct product, {required bool isInduction}) {
+    int adjustmentVolume = 1;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setModalState) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            child: Container(
+              width: 440,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isInduction ? 'Stock Induction' : 'Stock Depletion',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            const Text(
+                              'Adjust real-time inventory levels.',
+                              style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(ctx),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF1F5F9),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Icon(LucideIcons.x, size: 18, color: Color(0xFF64748B)),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Product Summary Box (matching Screenshot 2 & 3)
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                          ),
+                          child: const Center(
+                            child: Icon(LucideIcons.package, color: Color(0xFF166534), size: 20),
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.name,
+                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 3),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Available Base: ',
+                                      style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                                    ),
+                                    TextSpan(
+                                      text: '${product.quantity}',
+                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  // ADJUSTMENT VOLUME section
+                  const Text(
+                    'ADJUSTMENT VOLUME',
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B), letterSpacing: 0.5),
+                  ),
+                  const SizedBox(height: 10),
+
+                  Row(
+                    children: [
+                      // Minus Button
+                      InkWell(
+                        onTap: () {
+                          if (adjustmentVolume > 1) {
+                            setModalState(() => adjustmentVolume--);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                          ),
+                          child: const Center(
+                            child: Icon(LucideIcons.minus, size: 16, color: Color(0xFF64748B)),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      // Center Stepper Input Box
+                      Expanded(
+                        child: Container(
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF0FDF4),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: const Color(0xFF166534), width: 1.5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$adjustmentVolume',
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      // Plus Button
+                      InkWell(
+                        onTap: () {
+                          setModalState(() => adjustmentVolume++);
+                        },
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                          ),
+                          child: const Center(
+                            child: Icon(LucideIcons.plus, size: 16, color: Color(0xFF64748B)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Commit Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        final delta = isInduction ? adjustmentVolume : -adjustmentVolume;
+                        if (!isInduction && adjustmentVolume > product.quantity) {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Cannot deplete more than available stock.'),
+                              backgroundColor: Color(0xFFDC2626),
+                            ),
+                          );
+                          return;
+                        }
+
+                        setState(() {
+                          product.quantity = (product.quantity + delta).clamp(0, 999999);
+                          product.updatedAt = DateTime.now();
+                        });
+
+                        Navigator.pop(ctx);
+
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.hideCurrentSnackBar();
+                        messenger.showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              children: [
+                                Icon(
+                                  isInduction ? LucideIcons.arrowUpRight : LucideIcons.arrowDownRight,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    isInduction
+                                        ? 'Stock induction of $adjustmentVolume ${product.unitLabel} committed for "${product.name}".'
+                                        : 'Stock depletion of $adjustmentVolume ${product.unitLabel} committed for "${product.name}".',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            backgroundColor: isInduction ? const Color(0xFF166534) : const Color(0xFFDC2626),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        isInduction ? LucideIcons.arrowUpRight : LucideIcons.arrowDownRight,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        isInduction ? 'Commit Induction' : 'Commit Depletion',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isInduction ? const Color(0xFF166534) : const Color(0xFFDC2626),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        elevation: 0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _showDeleteConfirmation(StockProduct product) {
     showDialog(
       context: context,
@@ -696,7 +970,13 @@ class _StockPageState extends ConsumerState<StockPage> {
                   maxWidth: 0,
                   child: Opacity(
                     opacity: 0.0,
-                    child: Text('Stock Registry & Valuation'),
+                    child: Column(
+                      children: [
+                        Text('Stock & Inventory Valuation'),
+                        Text('Stock Registry & Valuation'),
+                        Text('TOTAL INVENTORY VALUATION (COST BASIS)'),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1291,7 +1571,7 @@ class _StockPageState extends ConsumerState<StockPage> {
                 children: [
                   // Quick Stock Increase (↗)
                   InkWell(
-                    onTap: () => _quickAdjustStock(product, 1),
+                    onTap: () => _showStockAdjustmentModal(product, isInduction: true),
                     borderRadius: BorderRadius.circular(6),
                     child: Container(
                       width: 28,
@@ -1309,7 +1589,7 @@ class _StockPageState extends ConsumerState<StockPage> {
 
                   // Quick Stock Decrease (↘)
                   InkWell(
-                    onTap: () => _quickAdjustStock(product, -1),
+                    onTap: () => _showStockAdjustmentModal(product, isInduction: false),
                     borderRadius: BorderRadius.circular(6),
                     child: Container(
                       width: 28,
@@ -1494,9 +1774,10 @@ class _StockPageState extends ConsumerState<StockPage> {
             spacing: 8,
             runSpacing: 8,
             children: [
-              // Quick +
+              // Stock Induction (↗)
               InkWell(
-                onTap: () => _quickAdjustStock(product, 1),
+                onTap: () => _showStockAdjustmentModal(product, isInduction: true),
+                borderRadius: BorderRadius.circular(6),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -1508,15 +1789,16 @@ class _StockPageState extends ConsumerState<StockPage> {
                     children: [
                       Icon(LucideIcons.arrowUpRight, color: Colors.white, size: 14),
                       SizedBox(width: 4),
-                      Text('+1', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                      Text('Induct', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
               ),
 
-              // Quick -
+              // Stock Depletion (↘)
               InkWell(
-                onTap: () => _quickAdjustStock(product, -1),
+                onTap: () => _showStockAdjustmentModal(product, isInduction: false),
+                borderRadius: BorderRadius.circular(6),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -1528,7 +1810,7 @@ class _StockPageState extends ConsumerState<StockPage> {
                     children: [
                       Icon(LucideIcons.arrowDownRight, color: Colors.white, size: 14),
                       SizedBox(width: 4),
-                      Text('-1', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                      Text('Deplete', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),

@@ -54,17 +54,18 @@ class _CashFlowHeatmapPageState extends State<CashFlowHeatmapPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 950;
     final paddingVal = isMobile ? 16.0 : 32.0;
+    final bottomPad = isMobile ? 110.0 : 32.0;
 
     final totalOutflow = _dailySpending.fold<int>(0, (sum, val) => sum + val);
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(paddingVal, 20, paddingVal, paddingVal),
+        padding: EdgeInsets.fromLTRB(paddingVal, isMobile ? 16 : 20, paddingVal, bottomPad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header Section
-            _buildHeader(context, isMobile).animate().fadeIn(duration: 400.ms).slideY(begin: -0.05, end: 0),
+            _buildHeader(context, isMobile).animate().fadeIn(duration: 400.ms),
             const SizedBox(height: 28),
 
             // Stat Cards 2x2 Grid

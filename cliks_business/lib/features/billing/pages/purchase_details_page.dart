@@ -258,11 +258,17 @@ class _PurchaseDetailsPageState extends ConsumerState<PurchaseDetailsPage> {
       builder: (ctx) => StatefulBuilder(
         builder: (context, setModalState) => AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          title: const Row(
-            children: [
+          title: Row(
+            children: const [
               Icon(LucideIcons.externalLink, color: Color(0xFF166534), size: 22),
-              SizedBox(width: 10),
-              Text('Link External Store / POS', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Link External Store / POS',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           content: SingleChildScrollView(
@@ -291,15 +297,16 @@ class _PurchaseDetailsPageState extends ConsumerState<PurchaseDetailsPage> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: selectedPlatform,
+                  isExpanded: true,
                   decoration: InputDecoration(
                     labelText: 'Platform Type',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   items: const [
-                    DropdownMenuItem(value: 'Cliks Smart POS', child: Text('Cliks Smart POS')),
-                    DropdownMenuItem(value: 'Shopify Storefront', child: Text('Shopify Storefront')),
-                    DropdownMenuItem(value: 'WooCommerce API', child: Text('WooCommerce API')),
-                    DropdownMenuItem(value: 'Pine Labs / Custom POS', child: Text('Pine Labs / Custom POS')),
+                    DropdownMenuItem(value: 'Cliks Smart POS', child: Text('Cliks Smart POS', overflow: TextOverflow.ellipsis)),
+                    DropdownMenuItem(value: 'Shopify Storefront', child: Text('Shopify Storefront', overflow: TextOverflow.ellipsis)),
+                    DropdownMenuItem(value: 'WooCommerce API', child: Text('WooCommerce API', overflow: TextOverflow.ellipsis)),
+                    DropdownMenuItem(value: 'Pine Labs / Custom POS', child: Text('Pine Labs / Custom POS', overflow: TextOverflow.ellipsis)),
                   ],
                   onChanged: (val) {
                     if (val != null) setModalState(() => selectedPlatform = val);

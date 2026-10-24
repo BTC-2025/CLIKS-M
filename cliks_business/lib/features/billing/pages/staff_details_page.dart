@@ -279,7 +279,7 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
                 // 4. YOUR SALARY HISTORY & DETAILS SECTION (LOCKED OR UNLOCKED)
                 _buildSalaryHistorySection(isMobile, isDesktop),
 
-                const SizedBox(height: 40),
+                SizedBox(height: isMobile ? 110 : 40),
               ],
             ),
           ),
@@ -757,18 +757,26 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
                     ),
                   ],
                 ] else ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
                     children: [
-                      const Row(
-                        children: [
-                          Icon(LucideIcons.checkCircle2, color: Color(0xFF16A34A), size: 18),
-                          SizedBox(width: 8),
-                          Text(
-                            'Integration active & verified',
-                            style: TextStyle(color: Color(0xFF166534), fontWeight: FontWeight.bold, fontSize: 13),
-                          ),
-                        ],
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(LucideIcons.checkCircle2, color: Color(0xFF16A34A), size: 18),
+                            SizedBox(width: 8),
+                            Text(
+                              'Integration active & verified',
+                              style: TextStyle(color: Color(0xFF166534), fontWeight: FontWeight.bold, fontSize: 13),
+                            ),
+                          ],
+                        ),
                       ),
                       TextButton.icon(
                         onPressed: _resetStatus,
@@ -843,59 +851,110 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section Title
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFEF3C7),
-                        borderRadius: BorderRadius.circular(10),
+          if (isMobile) ...[
+            Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF3C7),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Icon(LucideIcons.lock, color: Color(0xFFD97706), size: 18),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'YOUR SALARY History & Details',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      child: const Center(
-                        child: Icon(LucideIcons.lock, color: Color(0xFFD97706), size: 18),
+                      Text(
+                        'Official payroll structure, compensations & tax documents',
+                        style: TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'YOUR SALARY History & Details',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            'Official payroll structure, compensations & tax documents',
-                            style: TextStyle(fontSize: 12, color: Color(0xFF64748B)),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (_isAccepted) ...[
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDCFCE7),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFF86EFAC)),
+                ),
+                child: const Text(
+                  '✓ VERIFIED UNLOCKED',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF166534)),
                 ),
               ),
-              if (_isAccepted)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDCFCE7),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF86EFAC)),
-                  ),
-                  child: const Text(
-                    '✓ VERIFIED UNLOCKED',
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF166534)),
+            ],
+          ] else ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEF3C7),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Icon(LucideIcons.lock, color: Color(0xFFD97706), size: 18),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'YOUR SALARY History & Details',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Official payroll structure, compensations & tax documents',
+                              style: TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-            ],
-          ),
+                if (_isAccepted)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDCFCE7),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: const Color(0xFF86EFAC)),
+                    ),
+                    child: const Text(
+                      '✓ VERIFIED UNLOCKED',
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF166534)),
+                    ),
+                  ),
+              ],
+            ),
+          ],
 
           const SizedBox(height: 20),
 
@@ -1288,13 +1347,16 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            children: [
+          Row(
+            children: const [
               Icon(LucideIcons.creditCard, color: Color(0xFF2563EB), size: 18),
               SizedBox(width: 8),
-              Text(
-                'BANK DISBURSEMENT DETAILS',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+              Expanded(
+                child: Text(
+                  'BANK DISBURSEMENT DETAILS',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -1338,13 +1400,16 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            children: [
+          Row(
+            children: const [
               Icon(LucideIcons.shieldCheck, color: Color(0xFF16A34A), size: 18),
               SizedBox(width: 8),
-              Text(
-                'PAN, PF & COMPLIANCE RECORDS',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+              Expanded(
+                child: Text(
+                  'PAN, PF & COMPLIANCE RECORDS',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -1429,32 +1494,64 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(LucideIcons.mapPin, color: Color(0xFF2563EB), size: 18),
-                  SizedBox(width: 8),
-                  Text(
-                    'RESIDENTIAL ADDRESS & EMERGENCY CONTACTS',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+          if (isMobile)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(LucideIcons.mapPin, color: Color(0xFF2563EB), size: 18),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'RESIDENTIAL ADDRESS & EMERGENCY CONTACTS',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEFF6FF),
-                  borderRadius: BorderRadius.circular(4),
+                  child: const Text(
+                    'HR SUBMITTED RECORD',
+                    style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Color(0xFF2563EB)),
+                  ),
                 ),
-                child: const Text(
-                  'HR SUBMITTED RECORD',
-                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Color(0xFF2563EB)),
+              ],
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
+                  children: [
+                    Icon(LucideIcons.mapPin, color: Color(0xFF2563EB), size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'RESIDENTIAL ADDRESS & EMERGENCY CONTACTS',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    'HR SUBMITTED RECORD',
+                    style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Color(0xFF2563EB)),
+                  ),
+                ),
+              ],
+            ),
           const SizedBox(height: 16),
           if (isMobile) ...[
             Column(
@@ -1513,25 +1610,50 @@ class _StaffDetailsPageState extends ConsumerState<StaffDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(
-                children: [
-                  Icon(LucideIcons.fileText, color: Color(0xFF2563EB), size: 18),
-                  SizedBox(width: 8),
-                  Text(
-                    'DISBURSED PAYSLIPS',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
-                  ),
-                ],
-              ),
-              Text(
-                'Generated by santhoshhhhh(HR)',
-                style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
-              ),
-            ],
-          ),
+          if (isMobile)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Row(
+                  children: [
+                    Icon(LucideIcons.fileText, color: Color(0xFF2563EB), size: 18),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'DISBURSED PAYSLIPS',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Generated by santhoshhhhh(HR)',
+                  style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                ),
+              ],
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Row(
+                  children: [
+                    Icon(LucideIcons.fileText, color: Color(0xFF2563EB), size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'DISBURSED PAYSLIPS',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Generated by santhoshhhhh(HR)',
+                  style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
           const SizedBox(height: 16),
 
           // August 2026 Payslip

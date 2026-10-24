@@ -315,7 +315,7 @@ class _TaxDeductionsPageState extends ConsumerState<TaxDeductionsPage> {
               _buildTaxComplianceCard(),
             ],
 
-            const SizedBox(height: 40),
+            SizedBox(height: isMobile ? 110 : 40),
           ],
         ),
       ),

@@ -148,10 +148,21 @@ void main() {
       expect(find.text('₹40'), findsOneWidget);
       expect(find.text('IN STOCK'), findsWidgets);
 
-      // 5. Test Quick Stock Dispatch (-1)
+      // 5. Test Stock Depletion Modal (-1)
       final dispatchBtn = find.byIcon(LucideIcons.arrowDownRight);
       expect(dispatchBtn, findsOneWidget);
       await tester.tap(dispatchBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Stock Depletion'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((w) => w is RichText && w.text.toPlainText().contains('Available Base: 50')),
+        findsOneWidget,
+      );
+      expect(find.text('ADJUSTMENT VOLUME'), findsOneWidget);
+      expect(find.text('Commit Depletion'), findsOneWidget);
+
+      await tester.tap(find.text('Commit Depletion'));
       await tester.pumpAndSettle();
 
       expect(
@@ -160,10 +171,21 @@ void main() {
       );
       expect(find.text('₹1,960'), findsOneWidget); // 49 * 40 = 1960
 
-      // 6. Test Quick Stock Add (+1)
+      // 6. Test Stock Induction Modal (+1)
       final addStockBtn = find.byIcon(LucideIcons.arrowUpRight);
       expect(addStockBtn, findsOneWidget);
       await tester.tap(addStockBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Stock Induction'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((w) => w is RichText && w.text.toPlainText().contains('Available Base: 49')),
+        findsOneWidget,
+      );
+      expect(find.text('ADJUSTMENT VOLUME'), findsOneWidget);
+      expect(find.text('Commit Induction'), findsOneWidget);
+
+      await tester.tap(find.text('Commit Induction'));
       await tester.pumpAndSettle();
 
       expect(
