@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/navigation/navigation_provider.dart';
-import '../../payments/widgets/add_money_dialog.dart';
 import '../pages/macos_storage_page.dart';
 import '../pages/mobile_storage_page.dart';
 import 'sidebar_utility_rail.dart';
@@ -223,13 +222,13 @@ class Sidebar extends ConsumerWidget {
                     label: 'Finance',
                     isInitiallyExpanded:
                         navigation.currentRoute == AppRoute.accounting ||
+                        navigation.currentRoute == AppRoute.purchaseDetails ||
+                        navigation.currentRoute == AppRoute.staffDetails ||
                         navigation.currentRoute == AppRoute.expenses ||
                         navigation.currentRoute == AppRoute.gst ||
                         navigation.currentRoute == AppRoute.fintech ||
-                        navigation.currentRoute == AppRoute.recordExpense ||
-                        navigation.currentRoute == AppRoute.lodgeStaffClaim ||
-                        navigation.currentRoute == AppRoute.generateEWayBill ||
-                        navigation.currentRoute == AppRoute.generateEInvoice,
+                        navigation.currentRoute == AppRoute.purchase ||
+                        navigation.currentRoute == AppRoute.staff,
                     children: [
                       _SidebarSubItem(
                         icon: LucideIcons.calculator,
@@ -247,110 +246,10 @@ class Sidebar extends ConsumerWidget {
                         },
                       ),
                       _SidebarSubItem(
-                        icon: LucideIcons.trendingUp,
-                        label: 'Expenses',
+                        icon: LucideIcons.shoppingCart,
+                        label: 'Purchase details',
                         isSelected:
-                            navigation.currentRoute == AppRoute.expenses ||
-                            navigation.currentRoute == AppRoute.recordExpense ||
-                            navigation.currentRoute == AppRoute.lodgeStaffClaim,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.expenses);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        icon: LucideIcons.percent,
-                        label: 'Tax',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.gst ||
-                            navigation.currentRoute ==
-                                AppRoute.generateEWayBill ||
-                            navigation.currentRoute ==
-                                AppRoute.generateEInvoice,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.gst);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        icon: LucideIcons.cpu,
-                        label: 'Fintech',
-                        isSelected: navigation.currentRoute == AppRoute.fintech,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.fintech);
-                        },
-                      ),
-                    ],
-                  ),
-                  _SidebarExpandable(
-                    icon: LucideIcons.shoppingCart,
-                    label: 'Sales',
-                    isInitiallyExpanded:
-                        navigation.currentRoute == AppRoute.billing ||
-                        navigation.currentRoute == AppRoute.newInvoice ||
-                        navigation.currentRoute == AppRoute.customers ||
-                        navigation.currentRoute == AppRoute.invoiceTemplates ||
-                        navigation.currentRoute == AppRoute.addCustomer,
-                    children: [
-                      _SidebarSubItem(
-                        label: 'Sales Invoice',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.billing ||
-                            navigation.currentRoute == AppRoute.newInvoice ||
-                            navigation.currentRoute ==
-                                AppRoute.invoiceTemplates,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.billing);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        label: 'Customers',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.customers ||
-                            navigation.currentRoute == AppRoute.addCustomer,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.customers);
-                        },
-                      ),
-                    ],
-                  ),
-                  _SidebarExpandable(
-                    icon: LucideIcons.shoppingBag,
-                    label: 'Purchases',
-                    isInitiallyExpanded:
-                        navigation.currentRoute == AppRoute.purchase,
-                    children: [
-                      _SidebarSubItem(
-                        label: 'Purchase Invoice',
-                        isSelected:
+                            navigation.currentRoute == AppRoute.purchaseDetails ||
                             navigation.currentRoute == AppRoute.purchase,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
@@ -359,13 +258,15 @@ class Sidebar extends ConsumerWidget {
                           }
                           ref
                               .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.purchase);
+                              .setRoute(AppRoute.purchaseDetails);
                         },
                       ),
                       _SidebarSubItem(
-                        label: 'Suppliers',
+                        icon: LucideIcons.user,
+                        label: 'Staff details',
                         isSelected:
-                            navigation.currentRoute == AppRoute.suppliers,
+                            navigation.currentRoute == AppRoute.staffDetails ||
+                            navigation.currentRoute == AppRoute.staff,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
                           if (scaffold != null && scaffold.isDrawerOpen) {
@@ -373,104 +274,29 @@ class Sidebar extends ConsumerWidget {
                           }
                           ref
                               .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.suppliers);
+                              .setRoute(AppRoute.staffDetails);
                         },
                       ),
                     ],
                   ),
-                  _SidebarExpandable(
-                    icon: LucideIcons.box,
-                    label: 'Inventory',
-                    isInitiallyExpanded:
-                        navigation.currentRoute == AppRoute.products ||
-                        navigation.currentRoute == AppRoute.stock ||
-                        navigation.currentRoute == AppRoute.warehouse,
-                    children: [
-                      _SidebarSubItem(
-                        label: 'Products',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.products,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.products);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        label: 'Stock',
-                        isSelected: navigation.currentRoute == AppRoute.stock,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.stock);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        label: 'Warehouse',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.warehouse,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.warehouse);
-                        },
-                      ),
-                    ],
+                  _SidebarItem(
+                    icon: LucideIcons.trendingUp,
+                    label: 'Stock',
+                    isSelected: navigation.currentRoute == AppRoute.stock,
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.stock);
+                    },
                   ),
-                  _SidebarExpandable(
+                  _SidebarItem(
                     icon: LucideIcons.users,
-                    label: 'HR',
-                    isInitiallyExpanded:
-                        navigation.currentRoute == AppRoute.staff ||
-                        navigation.currentRoute == AppRoute.payroll ||
-                        navigation.currentRoute == AppRoute.hr,
-                    children: [
-                      _SidebarSubItem(
-                        label: 'Staff',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.staff ||
-                            navigation.currentRoute == AppRoute.hr,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.staff);
-                        },
-                      ),
-                      _SidebarSubItem(
-                        label: 'Payroll',
-                        isSelected: navigation.currentRoute == AppRoute.payroll,
-                        onTap: () {
-                          final scaffold = Scaffold.maybeOf(context);
-                          if (scaffold != null && scaffold.isDrawerOpen) {
-                            Navigator.pop(context);
-                          }
-                          ref
-                              .read(navigationProvider.notifier)
-                              .setRoute(AppRoute.payroll);
-                        },
-                      ),
-                    ],
-                  ),
-                  _SidebarItem(
-                    icon: LucideIcons.monitor,
-                    label: 'POS Billing',
-                    isSelected: navigation.currentRoute == AppRoute.pos,
+                    label: 'People',
+                    isSelected: navigation.currentRoute == AppRoute.people,
                     onTap: () {
                       final scaffold = Scaffold.maybeOf(context);
                       if (scaffold != null && scaffold.isDrawerOpen) {
@@ -478,14 +304,13 @@ class Sidebar extends ConsumerWidget {
                       }
                       ref
                           .read(navigationProvider.notifier)
-                          .setRoute(AppRoute.pos);
+                          .setRoute(AppRoute.people);
                     },
                   ),
                   _SidebarItem(
-                    icon: LucideIcons.receiptText,
-                    label: 'Simple Billing',
-                    isSelected:
-                        navigation.currentRoute == AppRoute.simpleBilling,
+                    icon: LucideIcons.gitPullRequest,
+                    label: 'Split & Collect',
+                    isSelected: navigation.currentRoute == AppRoute.splitCollect,
                     onTap: () {
                       final scaffold = Scaffold.maybeOf(context);
                       if (scaffold != null && scaffold.isDrawerOpen) {
@@ -493,12 +318,12 @@ class Sidebar extends ConsumerWidget {
                       }
                       ref
                           .read(navigationProvider.notifier)
-                          .setRoute(AppRoute.simpleBilling);
+                          .setRoute(AppRoute.splitCollect);
                     },
                   ),
                   _SidebarItem(
-                    icon: LucideIcons.lineChart,
-                    label: 'Reports',
+                    icon: LucideIcons.barChart3,
+                    label: 'Report',
                     isSelected: navigation.currentRoute == AppRoute.reports,
                     onTap: () {
                       final scaffold = Scaffold.maybeOf(context);
@@ -510,37 +335,9 @@ class Sidebar extends ConsumerWidget {
                           .setRoute(AppRoute.reports);
                     },
                   ),
-                  _SidebarItem(
-                    icon: LucideIcons.barcode,
-                    label: 'Barcode Gen',
-                    isSelected: navigation.currentRoute == AppRoute.barcodeGen,
-                    onTap: () {
-                      final scaffold = Scaffold.maybeOf(context);
-                      if (scaffold != null && scaffold.isDrawerOpen) {
-                        Navigator.pop(context);
-                      }
-                      ref
-                          .read(navigationProvider.notifier)
-                          .setRoute(AppRoute.barcodeGen);
-                    },
-                  ),
-                  _SidebarItem(
-                    icon: LucideIcons.megaphone,
-                    label: 'Marketing',
-                    isSelected: navigation.currentRoute == AppRoute.marketing,
-                    onTap: () {
-                      final scaffold = Scaffold.maybeOf(context);
-                      if (scaffold != null && scaffold.isDrawerOpen) {
-                        Navigator.pop(context);
-                      }
-                      ref
-                          .read(navigationProvider.notifier)
-                          .setRoute(AppRoute.marketing);
-                    },
-                  ),
                   _SidebarExpandable(
-                    icon: LucideIcons.shieldCheck,
-                    label: 'Personal Vault',
+                    icon: LucideIcons.compass,
+                    label: 'Track',
                     isInitiallyExpanded:
                         navigation.currentRoute == AppRoute.track ||
                         navigation.currentRoute == AppRoute.goalBuckets ||
@@ -548,7 +345,7 @@ class Sidebar extends ConsumerWidget {
                         navigation.currentRoute == AppRoute.subscriptionVault,
                     children: [
                       _SidebarSubItem(
-                        icon: LucideIcons.walletCards,
+                        icon: LucideIcons.compass,
                         label: 'Money Tracker',
                         isSelected: navigation.currentRoute == AppRoute.track,
                         onTap: () {
@@ -597,82 +394,103 @@ class Sidebar extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  _SidebarItem(
-                    icon: LucideIcons.sparkles,
-                    label: 'Refer & Earn',
-                    isSelected: navigation.currentRoute == AppRoute.referral,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.referral),
-                  ),
-                ] else if (navigation.currentModule == AppModule.payments) ...[
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const AddMoneyDialog(),
-                        );
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: InkWell(
+                      onTap: () {
+                        final scaffold = Scaffold.maybeOf(context);
+                        if (scaffold != null && scaffold.isDrawerOpen) {
+                          Navigator.pop(context);
+                        }
+                        ref.read(navigationProvider.notifier).setRoute(AppRoute.auditHub);
                       },
-                      icon: const Icon(LucideIcons.plus, size: 16),
-                      label: const Text(
-                        'Add Money',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryGreen,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFACC15),
                           borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(LucideIcons.briefcase, color: Color(0xFF0F172A), size: 16),
+                            SizedBox(width: 8),
+                            Text(
+                              'FIN-PRO',
+                              style: TextStyle(
+                                color: Color(0xFF0F172A),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13,
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                   _SidebarItem(
-                    icon: LucideIcons.users,
-                    label: 'People',
-                    isSelected: navigation.currentRoute == AppRoute.people,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.people),
+                    icon: LucideIcons.gift,
+                    label: 'Refer & Earn',
+                    isSelected: navigation.currentRoute == AppRoute.referral,
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref.read(navigationProvider.notifier).setRoute(AppRoute.referral);
+                    },
                   ),
+                ] else if (navigation.currentModule == AppModule.payments) ...[
                   _SidebarItem(
                     icon: LucideIcons.history,
                     label: 'Transaction',
                     isSelected: navigation.currentRoute == AppRoute.transaction,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.transaction),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.transaction);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.split,
                     label: 'Segregation',
                     isSelected: navigation.currentRoute == AppRoute.segregation,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.segregation),
-                  ),
-                  _SidebarItem(
-                    icon: LucideIcons.activity,
-                    label: 'Split & Collect',
-                    isSelected:
-                        navigation.currentRoute == AppRoute.splitCollect,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.splitCollect),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.segregation);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.calendarDays,
                     label: 'Planner',
                     isSelected: navigation.currentRoute == AppRoute.planner,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.planner),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.planner);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.flame,
@@ -688,38 +506,48 @@ class Sidebar extends ConsumerWidget {
                           .setRoute(AppRoute.cashFlowHeatmap);
                     },
                   ),
-                  _SidebarItem(
-                    icon: LucideIcons.sparkles,
-                    label: 'Refer & Earn',
-                    isSelected: navigation.currentRoute == AppRoute.referral,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.referral),
-                  ),
                 ] else if (navigation.currentModule == AppModule.social) ...[
                   _SidebarItem(
                     icon: LucideIcons.userCheck,
                     label: 'PARTNER LAUNCH DESK',
                     isSelected: navigation.currentRoute == AppRoute.betaClub,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.betaClub),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.betaClub);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.trendingUp,
                     label: 'Trading Docs',
                     isSelected: navigation.currentRoute == AppRoute.tradingDocs,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.tradingDocs),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.tradingDocs);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.sparkles,
                     label: 'Refer & Earn',
                     isSelected: navigation.currentRoute == AppRoute.referral,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.referral),
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.referral);
+                    },
                   ),
                 ] else if (navigation.currentModule == AppModule.profile) ...[
                   _SidebarItem(
@@ -831,19 +659,17 @@ class Sidebar extends ConsumerWidget {
 
                   const SizedBox(height: 2),
 
-                  // 3. Expandable Groups
+                  // 3. Expandable Groups & Navigation Items (Books)
                   _buildMacOSExpandable(
-                    icon: LucideIcons.banknote,
+                    icon: LucideIcons.wallet,
                     label: 'Finance',
                     isInitiallyExpanded: [
                       AppRoute.accounting,
+                      AppRoute.purchaseDetails,
+                      AppRoute.staffDetails,
                       AppRoute.expenses,
                       AppRoute.gst,
                       AppRoute.fintech,
-                      AppRoute.recordExpense,
-                      AppRoute.lodgeStaffClaim,
-                      AppRoute.generateEWayBill,
-                      AppRoute.generateEInvoice,
                     ].contains(navigation.currentRoute),
                     children: [
                       _buildMacOSSubItem(
@@ -856,249 +682,65 @@ class Sidebar extends ConsumerWidget {
                             .setRoute(AppRoute.accounting),
                       ),
                       _buildMacOSSubItem(
-                        icon: LucideIcons.trendingUp,
-                        label: 'Expenses',
+                        icon: LucideIcons.shoppingCart,
+                        label: 'Purchase details',
                         isSelected:
-                            navigation.currentRoute == AppRoute.expenses ||
-                            navigation.currentRoute == AppRoute.recordExpense ||
-                            navigation.currentRoute == AppRoute.lodgeStaffClaim,
+                            navigation.currentRoute == AppRoute.purchaseDetails,
                         onTap: () => ref
                             .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.expenses),
+                            .setRoute(AppRoute.purchaseDetails),
                       ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.percent,
-                        label: 'Tax',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.gst ||
-                            navigation.currentRoute ==
-                                AppRoute.generateEWayBill ||
-                            navigation.currentRoute ==
-                                AppRoute.generateEInvoice,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.gst),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.cpu,
-                        label: 'Fintech',
-                        isSelected: navigation.currentRoute == AppRoute.fintech,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.fintech),
-                      ),
-                    ],
-                  ),
-
-                  _buildMacOSExpandable(
-                    icon: LucideIcons.shoppingCart,
-                    label: 'Sales',
-                    isInitiallyExpanded: [
-                      AppRoute.billing,
-                      AppRoute.newInvoice,
-                      AppRoute.customers,
-                      AppRoute.addCustomer,
-                      AppRoute.invoiceTemplates,
-                    ].contains(navigation.currentRoute),
-                    children: [
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.receipt,
-                        label: 'Sales Invoices',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.billing ||
-                            navigation.currentRoute == AppRoute.newInvoice ||
-                            navigation.currentRoute ==
-                                AppRoute.invoiceTemplates,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.billing),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.users,
-                        label: 'Customers',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.customers ||
-                            navigation.currentRoute == AppRoute.addCustomer,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.customers),
-                      ),
-                    ],
-                  ),
-
-                  _buildMacOSExpandable(
-                    icon: LucideIcons.shoppingBag,
-                    label: 'Purchases',
-                    isInitiallyExpanded: [
-                      AppRoute.purchase,
-                      AppRoute.suppliers,
-                      AppRoute.newPO,
-                      AppRoute.newPurchaseBill,
-                      AppRoute.purchaseReturn,
-                      AppRoute.registerSupplier,
-                    ].contains(navigation.currentRoute),
-                    children: [
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.receiptText,
-                        label: 'Purchase Invoices',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.purchase ||
-                            navigation.currentRoute == AppRoute.newPurchaseBill,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.purchase),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.truck,
-                        label: 'Suppliers',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.suppliers ||
-                            navigation.currentRoute ==
-                                AppRoute.registerSupplier,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.suppliers),
-                      ),
-                    ],
-                  ),
-
-                  _buildMacOSExpandable(
-                    icon: LucideIcons.store,
-                    label: 'Inventory',
-                    isInitiallyExpanded: [
-                      AppRoute.products,
-                      AppRoute.stock,
-                      AppRoute.warehouse,
-                      AppRoute.inventory,
-                      AppRoute.registerProduct,
-                      AppRoute.adjustStock,
-                      AppRoute.warehouseTransfer,
-                      AppRoute.registerWarehouse,
-                      AppRoute.goodsInwardReceipt,
-                      AppRoute.interWarehouseTransfer,
-                      AppRoute.secureAuditExport,
-                      AppRoute.recordAccountingEntry,
-                    ].contains(navigation.currentRoute),
-                    children: [
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.package,
-                        label: 'Products',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.products ||
-                            navigation.currentRoute == AppRoute.registerProduct,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.products),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.boxes,
-                        label: 'Stock & Inventory',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.stock ||
-                            navigation.currentRoute == AppRoute.adjustStock,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.stock),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.warehouse,
-                        label: 'Warehouse',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.warehouse ||
-                            navigation.currentRoute ==
-                                AppRoute.registerWarehouse,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.warehouse),
-                      ),
-                    ],
-                  ),
-
-                  _buildMacOSExpandable(
-                    icon: LucideIcons.userCheck,
-                    label: 'HR',
-                    isInitiallyExpanded: [
-                      AppRoute.staff,
-                      AppRoute.payroll,
-                      AppRoute.hr,
-                      AppRoute.allocateEmployeeLoan,
-                      AppRoute.processMonthlyPayroll,
-                    ].contains(navigation.currentRoute),
-                    children: [
                       _buildMacOSSubItem(
                         icon: LucideIcons.user,
-                        label: 'Staff',
+                        label: 'Staff details',
                         isSelected:
-                            navigation.currentRoute == AppRoute.staff ||
-                            navigation.currentRoute == AppRoute.hr,
+                            navigation.currentRoute == AppRoute.staffDetails,
                         onTap: () => ref
                             .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.staff),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.fileText,
-                        label: 'Payroll',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.payroll ||
-                            navigation.currentRoute ==
-                                AppRoute.allocateEmployeeLoan ||
-                            navigation.currentRoute ==
-                                AppRoute.processMonthlyPayroll,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.payroll),
+                            .setRoute(AppRoute.staffDetails),
                       ),
                     ],
                   ),
 
                   _buildMacOSItem(
-                    icon: LucideIcons.monitor,
-                    label: 'POS Billing',
-                    isSelected: navigation.currentRoute == AppRoute.pos,
+                    icon: LucideIcons.trendingUp,
+                    label: 'Stock',
+                    isSelected: navigation.currentRoute == AppRoute.stock,
                     onTap: () => ref
                         .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.pos),
+                        .setRoute(AppRoute.stock),
                   ),
 
                   _buildMacOSItem(
-                    icon: LucideIcons.receiptText,
-                    label: 'Simple Billing',
-                    isSelected:
-                        navigation.currentRoute == AppRoute.simpleBilling,
+                    icon: LucideIcons.users,
+                    label: 'People',
+                    isSelected: navigation.currentRoute == AppRoute.people,
                     onTap: () => ref
                         .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.simpleBilling),
+                        .setRoute(AppRoute.people),
                   ),
 
                   _buildMacOSItem(
-                    icon: LucideIcons.lineChart,
-                    label: 'Reports',
+                    icon: LucideIcons.gitPullRequest,
+                    label: 'Split & Collect',
+                    isSelected: navigation.currentRoute == AppRoute.splitCollect,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.splitCollect),
+                  ),
+
+                  _buildMacOSItem(
+                    icon: LucideIcons.barChart3,
+                    label: 'Report',
                     isSelected: navigation.currentRoute == AppRoute.reports,
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.reports),
                   ),
 
-                  _buildMacOSItem(
-                    icon: LucideIcons.barcode,
-                    label: 'Barcode Gen',
-                    isSelected: navigation.currentRoute == AppRoute.barcodeGen,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.barcodeGen),
-                  ),
-
-                  _buildMacOSItem(
-                    icon: LucideIcons.megaphone,
-                    label: 'Marketing',
-                    isSelected: navigation.currentRoute == AppRoute.marketing,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.marketing),
-                  ),
                   _buildMacOSExpandable(
-                    icon: LucideIcons.shieldCheck,
-                    label: 'Personal Vault',
+                    icon: LucideIcons.compass,
+                    label: 'Track',
                     isInitiallyExpanded: [
                       AppRoute.track,
                       AppRoute.goalBuckets,
@@ -1107,7 +749,7 @@ class Sidebar extends ConsumerWidget {
                     ].contains(navigation.currentRoute),
                     children: [
                       _buildMacOSSubItem(
-                        icon: LucideIcons.walletCards,
+                        icon: LucideIcons.compass,
                         label: 'Money Tracker',
                         isSelected: navigation.currentRoute == AppRoute.track,
                         onTap: () => ref
@@ -1140,42 +782,40 @@ class Sidebar extends ConsumerWidget {
                       ),
                     ],
                   ),
-                ] else if (navigation.currentModule == AppModule.payments) ...[
-                  // + Add Money Button (for Payments module)
+
+                  // FIN-PRO Yellow Badge Button
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => const AddMoneyDialog(),
-                        );
-                      },
+                      onTap: () => ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.auditHub),
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF166534),
+                          color: const Color(0xFFFACC15),
                           borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              LucideIcons.plus,
-                              size: 16,
-                              color: Colors.white,
-                            ),
+                            Icon(LucideIcons.briefcase, color: Color(0xFF0F172A), size: 16),
                             SizedBox(width: 8),
                             Text(
-                              'Add Money',
+                              'FIN-PRO',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0F172A),
+                                fontWeight: FontWeight.w900,
                                 fontSize: 13,
+                                letterSpacing: 0.5,
                               ),
                             ),
                           ],
@@ -1183,17 +823,7 @@ class Sidebar extends ConsumerWidget {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 6),
-
-                  _buildMacOSItem(
-                    icon: LucideIcons.users,
-                    label: 'People',
-                    isSelected: navigation.currentRoute == AppRoute.people,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.people),
-                  ),
+                ] else if (navigation.currentModule == AppModule.payments) ...[
                   _buildMacOSItem(
                     icon: LucideIcons.history,
                     label: 'Transaction',
@@ -1209,15 +839,6 @@ class Sidebar extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.segregation),
-                  ),
-                  _buildMacOSItem(
-                    icon: LucideIcons.activity,
-                    label: 'Split & Collect',
-                    isSelected:
-                        navigation.currentRoute == AppRoute.splitCollect,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.splitCollect),
                   ),
                   _buildMacOSItem(
                     icon: LucideIcons.calendarDays,
@@ -1251,6 +872,14 @@ class Sidebar extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.tradingDocs),
+                  ),
+                  _buildMacOSItem(
+                    icon: LucideIcons.sparkles,
+                    label: 'Refer & Earn',
+                    isSelected: navigation.currentRoute == AppRoute.referral,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.referral),
                   ),
                 ] else if (navigation.currentModule == AppModule.profile) ...[
                   _buildMacOSItem(
@@ -1424,21 +1053,21 @@ class Sidebar extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Badge 1: 293 DAYS BOOK ELITE
+                        // Badge 1: 353 DAYS BOOK ELITE
                         _buildMacOSDaysBadge(
-                          '293',
+                          '353',
                           'DAYS',
                           'BOOK',
                           'ELITE',
                           const Color(0xFFF2C94C),
                         ),
                         Container(width: 1, height: 26, color: Colors.white24),
-                        // Badge 2: 354 DAYS FIN-PRO FIRM
+                        // Badge 2: 353 DAYS FIN-PRO SOLO
                         _buildMacOSDaysBadge(
-                          '354',
+                          '353',
                           'DAYS',
                           'FIN-PRO',
-                          'FIRM',
+                          'SOLO',
                           const Color(0xFFF2C94C),
                         ),
                       ],
@@ -2273,7 +1902,7 @@ class _SidebarBottomFixed extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '290',
+                              '353',
                               style: TextStyle(
                                 color: Color(0xFF0B1329),
                                 fontWeight: FontWeight.w900,
@@ -2325,7 +1954,7 @@ class _SidebarBottomFixed extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              // Badge 2: 351 DAYS FIN-PRO FIRM
+              // Badge 2: 353 DAYS FIN-PRO SOLO
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -2353,7 +1982,7 @@ class _SidebarBottomFixed extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '351',
+                              '353',
                               style: TextStyle(
                                 color: Color(0xFF0B1329),
                                 fontWeight: FontWeight.w900,
@@ -2389,7 +2018,7 @@ class _SidebarBottomFixed extends ConsumerWidget {
                             ),
                           ),
                           Text(
-                            'FIRM',
+                            'SOLO',
                             style: TextStyle(
                               color: Color(0xFFF59E0B),
                               fontWeight: FontWeight.w900,

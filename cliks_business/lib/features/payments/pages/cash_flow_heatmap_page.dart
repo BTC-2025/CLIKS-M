@@ -478,7 +478,7 @@ class _CashFlowHeatmapPageState extends State<CashFlowHeatmapPage> {
 
           // Bar Chart Row
           SizedBox(
-            height: 140,
+            height: 160,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: weekdayAverages.map((item) {
@@ -500,14 +500,14 @@ class _CashFlowHeatmapPageState extends State<CashFlowHeatmapPage> {
                       ),
                       const SizedBox(height: 4),
                       Container(
-                        height: 100 * heightRatio,
+                        height: 90 * heightRatio,
                         width: isMobile ? 16 : 28,
                         decoration: BoxDecoration(
                           color: isExceedingCap ? Colors.red.shade500 : AppColors.primaryGreen,
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         item['day'] as String,
                         style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.darkText),

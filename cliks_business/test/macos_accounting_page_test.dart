@@ -4,81 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clicks_business_frontend/features/billing/pages/accounting_page.dart';
 
 void main() {
-  group('macOS Finance → Accounting Page UI Modernization Tests', () {
-    testWidgets('macOS Accounting page renders modernized header, KPIs, tabs, and breakdowns at 1280x800',
-        (tester) async {
-      tester.view.physicalSize = const Size(1280, 800);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() {
-        tester.view.resetPhysicalSize();
-        tester.view.resetDevicePixelRatio();
-      });
-
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
-              body: AccountingPage(),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // 1. Verify Header
-      expect(find.text('Accounting'), findsOneWidget);
-      expect(find.text('Compliance-ready financial management and GST reporting.'), findsOneWidget);
-      expect(find.text('Record Entry'), findsOneWidget);
-
-      // 2. Verify 4 Financial KPI Cards
-      expect(find.text('GROSS REVENUE'), findsOneWidget);
-      expect(find.text('TOTAL EXPENSES'), findsOneWidget);
-      expect(find.text('NET PROFIT'), findsOneWidget);
-      expect(find.text('GST PAYABLE'), findsOneWidget);
-      expect(find.textContaining('10,00,00,07,06,880'), findsWidgets);
-      expect(find.textContaining('9,88,66,717.4'), findsOneWidget);
-      expect(find.text('LIVE POSITION'), findsNWidgets(4));
-
-      // 3. Verify 7 Accounting Tabs
-      expect(find.text('P & L'), findsOneWidget);
-      expect(find.text('Balance Sheet'), findsOneWidget);
-      expect(find.text('Receivables & Payables'), findsOneWidget);
-      expect(find.text('Expenses'), findsOneWidget);
-      expect(find.text('Cash & Bank'), findsOneWidget);
-      expect(find.text('GST'), findsOneWidget);
-      expect(find.text('Day Book'), findsOneWidget);
-
-      // 4. Verify Revenue Breakdown (P & L active by default)
-      expect(find.text('Revenue Breakdown'), findsOneWidget);
-      expect(find.text('3 Sources'), findsOneWidget);
-      expect(find.text('Sales Revenue'), findsOneWidget);
-      expect(find.text('Service Income'), findsOneWidget);
-      expect(find.text('Other Income'), findsOneWidget);
-      expect(find.text('100%'), findsWidgets);
-
-      // 5. Verify Expense Breakdown
-      expect(find.text('Expense Breakdown'), findsOneWidget);
-      expect(find.text('13 Categories'), findsOneWidget);
-      expect(find.text('Office Expenses'), findsOneWidget);
-      expect(find.text('Rent & Utilities'), findsOneWidget);
-      expect(find.text('Salary & Wages'), findsOneWidget);
-      expect(find.text('Marketing & Advertising'), findsOneWidget);
-      expect(find.text('Travel & Meals'), findsOneWidget);
-      expect(find.text('Vehicle Expenses'), findsOneWidget);
-      expect(find.text('Software & Subscription'), findsOneWidget);
-      expect(find.text('Repairs & Maintenance'), findsOneWidget);
-      expect(find.text('Bank Charges'), findsOneWidget);
-      expect(find.text('Taxes & Government Fees'), findsOneWidget);
-      expect(find.text('Insurance'), findsOneWidget);
-      expect(find.text('Inventory Purchase'), findsOneWidget);
-      expect(find.text('Miscellaneous'), findsOneWidget);
-
-      // 6. Zero overflow errors
-      expect(tester.takeException(), isNull);
-    });
-
-    testWidgets('macOS Accounting page renders without overflow at 1440x900 wide screen',
+  group('Finance / Accounting Page (cliks.beta-softnet.com) Responsive & Functional Tests', () {
+    testWidgets('Renders all Bento sections on Desktop (1440x900) without any overflow',
         (tester) async {
       tester.view.physicalSize = const Size(1440, 900);
       tester.view.devicePixelRatio = 1.0;
@@ -88,10 +15,9 @@ void main() {
       });
 
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
+            home: Scaffold(
               body: AccountingPage(),
             ),
           ),
@@ -99,52 +25,63 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Accounting'), findsOneWidget);
-      expect(find.text('Revenue Breakdown'), findsOneWidget);
-      expect(find.text('Expense Breakdown'), findsOneWidget);
+      // 1. Header
+      expect(find.text('Finance'), findsOneWidget);
+      expect(find.text('Track your income, fixed costs, and daily spending in one place.'), findsOneWidget);
+      expect(find.text('Tax & Deductions'), findsOneWidget);
+
+      // 2. Bento Stat Cards
+      expect(find.text('TOTAL INCOME'), findsOneWidget);
+      expect(find.text('TOTAL EXPENSES'), findsOneWidget);
+      expect(find.text('MONTHLY SAVINGS'), findsOneWidget);
+      expect(find.text('NET WORTH'), findsOneWidget);
+
+      // 3. Investment Portfolio & Estimated Tax Due cards
+      expect(find.text('INVESTMENT PORTFOLIO'), findsOneWidget);
+      expect(find.text('ESTIMATED TAX DUE'), findsOneWidget);
+      expect(find.text('+% All-time'), findsOneWidget);
+      expect(find.text('Monthly P/L  +₹0'), findsOneWidget);
+      expect(find.text('Due by July 31st'), findsOneWidget);
+      expect(find.text('TDS Paid  ₹0'), findsOneWidget);
+
+      // 4. My Wallet & Budget Planner
+      expect(find.text('My Wallet'), findsOneWidget);
+      expect(find.text('Budget Planner'), findsOneWidget);
+      expect(find.text('AVAILABLE BALANCE'), findsOneWidget);
+      expect(find.text('MONTHLY BUDGET LIMIT'), findsOneWidget);
+      expect(find.text('EXPENSES'), findsOneWidget);
+      expect(find.text('REMAINING'), findsOneWidget);
+
+      // 5. Financial Goals
+      expect(find.text('Financial Goals'), findsOneWidget);
+      expect(find.text('Track your long-term milestones'), findsOneWidget);
+
+      // 6. Investment Portfolio Asset Allocation
+      expect(find.text('Investment Portfolio'), findsOneWidget);
+      expect(find.text('Real-time asset allocation & performance'), findsOneWidget);
+      expect(find.text('MARKET VALUE'), findsOneWidget);
+      expect(find.text('COST BASIS'), findsOneWidget);
+      expect(find.text('Add Investment'), findsOneWidget);
+
+      // 7. Additional Source Section
+      expect(find.text('Additional Source'), findsWidgets);
+      expect(find.text('ADDITIONAL INCOME'), findsOneWidget);
+
+      // 8. Bills & Reminders
+      expect(find.text('Bills & Reminders'), findsOneWidget);
+      expect(find.text('Add Bill'), findsOneWidget);
+
+      // 9. Fixed Source Section
+      expect(find.text('Fixed Source'), findsWidgets);
+      expect(find.text('FIXED INCOME'), findsOneWidget);
+
+      // Zero exceptions / overflows
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('macOS Accounting page renders without overflow at 1050x700 compact screen',
+    testWidgets('Renders cleanly on Mobile (360x780) with zero overflow errors',
         (tester) async {
-      tester.view.physicalSize = const Size(1050, 700);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() {
-        tester.view.resetPhysicalSize();
-        tester.view.resetDevicePixelRatio();
-      });
-
-      FlutterErrorDetails? errorDetails;
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        errorDetails = details;
-      };
-      addTearDown(() {
-        FlutterError.onError = oldHandler;
-      });
-
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
-              body: AccountingPage(),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Accounting'), findsOneWidget);
-      if (errorDetails != null) {
-        debugPrint('CAPTURED ERROR DETAILS: $errorDetails');
-      }
-      expect(errorDetails, isNull);
-    });
-
-    testWidgets('macOS Accounting page renders without overflow at 950x650 small window size',
-        (tester) async {
-      tester.view.physicalSize = const Size(950, 650);
+      tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
         tester.view.resetPhysicalSize();
@@ -152,10 +89,9 @@ void main() {
       });
 
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
+            home: Scaffold(
               body: AccountingPage(),
             ),
           ),
@@ -163,41 +99,18 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Accounting'), findsOneWidget);
+      expect(find.text('Finance'), findsOneWidget);
+      expect(find.text('Tax & Deductions'), findsOneWidget);
+      expect(find.text('TOTAL INCOME'), findsOneWidget);
+      expect(find.text('TOTAL EXPENSES'), findsOneWidget);
+      expect(find.text('MONTHLY SAVINGS'), findsOneWidget);
+      expect(find.text('NET WORTH'), findsOneWidget);
+
+      // Zero exceptions / overflows on mobile
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('macOS Accounting Record Entry button opens entry dialog',
-        (tester) async {
-      tester.view.physicalSize = const Size(1280, 800);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() {
-        tester.view.resetPhysicalSize();
-        tester.view.resetDevicePixelRatio();
-      });
-
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
-              body: AccountingPage(),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final recordEntryBtn = find.text('Record Entry');
-      expect(recordEntryBtn, findsOneWidget);
-      await tester.tap(recordEntryBtn);
-      await tester.pumpAndSettle();
-
-      // Verify Record Entry modal/dialog appeared
-      expect(find.textContaining('Record Entry'), findsWidgets);
-    });
-
-    testWidgets('macOS Accounting tabs switch correctly and display respective tab content',
+    testWidgets('Tax & Deductions dialog opens and functions properly',
         (tester) async {
       tester.view.physicalSize = const Size(1280, 800);
       tester.view.devicePixelRatio = 1.0;
@@ -207,10 +120,9 @@ void main() {
       });
 
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
-            theme: ThemeData(platform: TargetPlatform.macOS),
-            home: const Scaffold(
+            home: Scaffold(
               body: AccountingPage(),
             ),
           ),
@@ -218,27 +130,81 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Switch to Balance Sheet
-      await tester.tap(find.text('Balance Sheet'));
+      // Tap Tax & Deductions button
+      await tester.tap(find.text('Tax & Deductions').first);
       await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
 
-      // Switch to Receivables & Payables
-      await tester.tap(find.text('Receivables & Payables'));
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
+      expect(find.text('Tax & Deductions Overview'), findsOneWidget);
+      expect(find.text('Section 80C (PPF/ELSS/EPF)'), findsOneWidget);
 
-      // Switch to Day Book
-      await tester.tap(find.text('Day Book'));
+      // Close dialog
+      await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
-      expect(find.byType(DataTable), findsAtLeastNWidgets(1));
-      expect(tester.takeException(), isNull);
 
-      // Switch back to P & L
-      await tester.tap(find.text('P & L'));
+      expect(find.text('Tax & Deductions Overview'), findsNothing);
+    });
+
+    testWidgets('Add Funds to Wallet dialog increases balance',
+        (tester) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: Scaffold(
+              body: AccountingPage(),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
-      expect(find.text('Revenue Breakdown'), findsOneWidget);
-      expect(find.text('Expense Breakdown'), findsOneWidget);
+
+      expect(find.text('₹0.00'), findsWidgets);
+
+      // Ensure visible and Tap Add Funds
+      await tester.ensureVisible(find.text('Add Funds'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Add Funds'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Add Funds to Wallet'), findsOneWidget);
+      await tester.tap(find.text('+ ₹5,000'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Deposit Funds'));
+      await tester.pumpAndSettle();
+
+      // Verify wallet updated
+      expect(find.text('₹5000.00'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('Renders cleanly on 320px narrow mobile with zero overflow errors',
+        (tester) async {
+      tester.view.physicalSize = const Size(320, 640);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: Scaffold(
+              body: AccountingPage(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AccountingPage), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

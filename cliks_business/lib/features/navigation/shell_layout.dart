@@ -31,6 +31,7 @@ import '../profile/pages/profile_page.dart';
 import '../settings/pages/settings_page.dart';
 import '../billing/pages/new_invoice_page.dart';
 import '../billing/pages/accounting_page.dart';
+import '../billing/pages/purchase_details_page.dart';
 import '../billing/pages/expenses_page.dart';
 import '../billing/pages/gst_page.dart';
 import '../billing/pages/orders_page.dart';
@@ -229,7 +230,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
               return AppRoute.billing;
             }
             return navigation.currentModule == AppModule.payments
-                ? AppRoute.people
+                ? AppRoute.transaction
                 : (navigation.currentModule == AppModule.social ? AppRoute.betaClub : AppRoute.dashboard);
           }();
           ref.read(navigationProvider.notifier).setRoute(baseRoute);
@@ -241,7 +242,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
             case AppModule.books:
               return AppRoute.dashboard;
             case AppModule.payments:
-              return AppRoute.people;
+              return AppRoute.transaction;
             case AppModule.social:
               return AppRoute.betaClub;
             case AppModule.profile:
@@ -355,7 +356,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
                                         return AppRoute.billing;
                                       }
                                       return navigation.currentModule == AppModule.payments
-                                          ? AppRoute.people
+                                          ? AppRoute.transaction
                                           : (navigation.currentModule == AppModule.social ? AppRoute.betaClub : AppRoute.dashboard);
                                     }();
 
@@ -868,6 +869,8 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return ReturnsPage(key: ValueKey(route));
       case AppRoute.purchase:
         return PurchaseInvoicePage(key: ValueKey(route));
+      case AppRoute.purchaseDetails:
+        return PurchaseDetailsPage(key: ValueKey(route));
       case AppRoute.suppliers:
         return SuppliersPage(key: ValueKey(route));
       case AppRoute.registerSupplier:
@@ -880,6 +883,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return WarehousePage(key: ValueKey(route));
       case AppRoute.hr:
       case AppRoute.staff:
+      case AppRoute.staffDetails:
         return StaffPage(key: ValueKey(route));
       case AppRoute.attendance:
         return AttendancePage(key: ValueKey(route));
@@ -979,7 +983,7 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
     if (module == AppModule.books) {
       ref.read(navigationProvider.notifier).setModuleAndRoute(AppModule.books, AppRoute.dashboard);
     } else if (module == AppModule.payments) {
-      ref.read(navigationProvider.notifier).setModuleAndRoute(AppModule.payments, AppRoute.people);
+      ref.read(navigationProvider.notifier).setModuleAndRoute(AppModule.payments, AppRoute.transaction);
     } else if (module == AppModule.social) {
       ref.read(navigationProvider.notifier).setModuleAndRoute(AppModule.social, AppRoute.betaClub);
     } else if (module == AppModule.profile) {

@@ -147,49 +147,19 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                   ),
                 if (!isDesktop) const SizedBox(width: 2),
                 Flexible(
-                  child: InkWell(
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setModuleAndRoute(AppModule.books, AppRoute.dashboard),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (![
-                          AppRoute.people,
-                          AppRoute.wallet,
-                          AppRoute.transaction,
-                          AppRoute.segregation,
-                          AppRoute.splitCollect,
-                          AppRoute.planner,
-                          AppRoute.accounting,
-                          AppRoute.expenses,
-                          AppRoute.gst,
-                          AppRoute.billing,
-                          AppRoute.simpleBilling,
-                          AppRoute.sales,
-                          AppRoute.customers,
-                          AppRoute.returns,
-                          AppRoute.purchase,
-                          AppRoute.suppliers,
-                          AppRoute.products,
-                          AppRoute.stock,
-                          AppRoute.warehouse,
-                          AppRoute.inventory,
-                          AppRoute.pos,
-                          AppRoute.reports,
-                          AppRoute.marketing,
-                          AppRoute.barcodeGen,
-                          AppRoute.auditHub,
-                          AppRoute.payroll,
-                          AppRoute.allocateEmployeeLoan,
-                          AppRoute.processMonthlyPayroll,
-                          AppRoute.attendance,
-                          AppRoute.manualPunchEntry,
-                          AppRoute.regularizeMissedPunch,
-                          AppRoute.staff,
-                          AppRoute.hr,
-                        ].contains(navigation.currentRoute)) ...[
-                          Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (navigation.currentRoute == AppRoute.dashboard) ...[
+                        InkWell(
+                          onTap: () => ref
+                              .read(navigationProvider.notifier)
+                              .setModuleAndRoute(
+                                AppModule.books,
+                                AppRoute.dashboard,
+                              ),
+                          borderRadius: BorderRadius.circular(7),
+                          child: Container(
                             clipBehavior: Clip.antiAlias,
                             padding: const EdgeInsets.all(2.5),
                             decoration: BoxDecoration(
@@ -210,8 +180,9 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 6),
-                        ],
+                        ),
+                        const SizedBox(width: 6),
+                      ],
                         if (!isDesktop && navigation.currentRoute == AppRoute.pos)
                           Flexible(
                             child: InkWell(
@@ -294,6 +265,16 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                     return 'Split and Collect';
                                   case AppRoute.planner:
                                     return 'Planner';
+                                  case AppRoute.cashFlowHeatmap:
+                                    return 'Cash Flow Heatmap';
+                                  case AppRoute.track:
+                                    return 'Money Tracker';
+                                  case AppRoute.goalBuckets:
+                                    return 'Goal Buckets';
+                                  case AppRoute.documents:
+                                    return 'Document Vault';
+                                  case AppRoute.subscriptionVault:
+                                    return 'Subscriptions';
                                   case AppRoute.accounting:
                                     return 'Accounting';
                                   case AppRoute.expenses:
@@ -312,6 +293,10 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                     return 'Returns';
                                   case AppRoute.purchase:
                                     return 'Purchase Invoice';
+                                  case AppRoute.purchaseDetails:
+                                    return 'Purchase Details';
+                                  case AppRoute.staffDetails:
+                                    return 'Staff Details';
                                   case AppRoute.suppliers:
                                     return 'Suppliers';
                                   case AppRoute.products:
@@ -348,6 +333,14 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                     return 'Human Resources';
                                   case AppRoute.betaClub:
                                     return 'Partner Launch Desk';
+                                  case AppRoute.tradingDocs:
+                                    return 'Trading Docs';
+                                  case AppRoute.rewards:
+                                    return 'Rewards';
+                                  case AppRoute.meetup:
+                                    return 'Meetup';
+                                  case AppRoute.referral:
+                                    return 'Refer & Earn';
                                   case AppRoute.storage:
                                     return 'Storage';
                                   default:
@@ -367,7 +360,6 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                       ],
                     ),
                   ),
-                ),
               ],
             ),
           ),
@@ -465,7 +457,7 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                   .read(navigationProvider.notifier)
                                   .setModuleAndRoute(
                                     AppModule.payments,
-                                    AppRoute.people,
+                                    AppRoute.transaction,
                                   ),
                             ),
                             _ModulePill(
@@ -1041,7 +1033,7 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                               .read(navigationProvider.notifier)
                               .setModuleAndRoute(
                                 AppModule.payments,
-                                AppRoute.people,
+                                AppRoute.transaction,
                               ),
                         ),
                         _buildMacOSModulePill(
@@ -1583,7 +1575,7 @@ class _PointsChip extends ConsumerWidget {
       onTap: () {
         ref
             .read(navigationProvider.notifier)
-            .setModuleAndRoute(AppModule.payments, AppRoute.marketing);
+            .setModuleAndRoute(AppModule.books, AppRoute.marketing);
       },
       borderRadius: BorderRadius.circular(8),
       child: Container(

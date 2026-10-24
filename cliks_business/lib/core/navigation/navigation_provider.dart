@@ -86,6 +86,8 @@ enum AppRoute {
   gratitudeJournal,
   noSpendChallenge,
   cashFlowHeatmap,
+  purchaseDetails,
+  staffDetails,
 }
 
 class NavigationState {
@@ -118,17 +120,16 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
   void setRoute(AppRoute route) {
     AppModule module = state.currentModule;
     switch (route) {
-      case AppRoute.people:
-      case AppRoute.wallet:
       case AppRoute.transaction:
       case AppRoute.segregation:
-      case AppRoute.splitCollect:
-      case AppRoute.referral:
+      case AppRoute.planner:
+      case AppRoute.cashFlowHeatmap:
         module = AppModule.payments;
         break;
       case AppRoute.meetup:
       case AppRoute.betaClub:
       case AppRoute.rewards:
+      case AppRoute.tradingDocs:
         module = AppModule.social;
         break;
       case AppRoute.profile:
@@ -138,7 +139,11 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
         module = AppModule.profile;
         break;
       default:
-        module = AppModule.books;
+        if (route == AppRoute.referral && state.currentModule == AppModule.social) {
+          module = AppModule.social;
+        } else {
+          module = AppModule.books;
+        }
         break;
     }
     state = state.copyWith(currentRoute: route, currentModule: module);
