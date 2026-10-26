@@ -1,0 +1,18 @@
+If:
+  PathMatch: .*(/|^)windows/.*
+
+Diagnostics:
+  Suppress: '*'
+
+CompileFlags:
+  Add: [-ferror-limit=0]
+
+---
+If:
+  PathMatch: windows/.*
+
+Diagnostics:
+  Suppress: '*'
+
+CompileFlags:
+  Add: [-ferror-limit=0]

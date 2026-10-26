@@ -79,11 +79,11 @@ class Sidebar extends ConsumerWidget {
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
                                   Image.asset(
-                                'assets/images/icon.png',
-                                width: 28,
-                                height: 28,
-                                fit: BoxFit.contain,
-                              ),
+                                    'assets/images/icon.png',
+                                    width: 28,
+                                    height: 28,
+                                    fit: BoxFit.contain,
+                                  ),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -224,7 +224,6 @@ class Sidebar extends ConsumerWidget {
                         navigation.currentRoute == AppRoute.accounting ||
                         navigation.currentRoute == AppRoute.purchaseDetails ||
                         navigation.currentRoute == AppRoute.staffDetails ||
-                        navigation.currentRoute == AppRoute.taxDeductions ||
                         navigation.currentRoute == AppRoute.expenses ||
                         navigation.currentRoute == AppRoute.gst ||
                         navigation.currentRoute == AppRoute.fintech ||
@@ -250,7 +249,8 @@ class Sidebar extends ConsumerWidget {
                         icon: LucideIcons.shoppingCart,
                         label: 'Purchase details',
                         isSelected:
-                            navigation.currentRoute == AppRoute.purchaseDetails ||
+                            navigation.currentRoute ==
+                                AppRoute.purchaseDetails ||
                             navigation.currentRoute == AppRoute.purchase,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
@@ -311,7 +311,8 @@ class Sidebar extends ConsumerWidget {
                   _SidebarItem(
                     icon: LucideIcons.gitPullRequest,
                     label: 'Split & Collect',
-                    isSelected: navigation.currentRoute == AppRoute.splitCollect,
+                    isSelected:
+                        navigation.currentRoute == AppRoute.splitCollect,
                     onTap: () {
                       final scaffold = Scaffold.maybeOf(context);
                       if (scaffold != null && scaffold.isDrawerOpen) {
@@ -354,60 +355,80 @@ class Sidebar extends ConsumerWidget {
                           if (scaffold != null && scaffold.isDrawerOpen) {
                             Navigator.pop(context);
                           }
-                          ref.read(navigationProvider.notifier).setRoute(AppRoute.track);
+                          ref
+                              .read(navigationProvider.notifier)
+                              .setRoute(AppRoute.track);
                         },
                       ),
                       _SidebarSubItem(
                         icon: LucideIcons.target,
                         label: 'Goal Buckets',
-                        isSelected: navigation.currentRoute == AppRoute.goalBuckets,
+                        isSelected:
+                            navigation.currentRoute == AppRoute.goalBuckets,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
                           if (scaffold != null && scaffold.isDrawerOpen) {
                             Navigator.pop(context);
                           }
-                          ref.read(navigationProvider.notifier).setRoute(AppRoute.goalBuckets);
+                          ref
+                              .read(navigationProvider.notifier)
+                              .setRoute(AppRoute.goalBuckets);
                         },
                       ),
                       _SidebarSubItem(
                         icon: LucideIcons.folderLock,
                         label: 'Document Vault',
-                        isSelected: navigation.currentRoute == AppRoute.documents,
+                        isSelected:
+                            navigation.currentRoute == AppRoute.documents,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
                           if (scaffold != null && scaffold.isDrawerOpen) {
                             Navigator.pop(context);
                           }
-                          ref.read(navigationProvider.notifier).setRoute(AppRoute.documents);
+                          ref
+                              .read(navigationProvider.notifier)
+                              .setRoute(AppRoute.documents);
                         },
                       ),
                       _SidebarSubItem(
                         icon: LucideIcons.badgePercent,
                         label: 'Subscriptions',
-                        isSelected: navigation.currentRoute == AppRoute.subscriptionVault,
+                        isSelected:
+                            navigation.currentRoute ==
+                            AppRoute.subscriptionVault,
                         onTap: () {
                           final scaffold = Scaffold.maybeOf(context);
                           if (scaffold != null && scaffold.isDrawerOpen) {
                             Navigator.pop(context);
                           }
-                          ref.read(navigationProvider.notifier).setRoute(AppRoute.subscriptionVault);
+                          ref
+                              .read(navigationProvider.notifier)
+                              .setRoute(AppRoute.subscriptionVault);
                         },
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     child: InkWell(
                       onTap: () {
                         final scaffold = Scaffold.maybeOf(context);
                         if (scaffold != null && scaffold.isDrawerOpen) {
                           Navigator.pop(context);
                         }
-                        ref.read(navigationProvider.notifier).setRoute(AppRoute.auditHub);
+                        ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.auditHub);
                       },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFACC15),
                           borderRadius: BorderRadius.circular(10),
@@ -422,7 +443,11 @@ class Sidebar extends ConsumerWidget {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(LucideIcons.briefcase, color: Color(0xFF0F172A), size: 16),
+                            Icon(
+                              LucideIcons.briefcase,
+                              color: Color(0xFF0F172A),
+                              size: 16,
+                            ),
                             SizedBox(width: 8),
                             Text(
                               'FIN-PRO',
@@ -447,7 +472,9 @@ class Sidebar extends ConsumerWidget {
                       if (scaffold != null && scaffold.isDrawerOpen) {
                         Navigator.pop(context);
                       }
-                      ref.read(navigationProvider.notifier).setRoute(AppRoute.referral);
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.referral);
                     },
                   ),
                 ] else if (navigation.currentModule == AppModule.payments) ...[
@@ -496,7 +523,8 @@ class Sidebar extends ConsumerWidget {
                   _SidebarItem(
                     icon: LucideIcons.flame,
                     label: 'Cash Flow Heatmap',
-                    isSelected: navigation.currentRoute == AppRoute.cashFlowHeatmap,
+                    isSelected:
+                        navigation.currentRoute == AppRoute.cashFlowHeatmap,
                     onTap: () {
                       final scaffold = Scaffold.maybeOf(context);
                       if (scaffold != null && scaffold.isDrawerOpen) {
@@ -668,7 +696,6 @@ class Sidebar extends ConsumerWidget {
                       AppRoute.accounting,
                       AppRoute.purchaseDetails,
                       AppRoute.staffDetails,
-                      AppRoute.taxDeductions,
                       AppRoute.expenses,
                       AppRoute.gst,
                       AppRoute.fintech,
@@ -725,7 +752,8 @@ class Sidebar extends ConsumerWidget {
                   _buildMacOSItem(
                     icon: LucideIcons.gitPullRequest,
                     label: 'Split & Collect',
-                    isSelected: navigation.currentRoute == AppRoute.splitCollect,
+                    isSelected:
+                        navigation.currentRoute == AppRoute.splitCollect,
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.splitCollect),
@@ -761,7 +789,8 @@ class Sidebar extends ConsumerWidget {
                       _buildMacOSSubItem(
                         icon: LucideIcons.target,
                         label: 'Goal Buckets',
-                        isSelected: navigation.currentRoute == AppRoute.goalBuckets,
+                        isSelected:
+                            navigation.currentRoute == AppRoute.goalBuckets,
                         onTap: () => ref
                             .read(navigationProvider.notifier)
                             .setRoute(AppRoute.goalBuckets),
@@ -769,7 +798,8 @@ class Sidebar extends ConsumerWidget {
                       _buildMacOSSubItem(
                         icon: LucideIcons.folderLock,
                         label: 'Document Vault',
-                        isSelected: navigation.currentRoute == AppRoute.documents,
+                        isSelected:
+                            navigation.currentRoute == AppRoute.documents,
                         onTap: () => ref
                             .read(navigationProvider.notifier)
                             .setRoute(AppRoute.documents),
@@ -777,7 +807,9 @@ class Sidebar extends ConsumerWidget {
                       _buildMacOSSubItem(
                         icon: LucideIcons.badgePercent,
                         label: 'Subscriptions',
-                        isSelected: navigation.currentRoute == AppRoute.subscriptionVault,
+                        isSelected:
+                            navigation.currentRoute ==
+                            AppRoute.subscriptionVault,
                         onTap: () => ref
                             .read(navigationProvider.notifier)
                             .setRoute(AppRoute.subscriptionVault),
@@ -787,14 +819,20 @@ class Sidebar extends ConsumerWidget {
 
                   // FIN-PRO Yellow Badge Button
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
                     child: InkWell(
                       onTap: () => ref
                           .read(navigationProvider.notifier)
                           .setRoute(AppRoute.auditHub),
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFACC15),
                           borderRadius: BorderRadius.circular(10),
@@ -809,7 +847,11 @@ class Sidebar extends ConsumerWidget {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(LucideIcons.briefcase, color: Color(0xFF0F172A), size: 16),
+                            Icon(
+                              LucideIcons.briefcase,
+                              color: Color(0xFF0F172A),
+                              size: 16,
+                            ),
                             SizedBox(width: 8),
                             Text(
                               'FIN-PRO',
@@ -853,7 +895,8 @@ class Sidebar extends ConsumerWidget {
                   _buildMacOSItem(
                     icon: LucideIcons.flame,
                     label: 'Cash Flow Heatmap',
-                    isSelected: navigation.currentRoute == AppRoute.cashFlowHeatmap,
+                    isSelected:
+                        navigation.currentRoute == AppRoute.cashFlowHeatmap,
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.cashFlowHeatmap),
@@ -1773,9 +1816,7 @@ class _SidebarBottomFixed extends ConsumerWidget {
               (kIsWeb && MediaQuery.of(context).size.width >= 1100);
           if (isDesktopStorage) {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const MacOsStoragePage(),
-              ),
+              MaterialPageRoute(builder: (context) => const MacOsStoragePage()),
             );
           } else {
             final scaffold = Scaffold.maybeOf(context);
