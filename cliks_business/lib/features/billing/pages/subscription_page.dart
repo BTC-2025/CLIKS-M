@@ -404,29 +404,56 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
         Center(
           child: Container(
-            width: isMobile ? double.infinity : 400,
+            width: isMobile ? double.infinity : 480,
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.25), width: 1.5),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  color: const Color(0xFF059669).withValues(alpha: 0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.02),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFECFDF5),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(LucideIcons.shieldCheck, color: Color(0xFF059669), size: 22),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFECFDF5), Color(0xFFD1FAE5)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFA7F3D0)),
+                      ),
+                      child: const Icon(LucideIcons.shieldCheck, color: Color(0xFF059669), size: 22),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF047857),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        '1-YEAR VALIDITY',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 0.6),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -440,7 +467,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 ),
                 const SizedBox(height: 20),
 
-                Row(
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 4,
                   children: [
                     Text(
                       '₹499',
@@ -451,15 +481,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                    const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: const Color(0xFFECFDF5),
                         borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: const Color(0xFFA7F3D0)),
                       ),
                       child: const Text(
-                        'Save ₹250',
+                        'Save ₹250 (50% OFF)',
                         style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
                       ),
                     ),
@@ -482,7 +512,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '(Equivalent to ₹21 per month)',
+                  '(Equivalent to ~₹21 per month)',
                   style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
                 ),
 
@@ -510,14 +540,420 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   "WHAT'S INCLUDED",
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.grey.shade500, letterSpacing: 0.5),
                 ),
-                const SizedBox(height: 12),
-                _buildIncludedFeatureRow('No Ads'),
-                _buildIncludedFeatureRow('Validity: Up to 12 Days'),
+                const SizedBox(height: 14),
+                ..._basicPlanFeatures.map((f) => _buildIncludedFeatureRow(f.checklistText, checkColor: const Color(0xFF059669), useBadge: true)),
               ],
             ),
           ),
         ),
+
+        const SizedBox(height: 36),
+
+        // Comparison Section: Free User vs. Basic Plan (₹249/yr)
+        _buildBasicPlanComparisonSection(isMobile),
       ],
+    );
+  }
+
+  Widget _buildBasicPlanComparisonSection(bool isMobile) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFECFDF5), Color(0xFFD1FAE5)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFA7F3D0)),
+                ),
+                child: const Icon(LucideIcons.sparkles, color: Color(0xFF059669), size: 20),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        const Text(
+                          'Free vs. Basic Plan Feature Comparison',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.darkText,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFECFDF5),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: const Color(0xFFA7F3D0)),
+                          ),
+                          child: const Text(
+                            '10 CORE QUOTAS',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF047857),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      'Understand what restrictions a General (Free) User faces versus what unlocks immediately for ₹249/year (~₹21/month).',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!isMobile) ...[
+                const SizedBox(width: 16),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFEF2F2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFFFECACA)),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(LucideIcons.x, size: 12, color: Color(0xFFDC2626)),
+                          SizedBox(width: 6),
+                          Text(
+                            'Restricted (Free)',
+                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Color(0xFFB91C1C)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFECFDF5),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFFA7F3D0)),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(LucideIcons.check, size: 12, color: Color(0xFF16A34A)),
+                          SizedBox(width: 6),
+                          Text(
+                            'Unlocked (Basic ₹249)',
+                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Color(0xFF047857)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Scrollable Comparison Table
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final tableWidth = constraints.maxWidth < 920 ? 920.0 : constraints.maxWidth;
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: tableWidth,
+                  child: Column(
+                    children: [
+                      // Header Row
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF8FAFC),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                        ),
+                        child: Row(
+                          children: [
+                            // Column 1 Header
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: [
+                                  Icon(LucideIcons.layers, size: 13, color: Colors.grey.shade600),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      'FEATURE CATEGORY',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.grey.shade600,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+
+                            // Column 2 Header (Wrong Mark)
+                            Expanded(
+                              flex: 4,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFFEE2E2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(LucideIcons.x, size: 11, color: Color(0xFFDC2626)),
+                                  ),
+                                  const SizedBox(width: 7),
+                                  const Expanded(
+                                    child: Text(
+                                      'GENERAL USER (FREE — RESTRICTED)',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xFF991B1B),
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+
+                            // Column 3 Header (Tick Mark)
+                            Expanded(
+                              flex: 5,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFDCFCE7),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(LucideIcons.check, size: 11, color: Color(0xFF16A34A)),
+                                  ),
+                                  const SizedBox(width: 7),
+                                  const Expanded(
+                                    child: Text(
+                                      'SUBSCRIBED USER (BASIC PLAN — ₹249/YR)',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xFF166534),
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Rows
+                      ..._basicPlanFeatures.map((item) {
+                        final isEven = item.id % 2 == 0;
+                        return Column(
+                          children: [
+                            _buildComparisonRow(item, isEven: isEven),
+                            if (item.id != _basicPlanFeatures.length)
+                              Divider(height: 1, color: Colors.grey.shade100),
+                          ],
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComparisonRow(_BasicPlanFeatureItem item, {bool isEven = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: isEven ? const Color(0xFFFBFDFB) : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Column 1: Category with tailored Icon
+          Expanded(
+            flex: 3,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 30,
+                  height: 30,
+                  margin: const EdgeInsets.only(right: 10, top: 1),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                  ),
+                  child: Icon(item.icon, size: 15, color: const Color(0xFF334155)),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.category,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.darkText,
+                          height: 1.3,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Quota #${item.id}',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 14),
+
+          // Column 2: Free User (Wrong Mark ✕)
+          Expanded(
+            flex: 4,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 22,
+                  height: 22,
+                  margin: const EdgeInsets.only(top: 2, right: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF2F2),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: const Color(0xFFFECACA), width: 1.2),
+                  ),
+                  child: const Icon(LucideIcons.x, size: 12, color: Color(0xFFDC2626)),
+                ),
+                Expanded(
+                  child: Text(
+                    item.freeTier,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Colors.grey.shade700,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 14),
+
+          // Column 3: Subscribed User (Tick Mark ✓)
+          Expanded(
+            flex: 5,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0FDF4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFFDCFCE7), width: 1),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 22,
+                    height: 22,
+                    margin: const EdgeInsets.only(top: 1, right: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDCFCE7),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFF86EFAC), width: 1.2),
+                    ),
+                    child: const Icon(LucideIcons.check, size: 12, color: Color(0xFF15803D)),
+                  ),
+                  Expanded(
+                    child: Text(
+                      item.basicTier,
+                      style: const TextStyle(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF065F46),
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1080,18 +1516,34 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     );
   }
 
-  Widget _buildIncludedFeatureRow(String featureText) {
+  Widget _buildIncludedFeatureRow(String featureText, {Color? checkColor, bool useBadge = false}) {
+    final cleanText = featureText.startsWith('✓ ') ? featureText.substring(2).trim() : featureText;
+    final color = checkColor ?? const Color(0xFF2563EB);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(LucideIcons.check, size: 14, color: Color(0xFF2563EB)),
-          const SizedBox(width: 8),
+          Padding(
+            padding: const EdgeInsets.only(top: 1.0),
+            child: useBadge
+                ? Container(
+                    width: 18,
+                    height: 18,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(LucideIcons.check, size: 11, color: color),
+                  )
+                : Icon(LucideIcons.check, size: 14, color: color),
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              featureText,
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade700, height: 1.3),
+              cleanText,
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade700, height: 1.35),
             ),
           ),
         ],
@@ -1124,12 +1576,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             children: [
               Icon(LucideIcons.history, color: Color(0xFF059669), size: 20),
               SizedBox(width: 8),
-              Text(
-                'Billing & Statement History',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.darkText,
+              Expanded(
+                child: Text(
+                  'Billing & Statement History',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkText,
+                  ),
                 ),
               ),
             ],
@@ -1284,3 +1738,105 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     );
   }
 }
+
+class _BasicPlanFeatureItem {
+  final int id;
+  final String category;
+  final IconData icon;
+  final String freeTier;
+  final String basicTier;
+  final String checklistText;
+
+  const _BasicPlanFeatureItem({
+    required this.id,
+    required this.category,
+    required this.icon,
+    required this.freeTier,
+    required this.basicTier,
+    required this.checklistText,
+  });
+}
+
+const List<_BasicPlanFeatureItem> _basicPlanFeatures = [
+  _BasicPlanFeatureItem(
+    id: 1,
+    category: 'Ad-Free & Clean Bill Branding',
+    icon: LucideIcons.sparkles,
+    freeTier: 'Contains in-app ads & "Powered by CLIKS" watermark on bills',
+    basicTier: '100% Ad-Free Experience + Clean, unbranded customer bills (365-Day Validity)',
+    checklistText: '100% Ad-Free Workspace & Watermark-Free Bills (1-Yr Validity)',
+  ),
+  _BasicPlanFeatureItem(
+    id: 2,
+    category: 'Simple Billing & History Archive',
+    icon: LucideIcons.receipt,
+    freeTier: 'Max 15 Bills/mo (3 items/bill) & only 7-Day Billing History',
+    basicTier: 'Up to 500 Bills/mo (50 items/bill) + Full 365-Day Billing Records Archive',
+    checklistText: 'Generate up to 500 Simple Bills/mo + 365-Day Billing Archive',
+  ),
+  _BasicPlanFeatureItem(
+    id: 3,
+    category: 'Personal Finance, Tax & Wallets',
+    icon: LucideIcons.wallet,
+    freeTier: 'Max 30 Entries/mo, 1 Wallet & Tax & Deductions Locked',
+    basicTier: 'Up to 1,000 Entries/mo, 5 Wallets, 15 Financial Goals & Full Tax/TDS Breakdown',
+    checklistText: '1,000 Finance Entries/mo, 5 Wallets & Full Tax/TDS Calculator',
+  ),
+  _BasicPlanFeatureItem(
+    id: 4,
+    category: 'Investment Portfolio & Net Worth',
+    icon: LucideIcons.trendingUp,
+    freeTier: 'Track 1 Asset Only (Monthly P/L % hidden)',
+    basicTier: 'Track up to 25 Investment Assets with live Monthly P/L & Net Worth Analytics',
+    checklistText: 'Track up to 25 Investment Portfolio Assets with Live Monthly P/L',
+  ),
+  _BasicPlanFeatureItem(
+    id: 5,
+    category: 'Stock (Inventory Suite)',
+    icon: LucideIcons.boxes,
+    freeTier: 'Capped at 25 Active Stock Items (No report export)',
+    basicTier: 'Up to 2,500 Active Stock Items + Low-Stock Alerts & 1-Click Report Export',
+    checklistText: 'Inventory Suite: Up to 2,500 Active Stock Items & Low-Stock Alerts',
+  ),
+  _BasicPlanFeatureItem(
+    id: 6,
+    category: 'Splitwise & Collect Group Bills',
+    icon: LucideIcons.users,
+    freeTier: 'Max 2 Active Split Tickets (Up to 3 members per ticket)',
+    basicTier: 'Up to 30 Active Splitwise Group Tickets (Up to 15 Members per group trip/bill)',
+    checklistText: 'Up to 30 Active Splitwise Group Tickets (15 Members per Group)',
+  ),
+  _BasicPlanFeatureItem(
+    id: 7,
+    category: 'People Network & Friendly Loans',
+    icon: LucideIcons.userCheck,
+    freeTier: 'Max 10 Contacts & Repayment Alerts Locked',
+    basicTier: 'Up to 500 People Contacts, Net Exposure tracking & Automated Repayment Alerts',
+    checklistText: '500 People Network Contacts + Automated Loan Repayment Alerts',
+  ),
+  _BasicPlanFeatureItem(
+    id: 8,
+    category: 'Connected Shops & Loyalty Rewards',
+    icon: LucideIcons.store,
+    freeTier: 'Link 1 External Store Only (Points redemption locked)',
+    basicTier: 'Link up to 10 Connected Shops + Unlock Loyalty Points Calculator & Cashback Value',
+    checklistText: 'Link 10 Connected Stores + Full Loyalty Points & Cashback Calculator',
+  ),
+  _BasicPlanFeatureItem(
+    id: 9,
+    category: 'Employer HR Sync & Salary Vault',
+    icon: LucideIcons.building2,
+    freeTier: 'View current month salary only (Payslip PDF downloads locked)',
+    basicTier: '3-Year Verified Salary History + 1-Click Payslip PDF, EPF & Tax Doc Downloads',
+    checklistText: 'Direct Employer HR Sync + 3-Year Verified Payslip & Tax PDF Vault',
+  ),
+  _BasicPlanFeatureItem(
+    id: 10,
+    category: 'Payments Engine, Wallets & Exports',
+    icon: LucideIcons.arrowRightLeft,
+    freeTier: 'Max 1 Purpose Wallet, 3 Schedules & No CSV/PDF Downloads',
+    basicTier: '10 Purpose Wallets, 50 Scheduled Transfers, Bank/Cash Registers & Full CSV/PDF Exports',
+    checklistText: '10 Purpose Wallets, 50 Scheduled Payments & Unlimited CSV/PDF Exports',
+  ),
+];
+
