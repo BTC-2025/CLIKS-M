@@ -39,7 +39,7 @@ void main() {
 
         // Verify core workspace tiers are present
         expect(find.text('Upgrade Workspace Tier'), findsOneWidget);
-        expect(find.text('Tier 1 (Starter)'), findsWidgets);
+        expect(find.text('FIN-PRO Standard'), findsWidgets);
       } finally {
         debugDefaultTargetPlatformOverride = null;
       }
@@ -118,7 +118,7 @@ void main() {
 
         // Confirmation dialog should appear for Tier 2 (Standard)
         expect(find.textContaining('Upgrade Plan -'), findsOneWidget);
-        final confirmButton = find.widgetWithText(ElevatedButton, 'Confirm Upgrade to Tier 2 (Standard)');
+        final confirmButton = find.widgetWithText(ElevatedButton, 'Confirm Upgrade to FIN-PRO Premium');
         expect(confirmButton, findsOneWidget);
 
         // Confirm upgrade
@@ -127,7 +127,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 300));
 
         // Dialog is dismissed and snackbar appears directly with success
-        expect(find.text('Successfully upgraded to Tier 2 (Standard)!'), findsOneWidget);
+        expect(find.text('Successfully upgraded to FIN-PRO Premium!'), findsOneWidget);
       } finally {
         debugDefaultTargetPlatformOverride = null;
       }

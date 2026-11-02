@@ -1,0 +1,5 @@
+analyzer:
+  exclude:
+    - exported_modules/**
+    - "**/build/**"
+    - "**/.dart_tool/**"

@@ -184,7 +184,7 @@ class MobileProductCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            '$cartQuantity',
+                            '$cartQuantity in cart',
                             style: GoogleFonts.inter(
                               fontSize: 7.5,
                               fontWeight: FontWeight.bold,
@@ -217,8 +217,8 @@ class MobileProductCard extends StatelessWidget {
                         isOutOfStock
                             ? 'Out of Stock'
                             : (cartQuantity > 0
-                                ? '$availableStock left'
-                                : '$availableStock in stock'),
+                                ? '$availableStock ${product.unit} left'
+                                : '$availableStock ${product.unit} in stock'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(

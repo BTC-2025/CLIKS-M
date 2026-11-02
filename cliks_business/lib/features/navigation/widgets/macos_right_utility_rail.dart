@@ -42,27 +42,7 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
   }
 
   void _syncBetaLogoAssets() {
-    try {
-      const src = '/Users/btrldev004/.gemini/antigravity-ide/brain/45c0b19c-2750-462e-9d32-e9090898243f/.user_uploaded/media_1790664964179.png';
-      final srcFile = File(src);
-      if (srcFile.existsSync()) {
-        final bytes = srcFile.readAsBytesSync();
-        final targets = [
-          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
-          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/beta_logo.png',
-          '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/images/beta_logo.png',
-        ];
-        for (final t in targets) {
-          try {
-            final f = File(t);
-            f.parent.createSync(recursive: true);
-            f.writeAsBytesSync(bytes);
-          } catch (_) {}
-        }
-      }
-    } catch (_) {}
+    // Cross-platform asset loading without hardcoded paths
   }
 
   @override
@@ -96,35 +76,14 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
     BoxFit fit = BoxFit.contain,
     Color? color,
   }) {
-    final candidatePaths = [
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/images/$fileName',
-    ];
-
-    for (final p in candidatePaths) {
-      final f = File(p);
-      if (f.existsSync()) {
-        return Image.file(
-          f,
-          width: width,
-          height: height,
-          fit: fit,
-          color: color,
-          colorBlendMode: color != null ? BlendMode.srcIn : null,
-          filterQuality: FilterQuality.high,
-          errorBuilder: (ctx, err, stack) => _buildFallbackAsset(fileName, width, height, fit, color),
-        );
-      }
-    }
-
-    return _buildFallbackAsset(fileName, width, height, fit, color);
+    final clean = fileName.trim().replaceAll(' ', '');
+    return _buildFallbackAsset(clean, width, height, fit, color);
   }
 
   Widget _buildFallbackAsset(String fileName, double? width, double? height, BoxFit fit, Color? color) {
+    final clean = fileName.trim().replaceAll(' ', '');
     return Image.asset(
-      'assets/icons_images_reference /$fileName',
+      'assets/icons_images_reference/$clean',
       width: width,
       height: height,
       fit: fit,
@@ -133,7 +92,7 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
       colorBlendMode: color != null ? BlendMode.srcIn : null,
       errorBuilder: (ctx, err, stack) {
         return Image.asset(
-          'assets/$fileName',
+          'assets/$clean',
           width: width,
           height: height,
           fit: fit,
@@ -142,7 +101,7 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
           colorBlendMode: color != null ? BlendMode.srcIn : null,
           errorBuilder: (ctx2, err2, stack2) {
             return Image.asset(
-              'assets/images/$fileName',
+              'assets/images/$clean',
               width: width,
               height: height,
               fit: fit,
@@ -302,28 +261,7 @@ class _MacOSRightUtilityRailState extends ConsumerState<MacOSRightUtilityRail> {
   // --- Vertical Rail Button Builders ---
 
   Widget _buildBetaImageHD({double? width, double? height, BoxFit fit = BoxFit.contain}) {
-    final candidatePaths = [
-      '/Users/btrldev004/.gemini/antigravity-ide/brain/45c0b19c-2750-462e-9d32-e9090898243f/.user_uploaded/media_1790664964179.png',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /beta_logo .jpg',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/beta_logo.png',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/beta_logo.png',
-    ];
-
-    for (final p in candidatePaths) {
-      final f = File(p);
-      if (f.existsSync()) {
-        return Image.file(
-          f,
-          width: width,
-          height: height,
-          fit: fit,
-          filterQuality: FilterQuality.high,
-          errorBuilder: (ctx, err, stack) => _buildFallbackAsset('beta_logo .jpg', width, height, fit, null),
-        );
-      }
-    }
-
-    return _buildFallbackAsset('beta_logo .jpg', width, height, fit, null);
+    return _buildFallbackAsset('beta_logo.png', width, height, fit, null);
   }
 
   Widget _buildBetaLogoHD({

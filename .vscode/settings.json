@@ -1,0 +1,6 @@
+{
+  "dart.analysisExcludedFolders": [
+    "exported_modules"
+  ]
+}
+

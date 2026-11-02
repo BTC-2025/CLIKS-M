@@ -2236,7 +2236,13 @@ class _PayrollPageState extends ConsumerState<PayrollPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('EPF Contribution:', style: TextStyle(fontSize: 11.5, color: Color(0xFF64748B))),
+                    const Expanded(
+                      child: Text(
+                        'EPF Contribution:',
+                        style: TextStyle(fontSize: 11.5, color: Color(0xFF64748B)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Flexible(
                       child: Text(
@@ -2795,7 +2801,14 @@ class _PayslipDetailsDialog extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Color(0xFF475569)),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 8),
           Text(
             value,
             style: TextStyle(

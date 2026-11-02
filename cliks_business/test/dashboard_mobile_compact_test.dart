@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:clicks_business_frontend/features/dashboard/dashboard_page.dart';
-import 'package:clicks_business_frontend/widgets/bento/bento_hero_banner.dart';
-import 'package:clicks_business_frontend/widgets/bento/macos_bento_hero.dart';
-import 'package:clicks_business_frontend/widgets/bento/bento_card.dart';
 import 'package:clicks_business_frontend/core/navigation/navigation_provider.dart';
 import 'package:clicks_business_frontend/features/dashboard/widgets/configure_quick_actions_dialog.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 void main() {
   group('Dashboard Page - Compact Mobile vs Desktop Layout Verification', () {
@@ -35,44 +31,25 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(DashboardPage), findsOneWidget);
-      expect(tester.takeException(), isNull);
+      final err = tester.takeException();
+      if (err != null) {
+        print('NARROW TEST ERROR: ');
+      }
+      expect(err, isNull);
 
-      // Verify Compact Hero Banner is present
-      expect(find.byType(BentoHeroBanner), findsOneWidget);
-      expect(find.text('BUSINESS OVERVIEW'), findsOneWidget);
+      // Verify Books Console Header & Quick Action Center
+      expect(find.text('Books Console'), findsOneWidget);
+      expect(find.text('Quick Action Center'), findsOneWidget);
 
-      // Verify Compact Metric Cards
-      expect(find.text('Total Sales Revenue'), findsOneWidget);
-      expect(find.text('Total Purchases'), findsOneWidget);
-      expect(find.text('Total Expenses'), findsOneWidget);
+      // Verify Live Stat Cards
+      expect(find.text('Asset Inventory Value'), findsOneWidget);
+      expect(find.text('Segregated Funds Total'), findsOneWidget);
+      expect(find.text('Split Shared Costs'), findsOneWidget);
 
-      // Verify Left & Right Shortcut Buttons are present
-      expect(find.byIcon(LucideIcons.arrowUpRight), findsWidgets);
-      expect(find.text('+ Manage'), findsOneWidget);
-
-      // Scroll progressively until chart is visible
-      await tester.scrollUntilVisible(
-        find.text('Sales Performance Analytics'),
-        150.0,
-        scrollable: find.byType(Scrollable),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Sales Performance Analytics'), findsOneWidget);
-      expect(find.text('12M'), findsOneWidget);
-
-      // Scroll progressively until bottom cards are visible
-      await tester.scrollUntilVisible(
-        find.text('Top Performing Products'),
-        150.0,
-        scrollable: find.byType(Scrollable),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Expense Distribution'), findsOneWidget);
-      expect(find.text('Top Performing Products'), findsOneWidget);
-      expect(find.text('Record Expense'), findsOneWidget);
-      expect(find.text('Register Product'), findsOneWidget);
+      // Verify Modules Suite & Fund Segregation
+      expect(find.text('Modules & Management Suite'), findsOneWidget);
+      expect(find.text('Fund Segregation'), findsWidgets);
+      expect(find.text('Personalized Bills & Splits'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -103,16 +80,16 @@ void main() {
       expect(tester.takeException(), isNull);
 
       // Verify elements render cleanly on narrow viewport
-      expect(find.text('BUSINESS OVERVIEW'), findsOneWidget);
+      expect(find.text('Books Console'), findsOneWidget);
       expect(find.text('Quick Action Center'), findsOneWidget);
-      expect(find.text('+ Manage'), findsOneWidget);
+      expect(find.text('Fund Segregation'), findsWidgets);
 
-      // Scroll through full page to verify zero overflow across whole sliver view
-      await tester.drag(find.byType(CustomScrollView), const Offset(0, -300));
+      // Scroll through full page to verify zero overflow across whole scroll view
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -300));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
 
-      await tester.drag(find.byType(CustomScrollView), const Offset(0, -400));
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     });
@@ -143,12 +120,12 @@ void main() {
       expect(find.byType(DashboardPage), findsOneWidget);
       expect(tester.takeException(), isNull);
 
-      // iOS renders the same compact Bento Hero Banner & shortcut layout as Android
-      expect(find.byType(BentoHeroBanner), findsOneWidget);
-      expect(find.text('+ Manage'), findsOneWidget);
-      expect(find.text('Total Sales Revenue'), findsOneWidget);
-      expect(find.text('Total Purchases'), findsOneWidget);
-      expect(find.text('Total Expenses'), findsOneWidget);
+      // iOS renders the same compact Books Console & shortcut layout as Android
+      expect(find.text('Books Console'), findsOneWidget);
+      expect(find.text('Quick Action Center'), findsOneWidget);
+      expect(find.text('Asset Inventory Value'), findsOneWidget);
+      expect(find.text('Modules & Management Suite'), findsOneWidget);
+      expect(find.text('Fund Segregation'), findsWidgets);
     });
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -177,19 +154,13 @@ void main() {
       expect(find.byType(DashboardPage), findsOneWidget);
       expect(tester.takeException(), isNull);
 
-      // Verify macOS Soft UI Hero is used on macOS desktop
-      expect(find.byType(MacOsSoftUiBentoHero), findsOneWidget);
-      expect(find.text('Monitor your enterprise performance and operations.'), findsOneWidget);
-
-      // Verify macOS desktop uses the original '+ Manage Shortcuts' dashed button
-      expect(find.text('+ Manage Shortcuts'), findsOneWidget);
-      expect(find.text('+ Manage'), findsNothing);
-
-      // Verify desktop BentoActionCards are used
-      expect(find.byType(BentoActionCard), findsWidgets);
-
-      // Verify desktop BentoMetricCards are used
-      expect(find.byType(BentoMetricCard), findsWidgets);
+      // Verify Books Console desktop layout
+      expect(find.text('Books Console'), findsOneWidget);
+      expect(find.text('Monitor your personal finance & operational intelligence suite.'), findsOneWidget);
+      expect(find.text('Quick Action Center'), findsOneWidget);
+      expect(find.text('Asset Inventory Value'), findsOneWidget);
+      expect(find.text('Modules & Management Suite'), findsOneWidget);
+      expect(find.text('Fund Segregation'), findsWidgets);
     });
 
     // ═════════════════════════════════════════════════════════════════════════

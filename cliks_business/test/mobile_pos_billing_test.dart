@@ -9,6 +9,8 @@ import 'package:clicks_business_frontend/features/billing/widgets/mobile_pos/mob
 import 'package:clicks_business_frontend/features/billing/widgets/mobile_pos/mobile_stock_adjustment_sheet.dart';
 import 'package:clicks_business_frontend/features/billing/widgets/mobile_pos/mobile_edit_product_sheet.dart';
 import 'package:clicks_business_frontend/features/billing/widgets/mobile_pos/mobile_cart_sheet.dart';
+import 'package:clicks_business_frontend/features/billing/providers/mobile_pos_header_provider.dart';
+import 'package:clicks_business_frontend/features/billing/widgets/mobile_pos/mobile_pos_header.dart';
 
 Widget _buildTestApp({
   required Widget child,
@@ -17,7 +19,29 @@ Widget _buildTestApp({
   return ProviderScope(
     child: MaterialApp(
       theme: ThemeData(platform: platform, useMaterial3: true),
-      home: child,
+      home: Scaffold(
+        body: Column(
+          children: [
+            if (child is MobilePosBillingPage)
+              Consumer(
+                builder: (context, ref, _) {
+                  final state = ref.watch(mobilePosHeaderProvider);
+                  return MobilePosHeader(
+                    selectedWarehouse: state.selectedWarehouse,
+                    warehouses: state.warehouses,
+                    onWarehouseSelected: (w) {},
+                    onOpenHistory: state.onOpenHistory ?? () {},
+                    onOpenHeldCarts: state.onOpenHeldCarts ?? () {},
+                    heldCartsCount: state.heldCartsCount,
+                    onQuickAddProduct: state.onQuickAddProduct ?? () {},
+                    onBack: () {},
+                  );
+                },
+              ),
+            Expanded(child: child),
+          ],
+        ),
+      ),
     ),
   );
 }
@@ -180,10 +204,18 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Tap General category chip (first InkWell with text 'General')
-      final generalChip = find.widgetWithText(InkWell, 'General').first;
-      await tester.tap(generalChip);
-      await tester.pumpAndSettle();
+      // Tap General category dropdown / chip
+      final categoryFilter = find.byTooltip('Filter Category');
+      if (categoryFilter.evaluate().isNotEmpty) {
+        await tester.tap(categoryFilter);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('General').last);
+        await tester.pumpAndSettle();
+      } else {
+        final generalChip = find.widgetWithText(InkWell, 'General').first;
+        await tester.tap(generalChip);
+        await tester.pumpAndSettle();
+      }
 
       expect(
         find.widgetWithText(MobileProductCard, 'a new digit product'),

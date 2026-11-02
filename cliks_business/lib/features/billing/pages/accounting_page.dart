@@ -1329,6 +1329,18 @@ class _AccountingPageState extends ConsumerState<AccountingPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 24),
+        child: FloatingActionButton.extended(
+          heroTag: 'mobile_accounting_record_fab',
+          onPressed: () => _showAddSourceDialog(title: 'Record Entry', isIncome: true, isFixed: true),
+          backgroundColor: const Color(0xFF166534),
+          foregroundColor: Colors.white,
+          elevation: 4,
+          icon: const Icon(LucideIcons.plus, size: 18),
+          label: const Text('Record Entry', style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile ? 16 : (isDesktop ? 28 : 20),

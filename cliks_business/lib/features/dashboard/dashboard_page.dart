@@ -416,8 +416,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   // 5. Fund Segregation Card
   // ---------------------------------------------------------------------------
   Widget _buildFundSegregationCard(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(isMobile ? 14 : 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -478,27 +479,29 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   child: const Icon(LucideIcons.wallet, color: Color(0xFF6366F1), size: 20),
                 ),
                 const SizedBox(width: 12),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'ACTIVE WALLETS',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ACTIVE WALLETS',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      '0 Established',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.darkText,
+                      SizedBox(height: 2),
+                      Text(
+                        '0 Established',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.darkText,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -521,27 +524,29 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   child: const Icon(LucideIcons.plus, color: Color(0xFF059669), size: 20),
                 ),
                 const SizedBox(width: 12),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'TARGET SAVED',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'TARGET SAVED',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      '₹0',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.darkText,
+                      SizedBox(height: 2),
+                      Text(
+                        '₹0',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.darkText,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -555,8 +560,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   // 6. Personalized Bills & Splits Dark Green Banner Card
   // ---------------------------------------------------------------------------
   Widget _buildPersonalizedBillsBanner(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(isMobile ? 16 : 24),
       decoration: BoxDecoration(
         color: const Color(0xFF033B26),
         borderRadius: BorderRadius.circular(20),
@@ -604,12 +610,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'View Joint Expenses',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      'View Joint Expenses',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(width: 8),
@@ -764,12 +774,15 @@ class _ActionPillTile extends StatelessWidget {
               child: Icon(icon, color: iconColor, size: 16),
             ),
             const SizedBox(width: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: AppColors.darkText,
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.darkText,
+                ),
               ),
             ),
           ],

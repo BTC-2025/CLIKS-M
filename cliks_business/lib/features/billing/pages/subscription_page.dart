@@ -11,6 +11,33 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
+  void _showUpgradeDialog(BuildContext context, String planTitle) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Upgrade Plan - $planTitle'),
+        content: Text('Confirm upgrading your workspace to $planTitle without external payment gateway.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Successfully upgraded to $planTitle!'),
+                ),
+              );
+            },
+            child: Text('Confirm Upgrade to $planTitle'),
+          ),
+        ],
+      ),
+    );
+  }
+
   int _selectedTierIndex = 1; // 0: BASIC PLAN, 1: FIN-PRO (AUDITOR), 2: BETA CLUB
 
   @override
@@ -106,9 +133,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Annual Billing Cycle',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                Flexible(
+                  child: Text(
+                    'Annual Billing Cycle',
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 const SizedBox(width: 6),
                 Container(
@@ -210,7 +240,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   Widget _buildActivePlanBanner(bool isMobile) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(isMobile ? 16 : 24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF1E3A8A), Color(0xFF2563EB)],
@@ -496,19 +526,23 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   ],
                 ),
                 const SizedBox(height: 4),
-                const Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Text(
-                      '₹249',
-                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.darkText),
-                    ),
-                    Text(
-                      ' / year',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
-                    ),
-                  ],
+                const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '₹249',
+                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.darkText),
+                      ),
+                      Text(
+                        ' / year',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -520,11 +554,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
+                  child: ElevatedButton(
+                    onPressed: () => _showUpgradeDialog(context, 'Basic Plan'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
                       foregroundColor: const Color(0xFF0F5132),
                       padding: const EdgeInsets.symmetric(vertical: 12),
+                      elevation: 0,
                       side: const BorderSide(color: Color(0xFF0F5132), width: 1.5),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
@@ -1427,45 +1463,53 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           ),
           const SizedBox(height: 20),
 
-          Row(
-            children: [
-              Text(
-                oldPrice,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade400,
-                  decoration: TextDecoration.lineThrough,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: [
+                Text(
+                  oldPrice,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade400,
+                    decoration: TextDecoration.lineThrough,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(6),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFECFDF5),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    saveLabel,
+                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
+                  ),
                 ),
-                child: Text(
-                  saveLabel,
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 4),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                price,
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.darkText),
-              ),
-              const Text(
-                ' / year',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
-              ),
-            ],
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  price,
+                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.darkText),
+                ),
+                const Text(
+                  ' / year',
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 2),
           Text(
@@ -1477,28 +1521,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
           SizedBox(
             width: double.infinity,
-            child: isSolidButton
-                ? ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0F172A),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Text(buttonText, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                  )
-                : OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: buttonColor ?? const Color(0xFF2563EB),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: buttonColor ?? const Color(0xFF2563EB), width: 1.5),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Text(buttonText, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                  ),
+            child: ElevatedButton(
+              onPressed: buttonText == 'Upgrade Plan'
+                  ? () => _showUpgradeDialog(context, title)
+                  : () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isSolidButton
+                    ? const Color(0xFF0F172A)
+                    : Colors.white,
+                foregroundColor: isSolidButton
+                    ? Colors.white
+                    : (buttonColor ?? const Color(0xFF2563EB)),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                elevation: 0,
+                side: isSolidButton
+                    ? null
+                    : BorderSide(color: buttonColor ?? const Color(0xFF2563EB), width: 1.5),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              child: Text(buttonText, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+            ),
           ),
 
           const SizedBox(height: 24),

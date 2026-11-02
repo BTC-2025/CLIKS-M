@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6447,29 +6446,8 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
     BoxFit fit = BoxFit.contain,
     Color? color,
   }) {
-    // Direct file loader on macOS desktop for instant hot-reload without bundle delay
-    final candidatePaths = [
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference /$fileName',
-      '/Users/btrldev004/Desktop/CLIKS-M/cliks_business/assets/icons_images_reference/$fileName',
-    ];
-
-    for (final p in candidatePaths) {
-      final f = File(p);
-      if (f.existsSync()) {
-        return Image.file(
-          f,
-          width: width,
-          height: height,
-          fit: fit,
-          color: color,
-          colorBlendMode: color != null ? BlendMode.srcIn : null,
-          errorBuilder: (ctx, err, stack) =>
-              _buildFallbackAsset(fileName, width, height, fit, color),
-        );
-      }
-    }
-
-    return _buildFallbackAsset(fileName, width, height, fit, color);
+    final clean = fileName.trim().replaceAll(' ', '');
+    return _buildFallbackAsset(clean, width, height, fit, color);
   }
 
   Widget _buildFallbackAsset(
@@ -6479,8 +6457,9 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
     BoxFit fit,
     Color? color,
   ) {
+    final clean = fileName.trim().replaceAll(' ', '');
     return Image.asset(
-      'assets/icons_images_reference /$fileName',
+      'assets/icons_images_reference/',
       width: width,
       height: height,
       fit: fit,
@@ -6488,12 +6467,22 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
       colorBlendMode: color != null ? BlendMode.srcIn : null,
       errorBuilder: (ctx, err, stack) {
         return Image.asset(
-          'assets/icons_images_reference/$fileName',
+          'assets/',
           width: width,
           height: height,
           fit: fit,
           color: color,
           colorBlendMode: color != null ? BlendMode.srcIn : null,
+          errorBuilder: (ctx2, err2, stack2) {
+            return Image.asset(
+              'assets/images/',
+              width: width,
+              height: height,
+              fit: fit,
+              color: color,
+              colorBlendMode: color != null ? BlendMode.srcIn : null,
+            );
+          },
         );
       },
     );
@@ -6529,15 +6518,7 @@ class _MacOsStoragePageState extends ConsumerState<MacOsStoragePage> {
               alignment: Alignment.center,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
-                child: Image.file(
-                  File(
-                    '/Users/btrldev004/.gemini/antigravity-ide/brain/45c0b19c-2750-462e-9d32-e9090898243f/.user_uploaded/media_1790664964179.png',
-                  ),
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.high,
-                  errorBuilder: (c, e, s) =>
-                      _buildLogoImage('beta_logo .jpg', fit: BoxFit.contain),
-                ),
+                child: _buildLogoImage('beta_logo.png', fit: BoxFit.contain),
               ),
             ),
             const SizedBox(width: 8),

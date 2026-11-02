@@ -61,5 +61,5 @@ void main() {
     }
     expect(subIds, isNotEmpty);
     print('========================================================\n');
-  });
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

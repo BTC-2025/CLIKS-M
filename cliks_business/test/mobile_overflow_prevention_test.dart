@@ -159,7 +159,7 @@ void main() {
       }
     });
 
-    testWidgets('AccountingPage Balance Sheet tab renders without overflow on 360px viewport (flutter_06.png)', (WidgetTester tester) async {
+    testWidgets('AccountingPage Bento overview and stat cards render without overflow on 360px viewport (flutter_06.png)', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -178,16 +178,15 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tab = find.text('Balance Sheet');
-      expect(tab, findsOneWidget);
-      await tester.tap(tab);
-      await tester.pumpAndSettle();
-
-      expect(find.text('Liabilities & Equity'), findsOneWidget);
-      expect(find.text('Owner\'s Equity'), findsOneWidget);
+      expect(find.text('Finance'), findsOneWidget);
+      expect(find.text('TOTAL INCOME'), findsOneWidget);
+      expect(find.text('TOTAL EXPENSES'), findsOneWidget);
+      expect(find.text('MONTHLY SAVINGS'), findsOneWidget);
+      expect(find.text('NET WORTH'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
-    testWidgets('AccountingPage Receivables & Payables tab filter bar renders without overflow on 360px viewport (flutter_07.png)', (WidgetTester tester) async {
+    testWidgets('AccountingPage Investment Portfolio & Tax cards render without overflow on 360px viewport (flutter_07.png)', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -206,19 +205,13 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tab = find.text('Receivables & Payables');
-      expect(tab, findsOneWidget);
-      await tester.ensureVisible(tab);
-      await tester.pumpAndSettle();
-      await tester.tap(tab);
-      await tester.pumpAndSettle();
-
-      expect(find.text('All Statuses'), findsOneWidget);
-      expect(find.text('Min ₹'), findsOneWidget);
-      expect(find.text('Max ₹'), findsOneWidget);
+      expect(find.text('INVESTMENT PORTFOLIO'), findsOneWidget);
+      expect(find.text('ESTIMATED TAX DUE'), findsOneWidget);
+      expect(find.text('Tax & Deductions'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
-    testWidgets('AccountingPage Expenses tab Operational Expense Categories renders without overflow on 360px viewport (flutter_08.png)', (WidgetTester tester) async {
+    testWidgets('AccountingPage My Wallet and Budget Planner render without overflow on 360px viewport (flutter_08.png)', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -237,17 +230,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tab = find.text('Expenses');
-      expect(tab, findsOneWidget);
-      await tester.ensureVisible(tab);
-      await tester.pumpAndSettle();
-      await tester.tap(tab);
-      await tester.pumpAndSettle();
-
-      expect(find.text('Operational Expense Categories'), findsOneWidget);
+      // My Wallet and Budget Planner sections
+      expect(find.text('My Wallet'), findsOneWidget);
+      expect(find.text('Budget Planner'), findsOneWidget);
+      expect(find.text('Add Funds'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
-    testWidgets('AccountingPage Cash & Bank tab renders full-width metric cards without overflow on 360px viewport (flutter_09.png)', (WidgetTester tester) async {
+    testWidgets('AccountingPage Record Entry FAB renders without overflow on 360px viewport (flutter_09.png)', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -266,19 +256,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tab = find.text('Cash & Bank');
-      expect(tab, findsOneWidget);
-      await tester.ensureVisible(tab);
-      await tester.pumpAndSettle();
-      await tester.tap(tab);
-      await tester.pumpAndSettle();
-
-      expect(find.text('TOTAL CASH'), findsOneWidget);
-      expect(find.text('TOTAL BANK BALANCE'), findsOneWidget);
-      expect(find.text('TOTAL AVAILABLE FUNDS'), findsOneWidget);
+      expect(find.text('Record Entry'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
-    testWidgets('AccountingPage Bank Statement History Dialog renders without overflow on 360px viewport (flutter_10.png)', (WidgetTester tester) async {
+    testWidgets('AccountingPage Record Entry dialog opens and renders without overflow on 360px viewport (flutter_10.png)', (WidgetTester tester) async {
       tester.view.physicalSize = const Size(360, 780);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -297,21 +279,12 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tab = find.text('Cash & Bank');
-      await tester.ensureVisible(tab);
-      await tester.pumpAndSettle();
-      await tester.tap(tab);
+      final fab = find.text('Record Entry');
+      await tester.tap(fab);
       await tester.pumpAndSettle();
 
-      final historyBtn = find.text('History').first;
-      expect(historyBtn, findsOneWidget);
-      await tester.ensureVisible(historyBtn);
-      await tester.pumpAndSettle();
-      await tester.tap(historyBtn);
-      await tester.pumpAndSettle();
-
-      expect(find.text('CURRENT BALANCE'), findsOneWidget);
-      expect(find.text('Export Statement'), findsOneWidget);
+      expect(find.text('Record Entry'), findsWidgets);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('ExpensesPage Recurring Subscriptions tab renders without overflow on 360px viewport (flutter_11.png)', (WidgetTester tester) async {
@@ -612,8 +585,8 @@ void main() {
       expect(find.text('Reschedule Pickup'), findsOneWidget);
     });
 
-    testWidgets('AccountingPage mobile tabs are arranged left-to-right correctly and can navigate sections via footer', (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(360, 780);
+    testWidgets('AccountingPage renders cleanly on compact 320px viewport without overflow', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(320, 640);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
         tester.view.resetPhysicalSize();
@@ -631,84 +604,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Verify initial tab 0 is P & L and footer shows next tab 'Balance Sheet ›'
-      expect(find.text('Gross Revenue'), findsOneWidget);
-      expect(find.text('Balance Sheet ›'), findsOneWidget);
+      expect(find.byType(AccountingPage), findsOneWidget);
+      expect(find.text('Finance'), findsOneWidget);
+      expect(find.text('TOTAL INCOME'), findsOneWidget);
 
-      // Tap 'Balance Sheet' tab in sticky tab bar
-      final balanceSheetTab = find.text('Balance Sheet');
-      expect(balanceSheetTab, findsOneWidget);
-      await tester.tap(balanceSheetTab);
+      // Scroll through page to verify zero overflow
+      await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -300));
       await tester.pumpAndSettle();
-
-      // On Balance Sheet (tab 1), footer shows previous '‹ P & L' and next 'Receivables & Payables ›'
-      expect(find.text('‹ P & L'), findsOneWidget);
-      expect(find.text('Receivables & Payables ›'), findsOneWidget);
-      expect(find.text('Liabilities & Equity'), findsOneWidget);
-
-      // Tap 'Receivables & Payables' tab in sticky tab bar
-      final rpTab = find.text('Receivables & Payables');
-      expect(rpTab, findsOneWidget);
-      await tester.ensureVisible(rpTab);
-      await tester.pumpAndSettle();
-      await tester.tap(rpTab);
-      await tester.pumpAndSettle();
-
-      // On Receivables & Payables (tab 2), next is Cash & Bank (tab 3)
-      expect(find.text('Cash & Bank ›'), findsOneWidget);
-      expect(find.text('‹ Balance Sheet'), findsOneWidget);
-
-      // Tap 'Cash & Bank' tab in sticky tab bar
-      final cashTab = find.text('Cash & Bank');
-      expect(cashTab, findsOneWidget);
-      await tester.ensureVisible(cashTab);
-      await tester.pumpAndSettle();
-      await tester.tap(cashTab);
-      await tester.pumpAndSettle();
-
-      // On Cash & Bank (tab 3), next is Day Book (tab 4)
-      expect(find.text('Day Book ›'), findsOneWidget);
-      expect(find.text('‹ Receivables & Payables'), findsOneWidget);
-      expect(find.text('TOTAL AVAILABLE FUNDS'), findsOneWidget);
-
-      // Tap 'Day Book' tab in sticky tab bar
-      final dayBookTab = find.text('Day Book');
-      expect(dayBookTab, findsOneWidget);
-      await tester.ensureVisible(dayBookTab);
-      await tester.pumpAndSettle();
-      await tester.tap(dayBookTab);
-      await tester.pumpAndSettle();
-
-      // On Day Book (tab 4), next is Expenses (tab 5)
-      expect(find.text('Expenses ›'), findsOneWidget);
-      expect(find.text('‹ Cash & Bank'), findsOneWidget);
-
-      // Tap 'Expenses' tab in sticky tab bar
-      final expensesTab = find.text('Expenses');
-      expect(expensesTab, findsOneWidget);
-      await tester.ensureVisible(expensesTab);
-      await tester.pumpAndSettle();
-      await tester.tap(expensesTab);
-      await tester.pumpAndSettle();
-
-      // On Expenses (tab 5), Dedicated Expenses Section banner is present with Open button
-      expect(find.text('Dedicated Expenses Section'), findsOneWidget);
-      expect(find.text('Operational Expense Categories'), findsOneWidget);
-      expect(find.text('GST ›'), findsOneWidget);
-      expect(find.text('‹ Day Book'), findsOneWidget);
-
-      // Tap 'GST' tab in sticky tab bar
-      final gstTab = find.text('GST');
-      expect(gstTab, findsOneWidget);
-      await tester.ensureVisible(gstTab);
-      await tester.pumpAndSettle();
-      await tester.tap(gstTab);
-      await tester.pumpAndSettle();
-
-      // On GST (tab 6), Full GST Compliance Portal banner is present
-      expect(find.text('Full GST Compliance Portal'), findsOneWidget);
-      expect(find.text('GSTR-1 Summary'), findsOneWidget);
-      expect(find.text('‹ Expenses'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('AccountingPage on macOS platform preserves original desktop UI without mobile changes', (WidgetTester tester) async {

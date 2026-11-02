@@ -343,9 +343,9 @@ void main() {
       await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -600));
       await tester.pumpAndSettle();
 
-      // Verify Tab 0: Employee Profiles Table and drag horizontally
-      expect(find.text('EMPLOYEE PROFILE'), findsOneWidget);
-      expect(find.text('PERSONAL INFO'), findsOneWidget);
+      // Verify Tab 0: Employee Profiles on mobile
+      expect(find.text('Employee Profiles'), findsWidgets);
+      expect(find.text('Ravi Kumar'), findsWidgets);
       final horizontalScrolls = find.byType(SingleChildScrollView);
       if (horizontalScrolls.evaluate().length > 2) {
         // Drag table horizontally to reveal RESIDENTIAL ADDRESS and ACTION
@@ -452,10 +452,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(StaffPage), findsOneWidget);
 
-      // Verify Tab 0: Employee Profiles Table and scroll down to it
+      // Verify Tab 0: Employee Profiles on mobile
       await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -600));
       await tester.pumpAndSettle();
-      expect(find.text('EMPLOYEE PROFILE'), findsOneWidget);
+      expect(find.text('Employee Profiles'), findsWidgets);
+      expect(find.text('Ravi Kumar'), findsWidgets);
 
       // Drag table horizontally
       final horizontalScrolls = find.byType(SingleChildScrollView);
@@ -932,14 +933,15 @@ void main() {
       expect(find.byType(SubscriptionPage), findsOneWidget);
 
       // Check Fin-Pro tab
-      final finProTab = find.text('FIN-PRO');
+      final finProTab = find.text('FIN-PRO (AUDITOR)');
       expect(finProTab, findsOneWidget);
+      await tester.ensureVisible(finProTab);
       await tester.tap(finProTab);
       await tester.pump(const Duration(milliseconds: 300));
-      expect(find.text('Upgrade Fin-Pro Practice Tier'), findsOneWidget);
+      expect(find.text('Upgrade Workspace Tier'), findsOneWidget);
 
-      // Check Partner Launch Desk tab
-      final partnerTab = find.text('PARTNER LAUNCH DESK');
+      // Check Partner Launch Desk / Beta Club tab
+      final partnerTab = find.text('BETA CLUB');
       expect(partnerTab, findsOneWidget);
       await tester.ensureVisible(partnerTab);
       await tester.tap(partnerTab);
@@ -952,14 +954,14 @@ void main() {
       await tester.ensureVisible(productsTab);
       await tester.tap(productsTab);
       await tester.pump(const Duration(milliseconds: 300));
-      expect(find.text('Upgrade Workspace Tier'), findsOneWidget);
+      expect(find.text('Beta Innovator'), findsOneWidget);
 
       // Return to Investor Club
       final investorTab = find.text('Investor Club');
       await tester.ensureVisible(investorTab);
       await tester.tap(investorTab);
       await tester.pump(const Duration(milliseconds: 300));
-      expect(find.text('Upgrade Investor Club Tier'), findsOneWidget);
+      expect(find.text('Beta Angel'), findsOneWidget);
     });
 
     testWidgets('SubscriptionPage renders on 320px ultra-compact mobile without overflow', (tester) async {
@@ -983,8 +985,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.byType(SubscriptionPage), findsOneWidget);
 
-      // Switch to Partner Launch Desk
-      final partnerTab = find.text('PARTNER LAUNCH DESK');
+      // Switch to Beta Club
+      final partnerTab = find.text('BETA CLUB');
       expect(partnerTab, findsOneWidget);
       await tester.ensureVisible(partnerTab);
       await tester.tap(partnerTab);
@@ -997,7 +999,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
 
       // Switch to Fin-Pro
-      final finProTab = find.text('FIN-PRO');
+      final finProTab = find.text('FIN-PRO (AUDITOR)');
       await tester.ensureVisible(finProTab);
       await tester.tap(finProTab);
       await tester.pump(const Duration(milliseconds: 300));
@@ -1360,7 +1362,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ExpensesPage), findsOneWidget);
-      expect(find.text('Expenses & Budget Control'), findsOneWidget);
+      expect(find.text('EXPENSES & COST AUDIT'), findsOneWidget);
 
       // Verify tabs can be switched on mobile without errors or overflows
       final tabs = [

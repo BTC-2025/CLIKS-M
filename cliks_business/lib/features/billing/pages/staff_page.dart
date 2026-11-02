@@ -2073,7 +2073,7 @@ class _StaffPageState extends ConsumerState<StaffPage> {
           ),
         ],
       ),
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 20),
+      padding: EdgeInsets.fromLTRB(isMobile ? 12 : 24, isMobile ? 14 : 24, isMobile ? 12 : 24, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -2990,7 +2990,14 @@ class _StaffPageState extends ConsumerState<StaffPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('KPI Targets Score', style: TextStyle(fontSize: 11, color: Color(0xFF64748B))),
+                  const Expanded(
+                    child: Text(
+                      'KPI Targets Score',
+                      style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                   Text(
                     '${emp.kpiScore}%',
                     style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF16A34A)),

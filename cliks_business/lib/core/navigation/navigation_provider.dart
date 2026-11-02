@@ -121,6 +121,7 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
   void setRoute(AppRoute route) {
     AppModule module = state.currentModule;
     switch (route) {
+      case AppRoute.wallet:
       case AppRoute.transaction:
       case AppRoute.segregation:
       case AppRoute.planner:
