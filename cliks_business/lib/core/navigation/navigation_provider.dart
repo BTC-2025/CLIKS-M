@@ -17,6 +17,7 @@ enum AppRoute {
   people,
   accounting, 
   expenses,
+  income,
   gst,
   sales,
   customers,

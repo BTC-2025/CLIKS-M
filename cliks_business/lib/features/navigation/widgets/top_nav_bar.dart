@@ -277,6 +277,8 @@ class _TopNavBarState extends ConsumerState<TopNavBar> {
                                     return 'Subscriptions';
                                   case AppRoute.accounting:
                                     return 'Accounting';
+                                  case AppRoute.income:
+                                    return 'Income';
                                   case AppRoute.expenses:
                                     return 'Expenses';
                                   case AppRoute.gst:

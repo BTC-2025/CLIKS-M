@@ -8,6 +8,7 @@ import '../../../core/navigation/navigation_provider.dart';
 import '../pages/macos_storage_page.dart';
 import '../pages/mobile_storage_page.dart';
 import 'sidebar_utility_rail.dart';
+import '../../../widgets/modals/add_transaction_modal.dart';
 
 class Sidebar extends ConsumerWidget {
   const Sidebar({super.key});
@@ -113,6 +114,118 @@ class Sidebar extends ConsumerWidget {
 
                 // Scrollable rest of the list (now inline in main ListView)
                 if (navigation.currentModule == AppModule.books) ...[
+                  // + Add Income & + Add Expense Action Buttons
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              final scaffold = Scaffold.maybeOf(context);
+                              if (scaffold != null && scaffold.isDrawerOpen) {
+                                Navigator.pop(context);
+                              }
+                              showDialog(
+                                context: context,
+                                builder: (_) => const AddTransactionModal(
+                                  initialType: TransactionType.income,
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF10B981),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        LucideIcons.plus,
+                                        size: 13,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Add Income',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              final scaffold = Scaffold.maybeOf(context);
+                              if (scaffold != null && scaffold.isDrawerOpen) {
+                                Navigator.pop(context);
+                              }
+                              showDialog(
+                                context: context,
+                                builder: (_) => const AddTransactionModal(
+                                  initialType: TransactionType.expense,
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEF4444),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        LucideIcons.plus,
+                                        size: 13,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Add Expense',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   // Dashboard Button
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -279,6 +392,20 @@ class Sidebar extends ConsumerWidget {
                         },
                       ),
                     ],
+                  ),
+                  _SidebarItem(
+                    icon: LucideIcons.banknote,
+                    label: 'Income',
+                    isSelected: navigation.currentRoute == AppRoute.income,
+                    onTap: () {
+                      final scaffold = Scaffold.maybeOf(context);
+                      if (scaffold != null && scaffold.isDrawerOpen) {
+                        Navigator.pop(context);
+                      }
+                      ref
+                          .read(navigationProvider.notifier)
+                          .setRoute(AppRoute.income);
+                    },
                   ),
                   _SidebarItem(
                     icon: LucideIcons.trendingUp,
@@ -615,6 +742,113 @@ class Sidebar extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 12),
               children: [
                 if (navigation.currentModule == AppModule.books) ...[
+                  // 0. + Add Income & + Add Expense Action Buttons
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => const AddTransactionModal(
+                                  initialType: TransactionType.income,
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF10B981),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        LucideIcons.plus,
+                                        size: 13,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Add Income',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 11.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => const AddTransactionModal(
+                                  initialType: TransactionType.expense,
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEF4444),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        LucideIcons.plus,
+                                        size: 13,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Add Expense',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 11.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
                   // 1. Dashboard Pill
                   _buildMacOSItem(
                     icon: LucideIcons.layoutGrid,
@@ -627,98 +861,79 @@ class Sidebar extends ConsumerWidget {
                     },
                   ),
 
-                  const SizedBox(height: 6),
-
-                  // 2. + Generate Invoice Button
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 4,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.newInvoice);
-                      },
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF166534),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                LucideIcons.plus,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Generate Invoice',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                  // 2. Accounts
+                  _buildMacOSItem(
+                    icon: LucideIcons.calculator,
+                    label: 'Accounts',
+                    isSelected: navigation.currentRoute == AppRoute.accounting,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.accounting),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
-                    ),
-                    child: Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: const Color(0xFF166534).withValues(alpha: 0.18),
-                    ),
+                  // 3. Purchases
+                  _buildMacOSItem(
+                    icon: LucideIcons.shoppingCart,
+                    label: 'Purchases',
+                    isSelected:
+                        navigation.currentRoute == AppRoute.purchaseDetails ||
+                        navigation.currentRoute == AppRoute.purchase,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.purchaseDetails),
                   ),
 
-                  const SizedBox(height: 2),
+                  // 4. Income
+                  _buildMacOSItem(
+                    icon: LucideIcons.banknote,
+                    label: 'Income',
+                    isSelected: navigation.currentRoute == AppRoute.income,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.income),
+                  ),
 
-                  // 3. Expandable Groups & Navigation Items (Books)
+                  // 5. Expense
+                  _buildMacOSItem(
+                    icon: LucideIcons.trendingDown,
+                    label: 'Expense',
+                    isSelected: navigation.currentRoute == AppRoute.expenses,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.expenses),
+                  ),
+
+                  // 6. Split & Collect
+                  _buildMacOSItem(
+                    icon: LucideIcons.gitPullRequest,
+                    label: 'Split & Collect',
+                    isSelected:
+                        navigation.currentRoute == AppRoute.splitCollect,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.splitCollect),
+                  ),
+
+                  // 7. Report
+                  _buildMacOSItem(
+                    icon: LucideIcons.barChart3,
+                    label: 'Report',
+                    isSelected: navigation.currentRoute == AppRoute.reports,
+                    onTap: () => ref
+                        .read(navigationProvider.notifier)
+                        .setRoute(AppRoute.reports),
+                  ),
+
+                  // 8. Expandable Groups & Navigation Items (Books)
                   _buildMacOSExpandable(
                     icon: LucideIcons.wallet,
                     label: 'Finance',
                     isInitiallyExpanded: [
-                      AppRoute.accounting,
-                      AppRoute.purchaseDetails,
                       AppRoute.staffDetails,
-                      AppRoute.expenses,
                       AppRoute.gst,
                       AppRoute.fintech,
                     ].contains(navigation.currentRoute),
                     children: [
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.calculator,
-                        label: 'Accounting',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.accounting,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.accounting),
-                      ),
-                      _buildMacOSSubItem(
-                        icon: LucideIcons.shoppingCart,
-                        label: 'Purchase details',
-                        isSelected:
-                            navigation.currentRoute == AppRoute.purchaseDetails,
-                        onTap: () => ref
-                            .read(navigationProvider.notifier)
-                            .setRoute(AppRoute.purchaseDetails),
-                      ),
                       _buildMacOSSubItem(
                         icon: LucideIcons.user,
                         label: 'Staff details',
@@ -727,6 +942,15 @@ class Sidebar extends ConsumerWidget {
                         onTap: () => ref
                             .read(navigationProvider.notifier)
                             .setRoute(AppRoute.staffDetails),
+                      ),
+                      _buildMacOSSubItem(
+                        icon: LucideIcons.fileText,
+                        label: 'GST Compliance',
+                        isSelected:
+                            navigation.currentRoute == AppRoute.gst,
+                        onTap: () => ref
+                            .read(navigationProvider.notifier)
+                            .setRoute(AppRoute.gst),
                       ),
                     ],
                   ),
@@ -747,25 +971,6 @@ class Sidebar extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationProvider.notifier)
                         .setRoute(AppRoute.people),
-                  ),
-
-                  _buildMacOSItem(
-                    icon: LucideIcons.gitPullRequest,
-                    label: 'Split & Collect',
-                    isSelected:
-                        navigation.currentRoute == AppRoute.splitCollect,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.splitCollect),
-                  ),
-
-                  _buildMacOSItem(
-                    icon: LucideIcons.barChart3,
-                    label: 'Report',
-                    isSelected: navigation.currentRoute == AppRoute.reports,
-                    onTap: () => ref
-                        .read(navigationProvider.notifier)
-                        .setRoute(AppRoute.reports),
                   ),
 
                   _buildMacOSExpandable(

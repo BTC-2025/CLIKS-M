@@ -68,6 +68,7 @@ import '../billing/pages/new_sales_order_page.dart';
 import '../../widgets/modals/purchase_modals.dart';
 import '../../widgets/modals/inventory_modals.dart';
 import '../people/widgets/schedule_reminder_panel.dart';
+import '../billing/pages/income_page.dart';
 
 class ShellLayout extends ConsumerStatefulWidget {
   const ShellLayout({super.key});
@@ -858,6 +859,8 @@ class _ShellLayoutState extends ConsumerState<ShellLayout> {
         return NewInvoicePage(key: ValueKey(route));
       case AppRoute.accounting:
         return AccountingPage(key: ValueKey(route));
+      case AppRoute.income:
+        return const IncomePage();
       case AppRoute.expenses:
         return ExpensesPage(key: ValueKey(route));
       case AppRoute.gst:

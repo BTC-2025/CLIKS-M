@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/navigation/navigation_provider.dart';
+import 'widgets/configure_quick_actions_dialog.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -25,57 +26,57 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 850;
-    final paddingVal = isMobile ? 16.0 : 24.0;
+    final paddingVal = isMobile ? 16.0 : 28.0;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7F6),
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(paddingVal, 20, paddingVal, paddingVal),
+        padding: EdgeInsets.fromLTRB(paddingVal, 24, paddingVal, paddingVal),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Header Section (Books Console + Search Bar)
+            // 1. Header Section (Books Console + Search Bar + Customise)
             _buildHeader(isMobile).animate().fadeIn(duration: 400.ms),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // 2. Quick Action Center Section (Right after search bar)
-            _buildQuickActionCenter(isMobile).animate().fadeIn(duration: 450.ms, delay: 100.ms),
+            // 2. Live Stat Cards (6 Live metrics matching image 1)
+            _buildLiveStatCards(screenWidth).animate().fadeIn(duration: 450.ms, delay: 100.ms),
             const SizedBox(height: 28),
 
-            // 3. Live Stat Cards Row
-            _buildLiveStatCards(isMobile).animate().fadeIn(duration: 500.ms, delay: 150.ms),
+            // 3. Quick Action Center Section
+            _buildQuickActionCenter(isMobile).animate().fadeIn(duration: 500.ms, delay: 150.ms),
             const SizedBox(height: 28),
 
             // 4. Main Body: Modules & Management Suite (Left) + Fund Segregation / Bills Banner (Right)
             if (isMobile) ...[
-              _buildModulesSuite(context).animate().fadeIn(duration: 500.ms, delay: 200.ms),
+              _buildModulesSuite(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 200.ms),
               const SizedBox(height: 24),
-              _buildFundSegregationCard(context).animate().fadeIn(duration: 500.ms, delay: 250.ms),
+              _buildFundSegregationCard(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 250.ms),
               const SizedBox(height: 24),
-              _buildPersonalizedBillsBanner(context).animate().fadeIn(duration: 500.ms, delay: 300.ms),
+              _buildPersonalizedBillsBanner(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 300.ms),
             ] else ...[
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 6,
-                    child: _buildModulesSuite(context).animate().fadeIn(duration: 500.ms, delay: 200.ms),
+                    child: _buildModulesSuite(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 200.ms),
                   ),
                   const SizedBox(width: 24),
                   Expanded(
                     flex: 4,
                     child: Column(
                       children: [
-                        _buildFundSegregationCard(context).animate().fadeIn(duration: 500.ms, delay: 250.ms),
+                        _buildFundSegregationCard(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 250.ms),
                         const SizedBox(height: 24),
-                        _buildPersonalizedBillsBanner(context).animate().fadeIn(duration: 500.ms, delay: 300.ms),
+                        _buildPersonalizedBillsBanner(context, isMobile).animate().fadeIn(duration: 500.ms, delay: 300.ms),
                       ],
                     ),
                   ),
                 ],
               ),
             ],
-            SizedBox(height: isMobile ? 110 : 32),
+            SizedBox(height: isMobile ? 110 : 36),
           ],
         ),
       ),
@@ -101,7 +102,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.darkText,
+                      color: Color(0xFF064E3B),
                       letterSpacing: -0.5,
                     ),
                   ),
@@ -110,7 +111,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     'Monitor your personal finance & operational intelligence suite.',
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.secondaryText.withValues(alpha: 0.9),
+                      color: Colors.grey.shade600,
                     ),
                   ),
                 ],
@@ -132,25 +133,30 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.grey.shade200),
+                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Color(0xFF0F5132)),
+                      borderSide: const BorderSide(color: Color(0xFF064E3B)),
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(LucideIcons.sliders, size: 16),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const ConfigureQuickActionsDialog(),
+                  );
+                },
+                icon: const Icon(LucideIcons.settings, size: 16),
                 label: const Text('Customise', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0F5132),
+                  backgroundColor: const Color(0xFF064E3B),
                   foregroundColor: Colors.white,
                   elevation: 0,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
               ),
@@ -176,11 +182,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                       fillColor: Colors.white,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.grey.shade200),
+                        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Color(0xFF0F5132)),
+                        borderSide: const BorderSide(color: Color(0xFF064E3B)),
                       ),
                     ),
                   ),
@@ -188,11 +194,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ),
               const SizedBox(width: 10),
               ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(LucideIcons.sliders, size: 16),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const ConfigureQuickActionsDialog(),
+                  );
+                },
+                icon: const Icon(LucideIcons.settings, size: 16),
                 label: const Text('Customise', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0F5132),
+                  backgroundColor: const Color(0xFF064E3B),
                   foregroundColor: Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -207,63 +218,129 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   }
 
   // ---------------------------------------------------------------------------
-  // 2. Top 3 Live Stat Cards Row
+  // 2. Live Stat Cards Grid (6 Stat Cards)
   // ---------------------------------------------------------------------------
-  Widget _buildLiveStatCards(bool isMobile) {
-    const c1 = _LiveStatCard(
-      width: double.infinity,
-      icon: LucideIcons.box,
-      title: 'Asset Inventory Value',
+  Widget _buildLiveStatCards(double screenWidth) {
+    final isCompact = screenWidth < 500;
+    final c1 = _LiveStatCard(
+      icon: LucideIcons.arrowUpRight,
+      iconColor: const Color(0xFF059669),
+      iconBgColor: const Color(0xFFECFDF5),
+      title: 'Total Income',
       value: '₹0',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.accounting),
     );
-    const c2 = _LiveStatCard(
-      width: double.infinity,
+    final c2 = _LiveStatCard(
+      icon: LucideIcons.arrowDownLeft,
+      iconColor: const Color(0xFFEF4444),
+      iconBgColor: const Color(0xFFFEF2F2),
+      title: 'Total Expenses',
+      value: '₹0',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.expenses),
+    );
+    final c3 = _LiveStatCard(
       icon: LucideIcons.wallet,
-      title: 'Segregated Funds Total',
+      iconColor: const Color(0xFF059669),
+      iconBgColor: const Color(0xFFECFDF5),
+      title: 'Net Balance',
       value: '₹0',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.accounting),
     );
-    const c3 = _LiveStatCard(
-      width: double.infinity,
-      icon: LucideIcons.split,
-      title: 'Split Shared Costs',
+    final c4 = _LiveStatCard(
+      icon: LucideIcons.piggyBank,
+      iconColor: const Color(0xFF3B82F6),
+      iconBgColor: const Color(0xFFEFF6FF),
+      title: 'Active Investments',
       value: '₹0',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.fintech),
+    );
+    final c5 = _LiveStatCard(
+      icon: LucideIcons.users,
+      iconColor: const Color(0xFFF97316),
+      iconBgColor: const Color(0xFFFFF7ED),
+      title: 'Active People',
+      value: '1 Contacts',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.people),
+    );
+    final c6 = _LiveStatCard(
+      icon: LucideIcons.layers,
+      iconColor: const Color(0xFF0D9488),
+      iconBgColor: const Color(0xFFF0FDFA),
+      title: 'Active Segregations',
+      value: '0 Records',
+      isCompact: isCompact,
+      onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.segregation),
     );
 
-    if (isMobile) {
-      return const Column(
+    // Desktop view (>= 1000px): 4 columns in Row 1, 2 cards in Row 2 with empty slots
+    if (screenWidth >= 1000) {
+      return Column(
         children: [
           Row(
             children: [
               Expanded(child: c1),
-              SizedBox(width: 12),
+              const SizedBox(width: 16),
               Expanded(child: c2),
+              const SizedBox(width: 16),
+              Expanded(child: c3),
+              const SizedBox(width: 16),
+              Expanded(child: c4),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: c3),
-              SizedBox(width: 12),
-              Expanded(child: SizedBox()),
+              Expanded(child: c5),
+              const SizedBox(width: 16),
+              Expanded(child: c6),
+              const SizedBox(width: 16),
+              const Expanded(child: SizedBox()),
+              const SizedBox(width: 16),
+              const Expanded(child: SizedBox()),
             ],
           ),
         ],
       );
     }
 
-    return const Row(
+    // Tablet or Mobile (< 1000px): 2 columns grid
+    final spacing = isCompact ? 10.0 : 14.0;
+    return Column(
       children: [
-        Expanded(child: c1),
-        SizedBox(width: 16),
-        Expanded(child: c2),
-        SizedBox(width: 16),
-        Expanded(child: c3),
+        Row(
+          children: [
+            Expanded(child: c1),
+            SizedBox(width: spacing),
+            Expanded(child: c2),
+          ],
+        ),
+        SizedBox(height: spacing),
+        Row(
+          children: [
+            Expanded(child: c3),
+            SizedBox(width: spacing),
+            Expanded(child: c4),
+          ],
+        ),
+        SizedBox(height: spacing),
+        Row(
+          children: [
+            Expanded(child: c5),
+            SizedBox(width: spacing),
+            Expanded(child: c6),
+          ],
+        ),
       ],
     );
   }
 
   // ---------------------------------------------------------------------------
-  // 3. Quick Action Center
+  // 3. Quick Action Center Section
   // ---------------------------------------------------------------------------
   Widget _buildQuickActionCenter(bool isMobile) {
     return Column(
@@ -283,8 +360,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           runSpacing: 12,
           children: [
             _ActionPillTile(
-              label: 'Inventory & Assets',
-              icon: LucideIcons.box,
+              label: 'Stock Management',
+              icon: LucideIcons.layoutGrid,
               iconBgColor: const Color(0xFFECFDF5),
               iconColor: const Color(0xFF059669),
               onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.stock),
@@ -292,65 +369,77 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             _ActionPillTile(
               label: 'People Hub',
               icon: LucideIcons.users,
-              iconBgColor: const Color(0xFFEEF2FF),
-              iconColor: const Color(0xFF4F46E5),
+              iconBgColor: const Color(0xFFEFF6FF),
+              iconColor: const Color(0xFF3B82F6),
               onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.people),
             ),
             _ActionPillTile(
-              label: 'Add Expense',
-              icon: LucideIcons.trendingUp,
+              label: 'Expenses',
+              icon: LucideIcons.fileText,
               iconBgColor: const Color(0xFFFEF2F2),
-              iconColor: const Color(0xFFDC2626),
-              onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.recordExpense),
+              iconColor: const Color(0xFFEF4444),
+              onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.expenses),
             ),
             _ActionPillTile(
-              label: 'Budgets & Limits',
-              icon: LucideIcons.activity,
-              iconBgColor: const Color(0xFFFDF2F8),
-              iconColor: const Color(0xFFDB2777),
+              label: 'Budgets & Planning',
+              icon: LucideIcons.pieChart,
+              iconBgColor: const Color(0xFFFFFBEB),
+              iconColor: const Color(0xFFD97706),
               onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.accounting),
             ),
             _ActionPillTile(
-              label: 'Split Costs',
-              icon: LucideIcons.split,
-              iconBgColor: const Color(0xFFFFF7ED),
-              iconColor: const Color(0xFFD97706),
+              label: 'Split & Collect',
+              icon: LucideIcons.wallet,
+              iconBgColor: const Color(0xFFF0FDFA),
+              iconColor: const Color(0xFF0D9488),
               onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.splitCollect),
             ),
             _ActionPillTile(
-              label: 'Fund Segregation',
-              icon: LucideIcons.target,
-              iconBgColor: const Color(0xFFECFDF5),
-              iconColor: const Color(0xFF10B981),
+              label: 'Segregation',
+              icon: LucideIcons.layers,
+              iconBgColor: const Color(0xFFF5F3FF),
+              iconColor: const Color(0xFF8B5CF6),
               onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.segregation),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
+        const SizedBox(height: 14),
+        CustomPaint(
+          painter: const _DashedRRectPainter(
+            color: Color(0xFFCBD5E1),
+            strokeWidth: 1.2,
+            dash: 4.0,
+            gap: 3.5,
+            radius: 20.0,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => const ConfigureQuickActionsDialog(),
+                );
+              },
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(LucideIcons.plus, size: 14, color: Colors.grey.shade700),
-                const SizedBox(width: 6),
-                Text(
-                  'Manage Shortcuts',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade700,
-                  ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(LucideIcons.plus, size: 14, color: Colors.grey.shade700),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Manage Shortcuts',
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -361,15 +450,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   // ---------------------------------------------------------------------------
   // 4. Modules & Management Suite Card
   // ---------------------------------------------------------------------------
-  Widget _buildModulesSuite(BuildContext context) {
+  Widget _buildModulesSuite(BuildContext context, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(isMobile ? 18 : 24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFE5E7EB).withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -415,16 +505,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   // ---------------------------------------------------------------------------
   // 5. Fund Segregation Card
   // ---------------------------------------------------------------------------
-  Widget _buildFundSegregationCard(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
+  Widget _buildFundSegregationCard(BuildContext context, bool isMobile) {
     return Container(
-      padding: EdgeInsets.all(isMobile ? 14 : 20),
+      padding: EdgeInsets.all(isMobile ? 18 : 24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFE5E7EB).withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -440,7 +530,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 child: Text(
                   'Fund Segregation',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.5,
                     fontWeight: FontWeight.bold,
                     color: AppColors.darkText,
                   ),
@@ -450,33 +540,41 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               const SizedBox(width: 8),
               InkWell(
                 onTap: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.segregation),
-                child: const Text(
-                  'Manage',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0F5132),
+                borderRadius: BorderRadius.circular(6),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Text(
+                    'Manage',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF064E3B),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
                     color: const Color(0xFFEEF2FF),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(LucideIcons.wallet, color: Color(0xFF6366F1), size: 20),
+                  child: const Center(
+                    child: Icon(LucideIcons.wallet, color: Color(0xFF6366F1), size: 18),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(
@@ -488,10 +586,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Color(0xFF64748B),
+                          letterSpacing: 0.5,
                         ),
                       ),
-                      SizedBox(height: 2),
+                      SizedBox(height: 3),
                       Text(
                         '0 Established',
                         style: TextStyle(
@@ -508,20 +607,24 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ),
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
                     color: const Color(0xFFECFDF5),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(LucideIcons.plus, color: Color(0xFF059669), size: 20),
+                  child: const Center(
+                    child: Icon(LucideIcons.plus, color: Color(0xFF059669), size: 18),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(
@@ -533,10 +636,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Color(0xFF64748B),
+                          letterSpacing: 0.5,
                         ),
                       ),
-                      SizedBox(height: 2),
+                      SizedBox(height: 3),
                       Text(
                         '₹0',
                         style: TextStyle(
@@ -559,10 +663,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   // ---------------------------------------------------------------------------
   // 6. Personalized Bills & Splits Dark Green Banner Card
   // ---------------------------------------------------------------------------
-  Widget _buildPersonalizedBillsBanner(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
+  Widget _buildPersonalizedBillsBanner(BuildContext context, bool isMobile) {
     return Container(
-      padding: EdgeInsets.all(isMobile ? 16 : 24),
       decoration: BoxDecoration(
         color: const Color(0xFF033B26),
         borderRadius: BorderRadius.circular(20),
@@ -574,61 +676,83 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Personalized Bills & Splits',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Manage complex bill cost splits among groups, monitor personal accounting logs, and reconcile joint statements.',
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.white70,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.splitCollect),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF033B26),
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -25,
+              top: -25,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black.withValues(alpha: 0.12),
                 ),
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+            ),
+            Padding(
+              padding: EdgeInsets.all(isMobile ? 18 : 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    child: Text(
-                      'View Joint Expenses',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
+                  const Text(
+                    'Personalized Bills & Splits',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Manage complex bill cost splits among groups, monitor personal accounting logs, and reconcile joint statements.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.white.withValues(alpha: 0.85),
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => ref.read(navigationProvider.notifier).setRoute(AppRoute.splitCollect),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF033B26),
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              'View Joint Expenses',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(LucideIcons.arrowRight, size: 16),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(LucideIcons.arrowRight, size: 16),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -638,88 +762,108 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 // Live Stat Card Component
 // -----------------------------------------------------------------------------
 class _LiveStatCard extends StatelessWidget {
-  final double width;
   final IconData icon;
+  final Color iconColor;
+  final Color iconBgColor;
   final String title;
   final String value;
+  final bool isCompact;
+  final VoidCallback? onTap;
 
   const _LiveStatCard({
-    required this.width,
     required this.icon,
+    required this.iconColor,
+    required this.iconBgColor,
     required this.title,
     required this.value,
+    this.isCompact = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    final paddingAmount = isCompact ? 14.0 : 20.0;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+        child: Container(
+          padding: EdgeInsets.all(paddingAmount),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xFFE5E7EB).withValues(alpha: 0.6)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.02),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: const Color(0xFF059669), size: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: isCompact ? 34 : 38,
+                    height: isCompact ? 34 : 38,
+                    decoration: BoxDecoration(
+                      color: iconBgColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Icon(icon, color: iconColor, size: isCompact ? 18 : 20),
+                    ),
+                  ),
+                  const Text(
+                    'Live',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF10B981),
+                    ),
+                  ),
+                ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'Live',
+              SizedBox(height: isCompact ? 12 : 18),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF059669),
+                    fontSize: isCompact ? 12 : 13,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              SizedBox(
+                width: double.infinity,
+                child: FittedBox(
+                  alignment: Alignment.centerLeft,
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: isCompact ? 22 : 26,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkText,
+                      letterSpacing: -0.5,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          const SizedBox(height: 6),
-          FittedBox(
-            alignment: Alignment.centerLeft,
-            fit: BoxFit.scaleDown,
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.darkText,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -745,47 +889,54 @@ class _ActionPillTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.grey.shade200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: iconBgColor,
-                borderRadius: BorderRadius.circular(8),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.02),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
               ),
-              child: Icon(icon, color: iconColor, size: 16),
-            ),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.darkText,
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: iconBgColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Icon(icon, color: iconColor, size: 16),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkText,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -810,63 +961,128 @@ class _ModuleSuiteRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFAFAFB),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
-              borderRadius: BorderRadius.circular(14),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAFAFB),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFF3F4F6)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: const Color(0xFFECFDF5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Icon(icon, color: const Color(0xFF059669), size: 22),
+              ),
             ),
-            child: Icon(icon, color: const Color(0xFF059669), size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.darkText,
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkText,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                    height: 1.3,
+                  const SizedBox(height: 3),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Colors.grey.shade600,
+                      height: 1.35,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 12),
-          InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              padding: const EdgeInsets.all(8),
+            const SizedBox(width: 12),
+            Container(
+              width: 32,
+              height: 32,
               decoration: const BoxDecoration(
-                color: Color(0xFFECFDF5),
+                color: Color(0xFFD1FAE5),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(LucideIcons.arrowRight, color: Color(0xFF059669), size: 18),
+              child: const Center(
+                child: Icon(LucideIcons.arrowRight, color: Color(0xFF059669), size: 16),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Dashed Rounded Rectangle Painter for "+ Manage Shortcuts"
+// -----------------------------------------------------------------------------
+class _DashedRRectPainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+  final double dash;
+  final double gap;
+  final double radius;
+
+  const _DashedRRectPainter({
+    required this.color,
+    this.strokeWidth = 1.2,
+    this.dash = 4.0,
+    this.gap = 3.5,
+    this.radius = 20.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    final rrect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(
+        strokeWidth / 2,
+        strokeWidth / 2,
+        size.width - strokeWidth,
+        size.height - strokeWidth,
+      ),
+      Radius.circular(radius),
+    );
+
+    final path = Path()..addRRect(rrect);
+    for (final metric in path.computeMetrics()) {
+      double distance = 0.0;
+      while (distance < metric.length) {
+        final length = (distance + dash > metric.length)
+            ? metric.length - distance
+            : dash;
+        final extractPath = metric.extractPath(distance, distance + length);
+        canvas.drawPath(extractPath, paint);
+        distance += dash + gap;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DashedRRectPainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.dash != dash ||
+        oldDelegate.gap != gap ||
+        oldDelegate.radius != radius;
   }
 }
